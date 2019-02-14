@@ -1,8 +1,8 @@
 tests: ## Clean and Make unit tests
-	python3 -m pytest tests --cov=finance_enums
+	python3 -m pytest -v tests --cov=finance_enums
 
 test: lint ## run the tests for travis CI
-	@ python3 -m pytest tests --cov=finance_enums
+	@ python3 -m pytest -v tests --cov=finance_enums
 
 lint: ## run linter
 	pylint finance_enums || echo
