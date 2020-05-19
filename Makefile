@@ -1,12 +1,11 @@
 tests: ## Clean and Make unit tests
-	python3 -m pytest -v tests --cov=finance_enums
+	python3.7 -m pytest -v tests --cov=finance_enums
 
 test: lint ## run the tests for travis CI
-	@ python3 -m pytest -v tests --cov=finance_enums
+	@ python3.7 -m pytest -v tests --cov=finance_enums
 
 lint: ## run linter
-	pylint finance_enums || echo
-	flake8 finance_enums 
+	python3.7 -m flake8 finance_enums 
 
 annotate: ## MyPy type annotation check
 	mypy -s finance_enums
@@ -28,8 +27,8 @@ install:  ## install to site-packages
 
 dist:  ## dist to pypi
 	rm -rf dist build
-	python3 setup.py sdist
-	python3 setup.py bdist_wheel
+	python3.7 setup.py sdist
+	python3.7 setup.py bdist_wheel
 	twine check dist/* && twine upload dist/*
 
 # Thanks to Francoise at marmelab.com for this
