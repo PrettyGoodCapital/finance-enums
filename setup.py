@@ -31,7 +31,7 @@ setup(
     url="https://github.com/timkpaine/finance_enums",
     download_url="https://github.com/timkpaine/finance_enums/archive/v0.1.0.tar.gz",
     author="Tim Paine",
-    author_email="timothy.k.paine@gmail.com",
+    author_email="t.paine154@gmail.com",
     license="Apache 2.0",
     classifiers=[
         "Development Status :: 3 - Alpha",
