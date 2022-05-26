@@ -1,4 +1,7 @@
-recursive-include finance_enums/data/ *
+recursive-include finance_enums/data *
 prune tests
 
-include requirements.txt
+include LICENSE
+exclude CODE_OF_CONDUCT.md
+exclude CONTRIBUTING.md
+exclude Makefile
