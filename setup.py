@@ -23,7 +23,7 @@ requires_dev = requires + [
 
 setup(
     name="finance_enums",
-    version="0.1.0",
+    version="0.1.1",
     description="Standard Finance enums",
     long_description=long_description,
     url="https://github.com/timkpaine/finance_enums",
