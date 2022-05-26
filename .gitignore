@@ -102,4 +102,6 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
 python_junit.xml
+.vscode
