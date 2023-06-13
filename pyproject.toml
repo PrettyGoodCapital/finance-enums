@@ -6,7 +6,7 @@ build-backend = "maturin"
 name = "finance-enums"
 authors = [{name = "Tim Paine", email = "t.paine154@gmail.com"}]
 description="Standard Financial Enumerations"
-version = "0.1.2"
+version = "0.2.0"
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.7"
