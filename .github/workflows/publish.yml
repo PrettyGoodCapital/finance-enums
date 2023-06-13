@@ -86,7 +86,7 @@ jobs:
         key: ${{ runner.os }}-pip-${{ matrix.python-version }}
 
     - name: Install python dependencies
-      run: pip install -U setuptools wheel twine cibuildwheel platformdirs
+      run: pip install -U build setuptools wheel twine cibuildwheel platformdirs
 
     - name: Display cibuildwheel cache dir
       id: cibuildwheel-cache
@@ -123,7 +123,7 @@ jobs:
         CIBW_BEFORE_BUILD_LINUX: >
           curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y &&
           rustup show
-        CIBW_TEST_COMMAND: 'pytest {project}/atomic_counter/tests'
+        CIBW_TEST_COMMAND: 'pytest {project}/finance_enums/tests'
         CIBW_TEST_REQUIRES: pytest pytest-cov
         CIBW_TEST_SKIP: '*-macosx_arm64 *-macosx_universal2:arm64'
         CIBW_BUILD_VERBOSITY: 1
