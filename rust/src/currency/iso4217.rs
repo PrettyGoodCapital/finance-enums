@@ -2,7 +2,9 @@
 use crate::CountryCode;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "UPPERCASE")]
 pub enum Currency {
     AED,
@@ -53,9 +55,11 @@ pub enum Currency {
     ERN,
     ETB,
     EUR,
+    EUX, // NOTE: non ISO 4217
     FJD,
     FKP,
     GBP,
+    GBX, // NOTE: non ISO 4217
     GEL,
     GHS,
     GIP,
@@ -154,6 +158,7 @@ pub enum Currency {
     UAH,
     UGX,
     USD,
+    USX, // NOTE: non ISO 4217
     USN,
     UYI,
     UYU,
@@ -238,9 +243,11 @@ impl Currency {
             Currency::ERN => "Eritrean nakfa",
             Currency::ETB => "Ethiopian birr",
             Currency::EUR => "Euro",
+            Currency::EUX => "Euro (cents)",
             Currency::FJD => "Fiji dollar",
             Currency::FKP => "Falkland Islands pound",
             Currency::GBP => "Pound sterling",
+            Currency::GBX => "Penny sterling",
             Currency::GEL => "Georgian lari",
             Currency::GHS => "Ghanaian cedi",
             Currency::GIP => "Gibraltar pound",
@@ -339,6 +346,7 @@ impl Currency {
             Currency::UAH => "Ukrainian hryvnia",
             Currency::UGX => "Ugandan shilling",
             Currency::USD => "United States dollar",
+            Currency::USX => "United States penny",
             Currency::USN => "United States dollar",
             Currency::UYI => "Uruguay Peso en Unidades Indexadas",
             Currency::UYU => "Uruguayan peso",

@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -31,9 +34,16 @@ impl Sector {
         Ok(format!("Sector<{}>", self.typ.to_string()))
     }
 
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
 
     fn industry_groups(&self) -> Vec<IndustryGroup> {
         self.typ.industry_groups().iter().map(|item| IndustryGroup{typ: item.clone()} ).collect()
@@ -53,7 +63,6 @@ impl Sector {
 
     // Enum values
     #[classattr]
-    #[allow(non_snake_case)]
     fn Energy() -> Sector {
         Sector {
             typ: BaseSector::Energy
@@ -61,7 +70,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Materials() -> Sector {
         Sector {
             typ: BaseSector::Materials
@@ -69,7 +77,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Industrials() -> Sector {
         Sector {
             typ: BaseSector::Industrials
@@ -77,7 +84,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerDiscretionary() -> Sector {
         Sector {
             typ: BaseSector::ConsumerDiscretionary
@@ -85,7 +91,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerStaples() -> Sector {
         Sector {
             typ: BaseSector::ConsumerStaples
@@ -93,7 +98,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn HealthCare() -> Sector {
         Sector {
             typ: BaseSector::HealthCare
@@ -101,7 +105,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Financials() -> Sector {
         Sector {
             typ: BaseSector::Financials
@@ -109,7 +112,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn InformationTechnology() -> Sector {
         Sector {
             typ: BaseSector::InformationTechnology
@@ -117,7 +119,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn CommunicationServices() -> Sector {
         Sector {
             typ: BaseSector::CommunicationServices
@@ -125,7 +126,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Utilities() -> Sector {
         Sector {
             typ: BaseSector::Utilities
@@ -133,7 +133,6 @@ impl Sector {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn RealEstate() -> Sector {
         Sector {
             typ: BaseSector::RealEstate

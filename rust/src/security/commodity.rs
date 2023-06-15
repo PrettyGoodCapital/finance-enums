@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum CommodityType {
     Energy,
@@ -9,7 +11,7 @@ pub enum CommodityType {
 }
 
 // TODO
-// #[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+// #[derive(Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
 // #[strum(serialize_all = "PascalCase")]
 // pub enum CommoditySubType {
 //     EnergyType(Energy),
@@ -17,7 +19,9 @@ pub enum CommodityType {
 //     AgricultureType(Agriculture),
 // }
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum Energy {
     Crude,
@@ -26,7 +30,9 @@ pub enum Energy {
     NaturalGas,
 }
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum Metals {
     Gold,
@@ -36,7 +42,9 @@ pub enum Metals {
     Palladium,
 }
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum Agriculture {
     Corn,
