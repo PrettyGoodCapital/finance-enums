@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -36,8 +39,15 @@ impl Country {
         Ok(format!("Country<{}>", self.code.to_string()))
     }
 
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.code == other.code
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.code.to_string() < other.code.to_string()),
+            CompareOp::Le => Ok(self.code.to_string() <= other.code.to_string()),
+            CompareOp::Eq => Ok(self.code == other.code),
+            CompareOp::Ne => Ok(self.code != other.code),
+            CompareOp::Gt => Ok(self.code.to_string() > other.code.to_string()),
+            CompareOp::Ge => Ok(self.code.to_string() >= other.code.to_string()),
+        }
     }
 
     #[getter]
@@ -73,7 +83,6 @@ impl Country {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn AF() -> Country {
         Country {
             code: CountryCode::AF,
@@ -82,7 +91,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AX() -> Country {
         Country {
             code: CountryCode::AX,
@@ -91,7 +99,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AL() -> Country {
         Country {
             code: CountryCode::AL,
@@ -100,7 +107,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DZ() -> Country {
         Country {
             code: CountryCode::DZ,
@@ -109,7 +115,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AS() -> Country {
         Country {
             code: CountryCode::AS,
@@ -118,7 +123,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AD() -> Country {
         Country {
             code: CountryCode::AD,
@@ -127,7 +131,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AO() -> Country {
         Country {
             code: CountryCode::AO,
@@ -136,7 +139,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AI() -> Country {
         Country {
             code: CountryCode::AI,
@@ -145,7 +147,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AQ() -> Country {
         Country {
             code: CountryCode::AQ,
@@ -154,7 +155,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AG() -> Country {
         Country {
             code: CountryCode::AG,
@@ -163,7 +163,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AR() -> Country {
         Country {
             code: CountryCode::AR,
@@ -172,7 +171,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AM() -> Country {
         Country {
             code: CountryCode::AM,
@@ -181,7 +179,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AW() -> Country {
         Country {
             code: CountryCode::AW,
@@ -190,7 +187,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AU() -> Country {
         Country {
             code: CountryCode::AU,
@@ -199,7 +195,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AT() -> Country {
         Country {
             code: CountryCode::AT,
@@ -208,7 +203,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AZ() -> Country {
         Country {
             code: CountryCode::AZ,
@@ -217,7 +211,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BS() -> Country {
         Country {
             code: CountryCode::BS,
@@ -226,7 +219,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BH() -> Country {
         Country {
             code: CountryCode::BH,
@@ -235,7 +227,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BD() -> Country {
         Country {
             code: CountryCode::BD,
@@ -244,7 +235,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BB() -> Country {
         Country {
             code: CountryCode::BB,
@@ -253,7 +243,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BY() -> Country {
         Country {
             code: CountryCode::BY,
@@ -262,7 +251,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BE() -> Country {
         Country {
             code: CountryCode::BE,
@@ -271,7 +259,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BZ() -> Country {
         Country {
             code: CountryCode::BZ,
@@ -280,7 +267,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BJ() -> Country {
         Country {
             code: CountryCode::BJ,
@@ -289,7 +275,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BM() -> Country {
         Country {
             code: CountryCode::BM,
@@ -298,7 +283,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BT() -> Country {
         Country {
             code: CountryCode::BT,
@@ -307,7 +291,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BO() -> Country {
         Country {
             code: CountryCode::BO,
@@ -316,7 +299,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BQ() -> Country {
         Country {
             code: CountryCode::BQ,
@@ -325,7 +307,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BA() -> Country {
         Country {
             code: CountryCode::BA,
@@ -334,7 +315,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BW() -> Country {
         Country {
             code: CountryCode::BW,
@@ -343,7 +323,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BV() -> Country {
         Country {
             code: CountryCode::BV,
@@ -352,7 +331,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BR() -> Country {
         Country {
             code: CountryCode::BR,
@@ -361,7 +339,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IO() -> Country {
         Country {
             code: CountryCode::IO,
@@ -370,7 +347,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BN() -> Country {
         Country {
             code: CountryCode::BN,
@@ -379,7 +355,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BG() -> Country {
         Country {
             code: CountryCode::BG,
@@ -388,7 +363,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BF() -> Country {
         Country {
             code: CountryCode::BF,
@@ -397,7 +371,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BI() -> Country {
         Country {
             code: CountryCode::BI,
@@ -406,7 +379,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CV() -> Country {
         Country {
             code: CountryCode::CV,
@@ -415,7 +387,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KH() -> Country {
         Country {
             code: CountryCode::KH,
@@ -424,7 +395,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CM() -> Country {
         Country {
             code: CountryCode::CM,
@@ -433,7 +403,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CA() -> Country {
         Country {
             code: CountryCode::CA,
@@ -442,7 +411,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KY() -> Country {
         Country {
             code: CountryCode::KY,
@@ -451,7 +419,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CF() -> Country {
         Country {
             code: CountryCode::CF,
@@ -460,7 +427,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TD() -> Country {
         Country {
             code: CountryCode::TD,
@@ -469,7 +435,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CL() -> Country {
         Country {
             code: CountryCode::CL,
@@ -478,7 +443,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CN() -> Country {
         Country {
             code: CountryCode::CN,
@@ -487,7 +451,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CX() -> Country {
         Country {
             code: CountryCode::CX,
@@ -496,7 +459,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CC() -> Country {
         Country {
             code: CountryCode::CC,
@@ -505,7 +467,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CO() -> Country {
         Country {
             code: CountryCode::CO,
@@ -514,7 +475,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KM() -> Country {
         Country {
             code: CountryCode::KM,
@@ -523,7 +483,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CG() -> Country {
         Country {
             code: CountryCode::CG,
@@ -532,7 +491,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CD() -> Country {
         Country {
             code: CountryCode::CD,
@@ -541,7 +499,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CK() -> Country {
         Country {
             code: CountryCode::CK,
@@ -550,7 +507,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CR() -> Country {
         Country {
             code: CountryCode::CR,
@@ -559,7 +515,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CI() -> Country {
         Country {
             code: CountryCode::CI,
@@ -568,7 +523,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HR() -> Country {
         Country {
             code: CountryCode::HR,
@@ -577,7 +531,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CU() -> Country {
         Country {
             code: CountryCode::CU,
@@ -586,7 +539,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CW() -> Country {
         Country {
             code: CountryCode::CW,
@@ -595,7 +547,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CY() -> Country {
         Country {
             code: CountryCode::CY,
@@ -604,7 +555,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CZ() -> Country {
         Country {
             code: CountryCode::CZ,
@@ -613,7 +563,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DK() -> Country {
         Country {
             code: CountryCode::DK,
@@ -622,7 +571,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DJ() -> Country {
         Country {
             code: CountryCode::DJ,
@@ -631,7 +579,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DM() -> Country {
         Country {
             code: CountryCode::DM,
@@ -640,7 +587,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DO() -> Country {
         Country {
             code: CountryCode::DO,
@@ -649,7 +595,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EC() -> Country {
         Country {
             code: CountryCode::EC,
@@ -658,7 +603,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EG() -> Country {
         Country {
             code: CountryCode::EG,
@@ -667,7 +611,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SV() -> Country {
         Country {
             code: CountryCode::SV,
@@ -676,7 +619,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GQ() -> Country {
         Country {
             code: CountryCode::GQ,
@@ -685,7 +627,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ER() -> Country {
         Country {
             code: CountryCode::ER,
@@ -694,7 +635,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EE() -> Country {
         Country {
             code: CountryCode::EE,
@@ -703,7 +643,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SZ() -> Country {
         Country {
             code: CountryCode::SZ,
@@ -712,7 +651,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ET() -> Country {
         Country {
             code: CountryCode::ET,
@@ -721,7 +659,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FK() -> Country {
         Country {
             code: CountryCode::FK,
@@ -730,7 +667,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FO() -> Country {
         Country {
             code: CountryCode::FO,
@@ -739,7 +675,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FJ() -> Country {
         Country {
             code: CountryCode::FJ,
@@ -748,7 +683,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FI() -> Country {
         Country {
             code: CountryCode::FI,
@@ -757,7 +691,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FR() -> Country {
         Country {
             code: CountryCode::FR,
@@ -766,7 +699,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GF() -> Country {
         Country {
             code: CountryCode::GF,
@@ -775,7 +707,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PF() -> Country {
         Country {
             code: CountryCode::PF,
@@ -784,7 +715,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TF() -> Country {
         Country {
             code: CountryCode::TF,
@@ -793,7 +723,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GA() -> Country {
         Country {
             code: CountryCode::GA,
@@ -802,7 +731,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GM() -> Country {
         Country {
             code: CountryCode::GM,
@@ -811,7 +739,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GE() -> Country {
         Country {
             code: CountryCode::GE,
@@ -820,7 +747,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DE() -> Country {
         Country {
             code: CountryCode::DE,
@@ -829,7 +755,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GH() -> Country {
         Country {
             code: CountryCode::GH,
@@ -838,7 +763,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GI() -> Country {
         Country {
             code: CountryCode::GI,
@@ -847,7 +771,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GR() -> Country {
         Country {
             code: CountryCode::GR,
@@ -856,7 +779,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GL() -> Country {
         Country {
             code: CountryCode::GL,
@@ -865,7 +787,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GD() -> Country {
         Country {
             code: CountryCode::GD,
@@ -874,7 +795,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GP() -> Country {
         Country {
             code: CountryCode::GP,
@@ -883,7 +803,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GU() -> Country {
         Country {
             code: CountryCode::GU,
@@ -892,7 +811,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GT() -> Country {
         Country {
             code: CountryCode::GT,
@@ -901,7 +819,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GG() -> Country {
         Country {
             code: CountryCode::GG,
@@ -910,7 +827,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GN() -> Country {
         Country {
             code: CountryCode::GN,
@@ -919,7 +835,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GW() -> Country {
         Country {
             code: CountryCode::GW,
@@ -928,7 +843,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GY() -> Country {
         Country {
             code: CountryCode::GY,
@@ -937,7 +851,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HT() -> Country {
         Country {
             code: CountryCode::HT,
@@ -946,7 +859,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HM() -> Country {
         Country {
             code: CountryCode::HM,
@@ -955,7 +867,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VA() -> Country {
         Country {
             code: CountryCode::VA,
@@ -964,7 +875,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HN() -> Country {
         Country {
             code: CountryCode::HN,
@@ -973,7 +883,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HK() -> Country {
         Country {
             code: CountryCode::HK,
@@ -982,7 +891,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HU() -> Country {
         Country {
             code: CountryCode::HU,
@@ -991,7 +899,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IS() -> Country {
         Country {
             code: CountryCode::IS,
@@ -1000,7 +907,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IN() -> Country {
         Country {
             code: CountryCode::IN,
@@ -1009,7 +915,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ID() -> Country {
         Country {
             code: CountryCode::ID,
@@ -1018,7 +923,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IR() -> Country {
         Country {
             code: CountryCode::IR,
@@ -1027,7 +931,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IQ() -> Country {
         Country {
             code: CountryCode::IQ,
@@ -1036,7 +939,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IE() -> Country {
         Country {
             code: CountryCode::IE,
@@ -1045,7 +947,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IM() -> Country {
         Country {
             code: CountryCode::IM,
@@ -1054,7 +955,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IL() -> Country {
         Country {
             code: CountryCode::IL,
@@ -1063,7 +963,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IT() -> Country {
         Country {
             code: CountryCode::IT,
@@ -1072,7 +971,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn JM() -> Country {
         Country {
             code: CountryCode::JM,
@@ -1081,7 +979,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn JP() -> Country {
         Country {
             code: CountryCode::JP,
@@ -1090,7 +987,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn JE() -> Country {
         Country {
             code: CountryCode::JE,
@@ -1099,7 +995,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn JO() -> Country {
         Country {
             code: CountryCode::JO,
@@ -1108,7 +1003,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KZ() -> Country {
         Country {
             code: CountryCode::KZ,
@@ -1117,7 +1011,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KE() -> Country {
         Country {
             code: CountryCode::KE,
@@ -1126,7 +1019,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KI() -> Country {
         Country {
             code: CountryCode::KI,
@@ -1135,7 +1027,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KP() -> Country {
         Country {
             code: CountryCode::KP,
@@ -1144,7 +1035,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KR() -> Country {
         Country {
             code: CountryCode::KR,
@@ -1153,7 +1043,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KW() -> Country {
         Country {
             code: CountryCode::KW,
@@ -1162,7 +1051,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KG() -> Country {
         Country {
             code: CountryCode::KG,
@@ -1171,7 +1059,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LA() -> Country {
         Country {
             code: CountryCode::LA,
@@ -1180,7 +1067,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LV() -> Country {
         Country {
             code: CountryCode::LV,
@@ -1189,7 +1075,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LB() -> Country {
         Country {
             code: CountryCode::LB,
@@ -1198,7 +1083,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LS() -> Country {
         Country {
             code: CountryCode::LS,
@@ -1207,7 +1091,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LR() -> Country {
         Country {
             code: CountryCode::LR,
@@ -1216,7 +1099,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LY() -> Country {
         Country {
             code: CountryCode::LY,
@@ -1225,7 +1107,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LI() -> Country {
         Country {
             code: CountryCode::LI,
@@ -1234,7 +1115,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LT() -> Country {
         Country {
             code: CountryCode::LT,
@@ -1243,7 +1123,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LU() -> Country {
         Country {
             code: CountryCode::LU,
@@ -1252,7 +1131,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MO() -> Country {
         Country {
             code: CountryCode::MO,
@@ -1261,7 +1139,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MG() -> Country {
         Country {
             code: CountryCode::MG,
@@ -1270,7 +1147,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MW() -> Country {
         Country {
             code: CountryCode::MW,
@@ -1279,7 +1155,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MY() -> Country {
         Country {
             code: CountryCode::MY,
@@ -1288,7 +1163,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MV() -> Country {
         Country {
             code: CountryCode::MV,
@@ -1297,7 +1171,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ML() -> Country {
         Country {
             code: CountryCode::ML,
@@ -1306,7 +1179,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MT() -> Country {
         Country {
             code: CountryCode::MT,
@@ -1315,7 +1187,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MH() -> Country {
         Country {
             code: CountryCode::MH,
@@ -1324,7 +1195,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MQ() -> Country {
         Country {
             code: CountryCode::MQ,
@@ -1333,7 +1203,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MR() -> Country {
         Country {
             code: CountryCode::MR,
@@ -1342,7 +1211,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MU() -> Country {
         Country {
             code: CountryCode::MU,
@@ -1351,7 +1219,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn YT() -> Country {
         Country {
             code: CountryCode::YT,
@@ -1360,7 +1227,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MX() -> Country {
         Country {
             code: CountryCode::MX,
@@ -1369,7 +1235,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FM() -> Country {
         Country {
             code: CountryCode::FM,
@@ -1378,7 +1243,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MD() -> Country {
         Country {
             code: CountryCode::MD,
@@ -1387,7 +1251,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MC() -> Country {
         Country {
             code: CountryCode::MC,
@@ -1396,7 +1259,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MN() -> Country {
         Country {
             code: CountryCode::MN,
@@ -1405,7 +1267,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ME() -> Country {
         Country {
             code: CountryCode::ME,
@@ -1414,7 +1275,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MS() -> Country {
         Country {
             code: CountryCode::MS,
@@ -1423,7 +1283,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MA() -> Country {
         Country {
             code: CountryCode::MA,
@@ -1432,7 +1291,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MZ() -> Country {
         Country {
             code: CountryCode::MZ,
@@ -1441,7 +1299,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MM() -> Country {
         Country {
             code: CountryCode::MM,
@@ -1450,7 +1307,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NA() -> Country {
         Country {
             code: CountryCode::NA,
@@ -1459,7 +1315,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NR() -> Country {
         Country {
             code: CountryCode::NR,
@@ -1468,7 +1323,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NP() -> Country {
         Country {
             code: CountryCode::NP,
@@ -1477,7 +1331,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NL() -> Country {
         Country {
             code: CountryCode::NL,
@@ -1486,7 +1339,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NC() -> Country {
         Country {
             code: CountryCode::NC,
@@ -1495,7 +1347,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NZ() -> Country {
         Country {
             code: CountryCode::NZ,
@@ -1504,7 +1355,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NI() -> Country {
         Country {
             code: CountryCode::NI,
@@ -1513,7 +1363,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NE() -> Country {
         Country {
             code: CountryCode::NE,
@@ -1522,7 +1371,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NG() -> Country {
         Country {
             code: CountryCode::NG,
@@ -1531,7 +1379,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NU() -> Country {
         Country {
             code: CountryCode::NU,
@@ -1540,7 +1387,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NF() -> Country {
         Country {
             code: CountryCode::NF,
@@ -1549,7 +1395,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MK() -> Country {
         Country {
             code: CountryCode::MK,
@@ -1558,7 +1403,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MP() -> Country {
         Country {
             code: CountryCode::MP,
@@ -1567,7 +1411,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn NO() -> Country {
         Country {
             code: CountryCode::NO,
@@ -1576,7 +1419,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn OM() -> Country {
         Country {
             code: CountryCode::OM,
@@ -1585,7 +1427,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PK() -> Country {
         Country {
             code: CountryCode::PK,
@@ -1594,7 +1435,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PW() -> Country {
         Country {
             code: CountryCode::PW,
@@ -1603,7 +1443,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PS() -> Country {
         Country {
             code: CountryCode::PS,
@@ -1612,7 +1451,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PA() -> Country {
         Country {
             code: CountryCode::PA,
@@ -1621,7 +1459,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PG() -> Country {
         Country {
             code: CountryCode::PG,
@@ -1630,7 +1467,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PY() -> Country {
         Country {
             code: CountryCode::PY,
@@ -1639,7 +1475,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PE() -> Country {
         Country {
             code: CountryCode::PE,
@@ -1648,7 +1483,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PH() -> Country {
         Country {
             code: CountryCode::PH,
@@ -1657,7 +1491,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PN() -> Country {
         Country {
             code: CountryCode::PN,
@@ -1666,7 +1499,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PL() -> Country {
         Country {
             code: CountryCode::PL,
@@ -1675,7 +1507,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PT() -> Country {
         Country {
             code: CountryCode::PT,
@@ -1684,7 +1515,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PR() -> Country {
         Country {
             code: CountryCode::PR,
@@ -1693,7 +1523,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn QA() -> Country {
         Country {
             code: CountryCode::QA,
@@ -1702,7 +1531,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RE() -> Country {
         Country {
             code: CountryCode::RE,
@@ -1711,7 +1539,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RO() -> Country {
         Country {
             code: CountryCode::RO,
@@ -1720,7 +1547,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RU() -> Country {
         Country {
             code: CountryCode::RU,
@@ -1729,7 +1555,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RW() -> Country {
         Country {
             code: CountryCode::RW,
@@ -1738,7 +1563,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BL() -> Country {
         Country {
             code: CountryCode::BL,
@@ -1747,7 +1571,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SH() -> Country {
         Country {
             code: CountryCode::SH,
@@ -1756,7 +1579,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn KN() -> Country {
         Country {
             code: CountryCode::KN,
@@ -1765,7 +1587,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LC() -> Country {
         Country {
             code: CountryCode::LC,
@@ -1774,7 +1595,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MF() -> Country {
         Country {
             code: CountryCode::MF,
@@ -1783,7 +1603,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PM() -> Country {
         Country {
             code: CountryCode::PM,
@@ -1792,7 +1611,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VC() -> Country {
         Country {
             code: CountryCode::VC,
@@ -1801,7 +1619,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn WS() -> Country {
         Country {
             code: CountryCode::WS,
@@ -1810,7 +1627,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SM() -> Country {
         Country {
             code: CountryCode::SM,
@@ -1819,7 +1635,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ST() -> Country {
         Country {
             code: CountryCode::ST,
@@ -1828,7 +1643,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SA() -> Country {
         Country {
             code: CountryCode::SA,
@@ -1837,7 +1651,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SN() -> Country {
         Country {
             code: CountryCode::SN,
@@ -1846,7 +1659,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RS() -> Country {
         Country {
             code: CountryCode::RS,
@@ -1855,7 +1667,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SC() -> Country {
         Country {
             code: CountryCode::SC,
@@ -1864,7 +1675,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SL() -> Country {
         Country {
             code: CountryCode::SL,
@@ -1873,7 +1683,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SG() -> Country {
         Country {
             code: CountryCode::SG,
@@ -1882,7 +1691,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SX() -> Country {
         Country {
             code: CountryCode::SX,
@@ -1891,7 +1699,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SK() -> Country {
         Country {
             code: CountryCode::SK,
@@ -1900,7 +1707,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SI() -> Country {
         Country {
             code: CountryCode::SI,
@@ -1909,7 +1715,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SB() -> Country {
         Country {
             code: CountryCode::SB,
@@ -1918,7 +1723,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SO() -> Country {
         Country {
             code: CountryCode::SO,
@@ -1927,7 +1731,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ZA() -> Country {
         Country {
             code: CountryCode::ZA,
@@ -1936,7 +1739,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GS() -> Country {
         Country {
             code: CountryCode::GS,
@@ -1945,7 +1747,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SS() -> Country {
         Country {
             code: CountryCode::SS,
@@ -1954,7 +1755,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ES() -> Country {
         Country {
             code: CountryCode::ES,
@@ -1963,7 +1763,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LK() -> Country {
         Country {
             code: CountryCode::LK,
@@ -1972,7 +1771,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SD() -> Country {
         Country {
             code: CountryCode::SD,
@@ -1981,7 +1779,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SR() -> Country {
         Country {
             code: CountryCode::SR,
@@ -1990,7 +1787,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SJ() -> Country {
         Country {
             code: CountryCode::SJ,
@@ -1999,7 +1795,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SE() -> Country {
         Country {
             code: CountryCode::SE,
@@ -2008,7 +1803,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn CH() -> Country {
         Country {
             code: CountryCode::CH,
@@ -2017,7 +1811,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SY() -> Country {
         Country {
             code: CountryCode::SY,
@@ -2026,7 +1819,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TW() -> Country {
         Country {
             code: CountryCode::TW,
@@ -2035,7 +1827,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TJ() -> Country {
         Country {
             code: CountryCode::TJ,
@@ -2044,7 +1835,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TZ() -> Country {
         Country {
             code: CountryCode::TZ,
@@ -2053,7 +1843,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TH() -> Country {
         Country {
             code: CountryCode::TH,
@@ -2062,7 +1851,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TL() -> Country {
         Country {
             code: CountryCode::TL,
@@ -2071,7 +1859,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TG() -> Country {
         Country {
             code: CountryCode::TG,
@@ -2080,7 +1867,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TK() -> Country {
         Country {
             code: CountryCode::TK,
@@ -2089,7 +1875,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TO() -> Country {
         Country {
             code: CountryCode::TO,
@@ -2098,7 +1883,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TT() -> Country {
         Country {
             code: CountryCode::TT,
@@ -2107,7 +1891,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TN() -> Country {
         Country {
             code: CountryCode::TN,
@@ -2116,7 +1899,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TR() -> Country {
         Country {
             code: CountryCode::TR,
@@ -2125,7 +1907,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TM() -> Country {
         Country {
             code: CountryCode::TM,
@@ -2134,7 +1915,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TC() -> Country {
         Country {
             code: CountryCode::TC,
@@ -2143,7 +1923,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TV() -> Country {
         Country {
             code: CountryCode::TV,
@@ -2152,7 +1931,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn UG() -> Country {
         Country {
             code: CountryCode::UG,
@@ -2161,7 +1939,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn UA() -> Country {
         Country {
             code: CountryCode::UA,
@@ -2170,7 +1947,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AE() -> Country {
         Country {
             code: CountryCode::AE,
@@ -2179,7 +1955,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GB() -> Country {
         Country {
             code: CountryCode::GB,
@@ -2188,7 +1963,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn US() -> Country {
         Country {
             code: CountryCode::US,
@@ -2197,7 +1971,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn UM() -> Country {
         Country {
             code: CountryCode::UM,
@@ -2206,7 +1979,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn UY() -> Country {
         Country {
             code: CountryCode::UY,
@@ -2215,7 +1987,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn UZ() -> Country {
         Country {
             code: CountryCode::UZ,
@@ -2224,7 +1995,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VU() -> Country {
         Country {
             code: CountryCode::VU,
@@ -2233,7 +2003,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VE() -> Country {
         Country {
             code: CountryCode::VE,
@@ -2242,7 +2011,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VN() -> Country {
         Country {
             code: CountryCode::VN,
@@ -2251,7 +2019,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VG() -> Country {
         Country {
             code: CountryCode::VG,
@@ -2260,7 +2027,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn VI() -> Country {
         Country {
             code: CountryCode::VI,
@@ -2269,7 +2035,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn WF() -> Country {
         Country {
             code: CountryCode::WF,
@@ -2278,7 +2043,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EH() -> Country {
         Country {
             code: CountryCode::EH,
@@ -2287,7 +2051,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn YE() -> Country {
         Country {
             code: CountryCode::YE,
@@ -2296,7 +2059,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ZM() -> Country {
         Country {
             code: CountryCode::ZM,
@@ -2305,7 +2067,6 @@ impl Country {
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ZW() -> Country {
         Country {
             code: CountryCode::ZW,

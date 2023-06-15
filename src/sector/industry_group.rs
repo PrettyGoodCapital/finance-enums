@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -31,9 +34,16 @@ impl IndustryGroup {
         Ok(format!("IndustryGroup<{}>", self.typ.to_string()))
     }
 
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
 
     fn sector(&self) -> Sector {
         Sector {
@@ -59,7 +69,6 @@ impl IndustryGroup {
 
     // Energy
     #[classattr]
-    #[allow(non_snake_case)]
     fn Energy() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Energy
@@ -68,7 +77,6 @@ impl IndustryGroup {
 
     // Materials
     #[classattr]
-    #[allow(non_snake_case)]
     fn Materials() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Materials
@@ -77,7 +85,6 @@ impl IndustryGroup {
 
     // Industrials
     #[classattr]
-    #[allow(non_snake_case)]
     fn CapitalGoods() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::CapitalGoods
@@ -85,7 +92,6 @@ impl IndustryGroup {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn CommercialAndProfessionalServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::CommercialAndProfessionalServices
@@ -93,7 +99,6 @@ impl IndustryGroup {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Transportation() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Transportation
@@ -102,28 +107,24 @@ impl IndustryGroup {
     
     // Consumer Discretionary
     #[classattr]
-    #[allow(non_snake_case)]
     fn AutomobilesAndComponents() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::AutomobilesAndComponents
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerDurablesAndApparel() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::ConsumerDurablesAndApparel
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::ConsumerServices
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerDiscretionaryDistributionAndRetail() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::ConsumerDiscretionaryDistributionAndRetail
@@ -131,21 +132,18 @@ impl IndustryGroup {
     }
     // Consumer Staples
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConsumerStaplesDistributionAndRetail() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::ConsumerStaplesDistributionAndRetail
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FoodBeverageAndTobacco() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::FoodBeverageAndTobacco
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn HouseholdAndPersonalProducts() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::HouseholdAndPersonalProducts
@@ -153,14 +151,12 @@ impl IndustryGroup {
     }
     // Health Care
     #[classattr]
-    #[allow(non_snake_case)]
     fn HealthCareEquipmentAndServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::HealthCareEquipmentAndServices
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PharmaceuticalsBiotechnologyAndLifeSciences() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::PharmaceuticalsBiotechnologyAndLifeSciences
@@ -168,21 +164,18 @@ impl IndustryGroup {
     }
     // Financials
     #[classattr]
-    #[allow(non_snake_case)]
     fn Banks() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Banks
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FinancialServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::FinancialServices
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Insurance() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Insurance
@@ -190,21 +183,18 @@ impl IndustryGroup {
     }
     // Information Technology
     #[classattr]
-    #[allow(non_snake_case)]
     fn SoftwareAndServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::SoftwareAndServices
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn TechnologyHardwareAndEquipment() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::TechnologyHardwareAndEquipment
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn SemiconductorsAndSemiconductorEquipment() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::SemiconductorsAndSemiconductorEquipment
@@ -212,14 +202,12 @@ impl IndustryGroup {
     }
     // Communication Services
     #[classattr]
-    #[allow(non_snake_case)]
     fn TelecommunicationServices() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::TelecommunicationServices
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MediaAndEntertainment() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::MediaAndEntertainment
@@ -227,7 +215,6 @@ impl IndustryGroup {
     }
     // Utilities
     #[classattr]
-    #[allow(non_snake_case)]
     fn Utilities() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::Utilities
@@ -235,14 +222,12 @@ impl IndustryGroup {
     }
     // Real Estate
     #[classattr]
-    #[allow(non_snake_case)]
     fn EquityRealEstateInvestmentTrusts() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::EquityRealEstateInvestmentTrusts
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn RealEstateManagementAndDevelopment() -> IndustryGroup {
         IndustryGroup {
             typ: BaseIndustryGroup::RealEstateManagementAndDevelopment

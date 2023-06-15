@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -30,8 +33,15 @@ impl EquityType {
         Ok(format!("EquityType<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
     }
     
     #[classmethod]
@@ -47,35 +57,30 @@ impl EquityType {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Shares() -> EquityType {
         EquityType {
             typ: BaseEquityType::Shares
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PreferredShares() -> EquityType {
         EquityType {
             typ: BaseEquityType::PreferredShares
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ConvertibleShares() -> EquityType {
         EquityType {
             typ: BaseEquityType::ConvertibleShares
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PreferredConvertibleShares() -> EquityType {
         EquityType {
             typ: BaseEquityType::PreferredConvertibleShares
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn DepositoryReceipt() -> EquityType {
         EquityType {
             typ: BaseEquityType::DepositoryReceipt
