@@ -1,4 +1,4 @@
-from finance_enums import OrderType, Side, TimeInForce, OrderFlag
+from finance_enums import OrderType, Side, TimeInForce, OrderFlag, TradingType
 
 
 class TestCurrency:
@@ -13,3 +13,6 @@ class TestCurrency:
 
     def test_order_flag_basic(self):
         assert len(OrderFlag.members()) == 4
+
+    def test_trading_type_basic(self):
+        assert len(TradingType.members()) == 4
