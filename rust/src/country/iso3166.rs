@@ -255,6 +255,7 @@ pub enum CountryCode {
     YE,
     ZM,
     ZW,
+    XX, // INVALID
 }
 
 #[derive(
@@ -511,6 +512,7 @@ pub enum CountryCode3 {
     YEM,
     ZMB,
     ZWE,
+    XXX, // INVALID
 }
 
 impl CountryCode {
@@ -765,6 +767,7 @@ impl CountryCode {
             CountryCode::YE => "Yemen",
             CountryCode::ZM => "Zambia",
             CountryCode::ZW => "Zimbabwe",
+            CountryCode::XX => "Uncategorized",
         }
     }
 
@@ -1019,6 +1022,7 @@ impl CountryCode {
             CountryCode::YE => CountryCode3::YEM,
             CountryCode::ZM => CountryCode3::ZMB,
             CountryCode::ZW => CountryCode3::ZWE,
+            CountryCode::XX => CountryCode3::XXX,
         }
     }
     pub fn flag(&self) -> &'static str {
@@ -1272,6 +1276,7 @@ impl CountryCode {
             CountryCode::WF => "iVBORw0KGgoAAAANSUhEUgAAABcAAAAPBAMAAAD9gUllAAAAD1BMVEUAJlRUbYz////eYG7OESZmtw3fAAAAGElEQVQI12NgYGBgVFJSUnZxcXFgGJIcANJDF8sUY7+rAAAAAElFTkSuQmCC",
             CountryCode::VU => "iVBORw0KGgoAAAANSUhEUgAAABcAAAAOCAMAAADzLXfBAAAA3lBMVEUxBAyfDCfSEDS9mg4+MgQ4BA6qDSocFwKYfAu3lQ0zKANGBRG0DiwAAAAgGgKXewunhwwpHwRNBhO3Di0OCwEMCgErIwOmhwygggslGwNUBhW+Di9XRwavjgxJPAU3LAS2lA0eFANJBRKTCyWcDCeIbwoyKQQlHgKpiQw7MAS7mA6ykQ1nVAhdTAdcSwdeTAZgTwariwwvJgPNpw82LAQYFwQANBcAaC8AbzIHBgAGBQAhHgQAPBsAhz0AlUMmIgQANhgAgjoxKQQAMhYAfzk4LQQAKBIAeDYAJxIAdTUecIAlAAAAiElEQVQY023PRRbCQBBF0cIT4BPc3d1dCrf9b4jkMGhI9x2+QQmRw6lCLrfHq+o+TfcHgnIHQkY4Eo3JPZ5IptKZbM7W80ahiFJZq1RrdYHQaLbaADrdXn8gEIaj8UTVMZ3NrTmL5WotmH2zNffu9gf+9b3zeDrzP+uvy/XGdqTfH0+W0evNKh+yEyl2qr7/SAAAAABJRU5ErkJggg==",
             CountryCode::TJ => "iVBORw0KGgoAAAANSUhEUgAAABcAAAAMCAMAAAC+5dbKAAAAPFBMVEXMAADpkZHqkoz///////398sj+9tj+9NH855n//vz+9dP//fj87bf855v76aGSvpKVv4+qv3Cev4EAZgDBcqXWAAAAQ0lEQVQY02NgoBJgRAAmJDYDMwywsLKxssB5CHF2Zg4gxhDn5OLm4ebixFTPxsvHy4ZQzw8DAoJCggJwHoMwdkCqOAAUSggc7yfNgAAAAABJRU5ErkJggg==",
+            CountryCode::XX => "", // TODO
         }
     }
 }
@@ -1528,6 +1533,7 @@ impl CountryCode3 {
             CountryCode3::YEM => "Yemen",
             CountryCode3::ZMB => "Zambia",
             CountryCode3::ZWE => "Zimbabwe",
+            CountryCode3::XXX => "Uncategorized",
         }
     }
 
@@ -1782,6 +1788,7 @@ impl CountryCode3 {
             CountryCode3::YEM => CountryCode::YE,
             CountryCode3::ZMB => CountryCode::ZM,
             CountryCode3::ZWE => CountryCode::ZW,
+            CountryCode3::XXX => CountryCode::XX,
         }
     }
 }

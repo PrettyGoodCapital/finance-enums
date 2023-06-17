@@ -6,7 +6,7 @@ use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
 
-use finance_enums::{OrderType as BaseOrderType, Side as BaseSide, TimeInForce as BaseTimeInForce, OrderFlag as BaseOrderFlag};
+use finance_enums::{OrderType as BaseOrderType, Side as BaseSide, TimeInForce as BaseTimeInForce, OrderFlag as BaseOrderFlag, TradingType as BaseTradingType};
 
 
 #[pyclass]
@@ -273,6 +273,81 @@ impl OrderFlag {
     fn AllOrNone() -> OrderFlag {
         OrderFlag {
             typ: BaseOrderFlag::AllOrNone
+        }
+    }
+}
+
+
+#[pyclass]
+pub struct TradingType {
+    pub typ: BaseTradingType
+}
+
+#[pymethods]
+impl TradingType {
+    #[new]
+    fn py_new(value: String) -> PyResult<Self> {
+        Ok(
+            TradingType {
+                typ: BaseTradingType::from_str(value.as_str()).unwrap()
+            }
+        )
+    }
+    
+    fn __str__(&self) -> PyResult<String>   {
+        Ok(format!("{}", self.typ.to_string()))
+    }
+    
+    fn __repr__(&self) -> PyResult<String>   {
+        Ok(format!("TradingType<{}>", self.typ.to_string()))
+    }
+    
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }
+    
+    #[classmethod]
+    fn __len__(_cls: &PyType) -> PyResult<usize> {
+        Ok(BaseTradingType::iter().count())
+    }
+    
+    // TODO figure out how to make a class iterator,
+    // is way too complicated in pyo3 rn
+    #[staticmethod]
+    fn members() -> Vec<TradingType> {
+        BaseTradingType::iter().map(|item: BaseTradingType| TradingType{typ: item} ).collect()
+    }
+
+
+    #[classattr]
+    fn Live() -> TradingType {
+        TradingType {
+            typ: BaseTradingType::Live
+        }
+    }
+    #[classattr]
+    fn Paper() -> TradingType {
+        TradingType {
+            typ: BaseTradingType::Paper
+        }
+    }
+    #[classattr]
+    fn Backtest() -> TradingType {
+        TradingType {
+            typ: BaseTradingType::Backtest
+        }
+    }
+    #[classattr]
+    fn Simulation() -> TradingType {
+        TradingType {
+            typ: BaseTradingType::Simulation
         }
     }
 }
