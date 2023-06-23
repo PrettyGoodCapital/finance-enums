@@ -1,6 +1,14 @@
 [build-system]
-requires = ["maturin>=1,<2"]
-build-backend = "maturin"
+requires = [
+    "cmake",
+    "ninja",
+    "numpy",
+    "pybind11[global]",
+    "scikit-build",
+    "setuptools",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "finance-enums"
@@ -12,7 +20,7 @@ license = { file = "LICENSE" }
 requires-python = ">=3.7"
 classifiers = [
     "Development Status :: 3 - Alpha",
-    "Programming Language :: Rust",
+    "Programming Language :: C++",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
@@ -30,30 +38,62 @@ develop = [
     "black>=23",
     "bump2version",
     "check-manifest",
-    "maturin>=1,<2",
+    "cibuildwheel",
+    "numpy",
+    "pybind11[global]",
     "pytest",
     "pytest-cov",
+    "pytest-sugar",
     "ruff",
+    "scikit-build",
     "twine",
     "wheel",
 ]
 test = [
     "pytest",
     "pytest-cov",
+    "pytest-sugar",
 ]
 
 [project.urls]
 Repository = "https://github.com/timkpaine/finance-enums"
 Homepage = "https://github.com/timkpaine/finance-enums"
+Issues = "https://github.com/timkpaine/finance-enums/issues"
 
 [tool.black]
 color = true
 line-length = 150
-target-version = ['py310']
+target-version = ["py310"]
 skip-string-normalization = true
 
 [tool.check-manifest]
 ignore = []
+
+[tool.cibuildwheel]
+build = "cp38-* cp39-* cp310-* cp311-*"
+before-all = "make develop"
+
+build-verbosity = "2"
+environment = {STATIC_PYTHON="On"}
+
+test-command = "pytest -vvv {project}/finance_enums/tests"
+test-requires = [
+    "pytest",
+    "pytest-cov",
+    "pytest-sugar",
+]
+
+[tool.cibuildwheel.linux]
+archs = "x86_64 aarch64"
+skip = "*musllinux* *i686"
+
+[tool.cibuildwheel.macos]
+archs = "x86_64 arm64"
+environment = {CFLAGS="-I/usr/local/include -L/usr/local/lib", CXXFLAGS="-I/usr/local/include -L/usr/local/lib", LDFLAGS="-L/usr/local/lib"}
+
+[tool.cibuildwheel.windows]
+archs = "AMD64"
+skip = "*win32 *arm_64"
 
 [tool.ruff]
 line-length = 150
@@ -62,5 +102,8 @@ line-length = 150
 "__init__.py" = ["F401", "F403"]
 
 [tool.pytest.ini_options]
-asyncio_mode = 'strict'
-testpaths = 'finance_enums/tests'
+asyncio_mode = "strict"
+testpaths = "finance_enums/tests"
+
+[tool.setuptools]
+py-modules = ["finance_enums"]

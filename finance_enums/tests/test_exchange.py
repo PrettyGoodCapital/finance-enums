@@ -1,6 +1,6 @@
-from finance_enums import Exchange
+from finance_enums import ExchangeCode
 
 
 class TestExchange:
     def test_exchange_basic(self):
-        assert len(Exchange.members()) == 96
+        assert len(ExchangeCode.__members__) == 96
