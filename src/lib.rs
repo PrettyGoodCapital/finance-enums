@@ -8,12 +8,12 @@ mod sector;
 mod security;
 mod trading;
 
-use country::Country;
-use currency::Currency;
-use exchange::Exchange;
-use sector::{Sector, IndustryGroup, Industry, SubIndustry};
-use security::{SecurityType, EquityType, OptionType, BondType, CommodityType, FundType, OptionExerciseType, FundSubType, MutualFundEndedness};
-use trading::{OrderType, Side, TimeInForce, OrderFlag, TradingType};
+pub use country::Country;
+pub use currency::Currency;
+pub use exchange::Exchange;
+pub use sector::{Sector, IndustryGroup, Industry, SubIndustry};
+pub use security::{SecurityType, EquityType, OptionType, BondType, CommodityType, FundType, OptionExerciseType, FundSubType, MutualFundEndedness};
+pub use trading::{OrderType, Side, TimeInForce, OrderFlag, TradingType};
 
 #[pymodule]
 fn finance_enums(_py: Python, m: &PyModule) -> PyResult<()> {
