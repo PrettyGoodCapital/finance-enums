@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.20.0)
 project(finance-enums)
 set(CMAKE_CXX_STANDARD 20)
-set(PROJECT_VERSION "0.2.3")
+set(PROJECT_VERSION "0.3.0")
 
 ###############################################################################################################
 # CMake Dependencies #
