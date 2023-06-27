@@ -18,7 +18,7 @@ if "CMAKE_BUILD_PARALLEL_LEVEL" not in os.environ:
 
 setup(
     name="finance_enums",
-    version="0.2.3",
+    version="0.3.0",
     packages=["finance_enums"],
     cmake_install_dir="finance_enums",
     cmake_args=cmake_args,
