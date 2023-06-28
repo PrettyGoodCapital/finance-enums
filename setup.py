@@ -7,9 +7,6 @@ python_version = f"{sys.version_info.major}.{sys.version_info.minor}"
 cmake_args = [f"-DPYTHON_VERSION={python_version}"]
 
 
-if "CMAKE_ARGS" in os.environ:
-    cmake_args.extend(os.environ["CMAKE_ARGS"].split(" "))
-
 if "STATIC_PYTHON" in os.environ:
     cmake_args.append("-DSTATIC_PYTHON=On")
 
