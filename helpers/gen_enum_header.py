@@ -33,13 +33,13 @@ enum_str = """
 #include <unordered_map>
 
 #define ENUM_TO_STRING(type)                                                                     \\
-  inline std::string type##_to_string(type& typ) { return type##_names[static_cast<int>(typ)]; } \\
-  inline std::string type##_to_repr(type& typ) { return std::string(#type) + std::string("<") + type##_names[static_cast<int>(typ)] + std::string(">"); }
+  inline std::string type##_to_string(const type& typ) { return type##_names[static_cast<int>(typ)]; } \\
+  inline std::string type##_to_repr(const type& typ) { return std::string(#type) + std::string("<") + type##_names[static_cast<int>(typ)] + std::string(">"); }
 
 #ifdef BUILD_PYTHON
 #include <pybind11/pybind11.h>
 #define ENUM_FROM_STRING(type)                                 \\
-  type inline type##_from_string(char* s) {                    \\
+  type inline type##_from_string(const char* s) {              \\
     if(_##type##_mapping.find(s) == _##type##_mapping.end()) { \\
       throw pybind11::value_error(s);                          \\
     }                                                          \\
@@ -47,7 +47,7 @@ enum_str = """
   };
 #else
 #define ENUM_FROM_STRING(type)                                 \\
-  type inline type##_from_string(char* s) {                    \\
+  type inline type##_from_string(const char* s) {              \\
     if(_##type##_mapping.find(s) == _##type##_mapping.end()) { \\
       throw FinanceEnumsCPPException(s);                       \\
     }                                                          \\
