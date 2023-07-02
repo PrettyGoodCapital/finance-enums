@@ -25,7 +25,7 @@ cmake_policy (SET CMP0074 NEW)
 cmake_policy(SET CMP0094 NEW)
 
 ###############################################################################################################
-# Environemtn #
+# Environment #
 ###############
 if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
     set(WIN32 ON)
@@ -46,10 +46,10 @@ endif()
 # Paths #
 #########
 # Custom CMake modules
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cpp/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake/modules")
 
 # Base includes
-include_directories ("${CMAKE_SOURCE_DIR}/cpp/include")
+include_directories ("${CMAKE_SOURCE_DIR}/src")
 
 ###############################################################################################################
 # Build Configuration #
@@ -103,6 +103,24 @@ endif()
 
 if(WIN32)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+endif()
+
+###############################################################################################################
+# Version #
+###########
+# Set version from cmake and extract latest hash if available
+set(FINANCE_ENUMS_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
+set(FINANCE_ENUMS_VERSION_MINOR ${PROJECT_VERSION_MINOR})
+set(FINANCE_ENUMS_VERSION_PATCH ${PROJECT_VERSION_PATCH})
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/.git")
+  # Get latest commit
+  execute_process(COMMAND git rev-parse HEAD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT_VARIABLE FINANCE_ENUMS_VERSION_COMMIT_SHA)
+  # strip newline
+  string(REGEX REPLACE "\n$" "" FINANCE_ENUMS_VERSION_COMMIT_SHA "${FINANCE_ENUMS_VERSION_COMMIT_SHA}")
+else()
+  set(FINANCE_ENUMS_VERSION_COMMIT_SHA "release")
 endif()
 
 ###############################################################################################################
@@ -190,6 +208,7 @@ endif()
 ###############################################################################################################
 # Messages #
 ############
+message("Building FinanceEnums version v${FINANCE_ENUMS_VERSION_MAJOR}.${FINANCE_ENUMS_VERSION_MINOR}.${FINANCE_ENUMS_VERSION_PATCH} [${FINANCE_ENUMS_VERSION_COMMIT_SHA}]")
 string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
 
 if(CMAKE_BUILD_TYPE_LOWER STREQUAL debug)
@@ -209,12 +228,47 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Standalone C++ Binary #
 #########################
 set(
+    PROJECT_HDRS
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/bond.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/commodity.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/common.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/country.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/currency.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/equity.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/exchange.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/finance-enums.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/fund.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/future.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/instrument.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/option.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/sector.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/security.hpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/trading.hpp"
+)
+set(
     PROJECT_SRCS
-    "${PROJECT_SOURCE_DIR}/cpp/src/finance-enums.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/bond.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/commodity.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/country.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/currency.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/equity.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/exchange.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/finance-enums.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/fund.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/future.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/instrument.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/option.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/sector.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/security.cpp"
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/trading.cpp"
 )
 
 add_library(finance-enums SHARED ${PROJECT_SRCS})
 add_library(finance-enums-static STATIC ${PROJECT_SRCS})
+set_target_properties(finance-enums PROPERTIES PUBLIC_HEADER "${PROJECT_HDRS}")
+
+add_library(finance-enums-rust SHARED "${PROJECT_SOURCE_DIR}/src/finance-enums/finance-enums-rust.cpp")
+target_link_libraries(finance-enums-rust finance-enums)
 
 # export symbols
 if(WIN32)
@@ -223,11 +277,8 @@ if(WIN32)
 endif()
 
 # install standalone library inside package
-install(TARGETS finance-enums EXPORT FinanceEnums LIBRARY DESTINATION lib)
-install(TARGETS finance-enums-static EXPORT FinanceEnums LIBRARY DESTINATION lib)
-
-# Install headers inside package
-install(DIRECTORY "${PROJECT_SOURCE_DIR}/cpp/include/" DESTINATION include)
+install(TARGETS finance-enums EXPORT FinanceEnums LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION include)
+install(TARGETS finance-enums-static EXPORT FinanceEnums LIBRARY DESTINATION lib PUBLIC_HEADER DESTINATION include)
 
 ###############################################################################################################
 # Pybind Extension #
@@ -240,15 +291,24 @@ if(BUILD_PYTHON)
   find_package(pybind11 REQUIRED)
   include_directories(${pybind11_INCLUDE_DIR})
 
+  set(
+    PYTHON_HDRS
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/python/extension.hpp"
+  )
+  set(
+    PYTHON_SRCS
+    "${PROJECT_SOURCE_DIR}/src/finance-enums/python/extension.cpp"
+  )
   # Extension
-  pybind11_add_module(extension MODULE "${PROJECT_SOURCE_DIR}/cpp/src/python/extension.cpp")
+  pybind11_add_module(extension MODULE "${PYTHON_SRCS}")
+  set_target_properties(extension PROPERTIES PUBLIC_HEADER "${PYTHON_HDRS}")
 
   # Link to standalone library
   target_link_libraries(extension PUBLIC finance-enums)
   set_property(TARGET extension PROPERTY INSTALL_RPATH "${module_origin_path}/lib")
 
   # install in python module
-  install(TARGETS extension EXPORT FinanceEnums LIBRARY DESTINATION .)
+  install(TARGETS extension EXPORT FinanceEnums LIBRARY DESTINATION . PUBLIC_HEADER DESTINATION include/python)
 endif()
 
 ###############################################################################################################
@@ -260,7 +320,7 @@ include(CMakePackageConfigHelpers)
 
 # generate the config file that is includes the exports
 configure_package_config_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cpp/cmake/config/FinanceEnumsConfig.cmake.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/config/FinanceEnumsConfig.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/FinanceEnumsConfig.cmake
   INSTALL_DESTINATION cmake
 )
@@ -271,7 +331,7 @@ write_basic_package_version_file(
 )
 
 configure_file(
-  ${CMAKE_CURRENT_SOURCE_DIR}/cpp/cmake/config/FinanceEnums.pc.in
+  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/config/FinanceEnums.pc.in
   "${CMAKE_CURRENT_BINARY_DIR}/FinanceEnums.pc"
   @ONLY)
 
