@@ -7,74 +7,79 @@ help:
 print-%:
 	@echo '$*=$($*)'
 
-OTHER_ARGS :=
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+	_CP_COMMAND := cp target/debug/libfinance_enums.dylib finance_enums/finance_enums.abi3.so
+else
+	_CP_COMMAND := cp target/debug/libfinance_enums.so finance_enums/finance_enums.abi3.so
+endif
 
 .PHONY: develop-py develop-rust develop
 develop-py:
-	pip install -U toml
-	pip install `python -c 'import toml; c = toml.load("pyproject.toml"); print(" ".join(c["project"]["optional-dependencies"]["develop"]))'`
+	pip install -U build maturin setuptools twine wheel
+	pip install -e .[develop]
 
-develop-cpp:
-	echo "C++ ready"
+develop-rust:
+	make -C rust develop
 
-develop: develop-py  ## Setup project for development
+develop: develop-rust develop-py  ## Setup project for development
 
-.PHONY: build-py build-cpp build
+.PHONY: build-py build-rust build
 build-py:
-	python setup.py build build_ext --inplace
+	maturin build
 
-build-cpp:
-	cmake -B build . -DBUILD_PYTHON=Off
-	cmake --build build -- -j8
+build-rust:
+	make -C rust build
 
-build: build-cpp build-py  ## Build the project
+build-sdist:  ## Build the python sdist
+	python -m build --sdist -o wheelhouse
 
-.PHONY: lint-py lint-cpp lint
+dev: build  ## Lightweight in-place build for iterative dev
+	$(_CP_COMMAND)
+
+build: build-rust build-py  ## Build the project
+
+.PHONY: lint-py lint-rust lint
 lint-py:
 	python -m ruff finance_enums
 
-lint-cpp:
-	clang-format --dry-run -Werror -i -style=file `find ./cpp/{src,include} -name "*.*pp"`
+lint-rust:
+	make -C rust lint
 
-lint: lint-cpp lint-py  ## Run project linters
+lint: lint-rust lint-py  ## Run project linters
 
-.PHONY: fix-py fix-cpp fix
+.PHONY: fix-py fix-rust fix
 fix-py:
 	python -m ruff finance_enums --fix
 
-fix-cpp:
-	clang-format -i -style=file `find ./cpp/{src,include} -name "*.*pp"`
+fix-rust:
+	make -C rust fix
 
-fix: fix-cpp fix-py  ## Run project autofixers
+fix: fix-rust fix-py  ## Run project autofixers
 
-.PHONY: tests-py tests-cpp tests test tests-ci
+.PHONY: tests-py tests-rust tests test tests-ci
 tests-py:
 	python -m pytest -v finance_enums/tests --junitxml=junit.xml --cov=finance_enums --cov-branch --cov-fail-under=65 --cov-report term-missing --cov-report xml
 
-tests-cpp:
-	echo "TODO C++ tests"
+tests-rust:
+	make -C rust tests
 
-tests: tests-cpp tests-py  ## Run the tests
+tests: tests-rust tests-py  ## Run the tests
 test: tests
 
-tests-ci: tests-cpp tests-py
+tests-ci-rust:
+	make -C rust tests-ci
 
-.PHONY: dist-sdist dist-wheel dist publish
+tests-ci: tests-ci-rust tests-py
 
-dist-sdist:  ## Create python source dist
-	python setup.py sdist
-
-dist-wheel:  ## Create python wheel dist
-	python setup.py bdist_wheel $(OTHER_ARGS)
-
-dist-cibw:  ## Create python wheel dist with cibuildwheel
-	python -m cibuildwheel --output-dir dist 
-
-dist: build dist-sdist dist-wheel  ## Create python dists
+.PHONY: dist publish
+dist: build  ## Create python dists
 	python -m twine check target/wheels/*
+	make -C rust dist
 
 publish: dist  ## Dist assets to pypi
 	python -m twine upload target/wheels/* --skip-existing
+	make -C rust publish
 
 clean:  ## Clean the repo
 	git clean -fdx

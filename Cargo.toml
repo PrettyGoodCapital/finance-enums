@@ -1,0 +1,21 @@
+[package]
+name = "finance-enums-py-binding"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "finance_enums_py_binding"
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+finance-enums = { path = "./rust", version = "*" }
+pyo3 = { version = "0.16", features = ["abi3-py37", "extension-module", "multiple-pymethods"] }
+
+[profile.release]
+panic = 'abort'
+lto = true
+
+[package.metadata.maturin]
+# python-source = "python" 

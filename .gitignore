@@ -8,10 +8,6 @@ __pycache__/
 
 # C extensions
 *.so
-*.dylib
-*.dll
-finance_enums/include
-finance_enums/lib
 
 # Distribution / packaging
 _skbuild
