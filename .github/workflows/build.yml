@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           # for pull_request so we can do HEAD^2
           fetch-depth: 2
@@ -89,15 +89,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
       - name: Setup C++
-        uses: actions-ext/cpp/setup-cpp@v1
+        uses: actions-ext/cpp/setup@v1
 
       - name: Install dependencies
         run: make develop
@@ -152,15 +152,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Run cibuildwheel
-        uses: actions-ext/python/run-python-cibuildwheel@v1
+        uses: actions-ext/python/run-cibuildwheel@v1
         with:
           version: ${{ matrix.python-version }}
 
       - name: Upload wheels
-        uses: actions-ext/python/upload-python-dist@v1
+        uses: actions-ext/python/upload-dist@v1
         with:
           kind: 'wheel'
 
@@ -200,10 +200,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
@@ -211,12 +211,12 @@ jobs:
         run: make develop
 
       - name: Run cibuildwheel
-        uses: actions-ext/python/run-python-cibuildwheel@v1
+        uses: actions-ext/python/run-cibuildwheel@v1
         with:
           version: ${{ matrix.python-version }}
 
       - name: Upload wheels
-        uses: actions-ext/python/upload-python-dist@v1
+        uses: actions-ext/python/upload-dist@v1
         with:
           version: ${{ matrix.python-version }}
           kind: 'wheel'
@@ -247,10 +247,10 @@ jobs:
  
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
@@ -261,7 +261,7 @@ jobs:
         run: make dist-sdist
 
       - name: Upload sdist
-        uses: actions-ext/python/upload-python-dist@v1
+        uses: actions-ext/python/upload-dist@v1
         with:
           kind: "sdist"
 
@@ -291,10 +291,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
@@ -343,10 +343,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
@@ -354,7 +354,7 @@ jobs:
         run: make develop
 
       - name: Download wheels
-        uses: actions-ext/python/download-python-dist@v1
+        uses: actions-ext/python/download-dist@v1
         with:
           version: ${{ matrix.python-version }}
           kind: "wheel"
@@ -409,10 +409,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup Python
-        uses: actions-ext/python/setup-python@v1
+        uses: actions-ext/python/setup@v1
         with:
           version: ${{ matrix.python-version }}
 
@@ -420,7 +420,7 @@ jobs:
         run: make develop
 
       - name: Download wheels
-        uses: actions-ext/python/download-python-dist@v1
+        uses: actions-ext/python/download-dist@v1
         with:
           kind: "sdist"
 
