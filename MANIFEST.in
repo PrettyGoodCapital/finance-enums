@@ -2,7 +2,8 @@
 graft finance_enums
 
 # C++
-graft cpp
+graft src
+graft cmake
 include CMakeLists.txt
 
 # Markdown / Text
@@ -38,4 +39,3 @@ global-exclude *.pyo
 global-exclude .git
 global-exclude .ipynb_checkpoints
 global-exclude .DS_Store
-

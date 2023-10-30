@@ -452,7 +452,65 @@ jobs:
   #~~~~~~|#############|~~~~#
   #~~~~~~~~~~~~~~~~~~~~~~~~~#
   #~~~~~~~~~~~~~~~~~~~~~~~~~#
+  build_and_test_rust:
+    needs: [initialize]
+    strategy:
+      matrix:
+        os:
+          - ubuntu-22.04
+    runs-on: ${{ matrix.os }}
 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: nightly
+          components: clippy
+          override: true
+
+      - name: Setup cargo cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            rust/target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Setup C++
+        uses: actions-ext/cpp/setup@v1
+
+      - name: Install dependencies
+        run: make develop-rust
+
+      - name: Build project
+        run: make build-cpp
+
+      - name: Build rust
+        run: make build-rust
+
+      - name: Lint
+        run: make lint-rust
+
+      - name: Test
+        run: make tests-ci-rust
+
+      - name: Upload test results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          check_name: Test Results
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            rust/junit.xml
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
   ##########################################################################################################################
   ##########################################################################################################################
   ###########################
