@@ -1,107 +1,85 @@
-#########
-# BUILD #
-#########
-develop:  ## install dependencies and build library
-	python -m pip install -e .[develop]
-
-build-py:  ## build the python library
-	python setup.py build build_ext --inplace
-
-build: build-py  ## build the library
-
-install:  ## install library
-	python -m pip install .
-
-#########
-# LINTS #
-#########
-lint-py:  ## run python linter with flake8 and black
-	python -m ruff finance_enums setup.py
-	python -m black --check finance_enums setup.py
-
-lint: lint-py  ## run all lints
-
-# Alias
-lints: lint
-
-fix-py:  ## fix python formatting with black
-	python -m black finance_enums/ setup.py
-	python -m ruff finance_enums/ setup.py --fix
-
-fix: fix-py  ## run all autofixers
-
-# alias
-format: fix
-
-################
-# Other Checks #
-################
-check-manifest:  ## check python sdist manifest with check-manifest
-	check-manifest -v
-
-checks: check-manifest
-
-# Alias
-check: checks
-
-#########
-# TESTS #
-#########
-test:  ## run python tests
-	python -m pytest -v finance_enums/tests --junitxml=junit.xml
-
-coverage:  ## run tests and collect test coverage
-	python -m pytest -v finance_enums/tests --junitxml=junit.xml --cov=finance_enums --cov-branch --cov-fail-under=80 --cov-report term-missing
-
-# Alias
-tests: test
-
-###########
-# VERSION #
-###########
-show-version:  ## show current library version
-	bump2version --dry-run --allow-dirty setup.py --list | grep current | awk -F= '{print $2}'
-
-patch:  ## bump a patch version
-	bump2version patch
-
-minor:  ## bump a minor version
-	bump2version minor
-
-major:  ## bump a major version
-	bump2version major
-
-########
-# DIST #
-########
-dist-py:  # build python dists
-	python setup.py sdist bdist_wheel
-
-dist-check:  ## run python dist checker with twine
-	python -m twine check dist/*
-dist: clean build dist-py dist-check  ## build all dists
-
-publish-py:  # publish python assets
-	python -m twine upload dist/* --skip-existing
-publish: dist publish-py  ## publish all dists
-
-#########
-# CLEAN #
-#########
-deep-clean: ## clean everything from the repository
-	git clean -fdx
-
-clean: ## clean the repository
-	rm -rf .coverage coverage cover htmlcov logs build dist *.egg-info
-
-############################################################################################
-
-# Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
+.PHONY: help
+# Thanks to Francoise at marmelab.com for this
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 print-%:
 	@echo '$*=$($*)'
 
-.PHONY: develop build-py build-js build build install serverextension labextension lint-py lint-js lint-cpp lint lints fix-py fix-js fix-cpp fix format check-manifest checks check annotate semgrep test-py test-js coverage-py show-coverage test tests docs show-docs show-version patch minor major dist-py dist-py-sdist dist-py-local-wheel dist-check dist publish-py publish-js publish deep-clean clean help 
+UNAME := $(shell uname)
+ifeq ($(UNAME), Darwin)
+	_CP_COMMAND := cp target/debug/libfinance_enums.dylib finance_enums/finance_enums.abi3.so
+else
+	_CP_COMMAND := cp target/debug/libfinance_enums.so finance_enums/finance_enums.abi3.so
+endif
+
+.PHONY: develop-py develop-rust develop
+develop-py:
+	pip install -U build maturin setuptools twine wheel
+	pip install -e .[develop]
+
+develop-rust:
+	make -C rust develop
+
+develop: develop-rust develop-py  ## Setup project for development
+
+.PHONY: build-py build-rust build
+build-py:
+	maturin build
+
+build-rust:
+	make -C rust build
+
+build-sdist:  ## Build the python sdist
+	python -m build --sdist -o wheelhouse
+
+dev: build  ## Lightweight in-place build for iterative dev
+	$(_CP_COMMAND)
+
+build: build-rust build-py  ## Build the project
+
+.PHONY: lint-py lint-rust lint
+lint-py:
+	python -m ruff finance_enums
+
+lint-rust:
+	make -C rust lint
+
+lint: lint-rust lint-py  ## Run project linters
+
+.PHONY: fix-py fix-rust fix
+fix-py:
+	python -m ruff finance_enums --fix
+
+fix-rust:
+	make -C rust fix
+
+fix: fix-rust fix-py  ## Run project autofixers
+
+.PHONY: tests-py tests-rust tests test tests-ci
+tests-py:
+	python -m pytest -v finance_enums/tests --junitxml=junit.xml --cov=finance_enums --cov-branch --cov-fail-under=65 --cov-report term-missing --cov-report xml
+
+tests-rust:
+	make -C rust tests
+
+tests: tests-rust tests-py  ## Run the tests
+test: tests
+
+tests-ci-rust:
+	make -C rust tests-ci
+
+tests-ci: tests-ci-rust tests-py
+
+.PHONY: dist publish
+dist: build  ## Create python dists
+	python -m twine check target/wheels/*
+	make -C rust dist
+
+publish: dist  ## Dist assets to pypi
+	python -m twine upload target/wheels/* --skip-existing
+	make -C rust publish
+
+clean:  ## Clean the repo
+	git clean -fdx
