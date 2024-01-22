@@ -10,6 +10,8 @@ __pycache__/
 *.so
 *.dylib
 *.dll
+finance_enums/include
+finance_enums/lib
 
 # Distribution / packaging
 _skbuild
