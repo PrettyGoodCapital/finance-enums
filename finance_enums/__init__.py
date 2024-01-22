@@ -1,18 +1,11 @@
-import os
-import os.path
-from .extension import *
-
+from os.path import abspath, join, dirname
+from .finance_enums import lib
 
 __version__ = "0.3.0"
 
+def lib_path():
+    return abspath(join(dirname(__file__), "finance_enums"))
 
 def include_path():
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "include"))
+    return abspath(join(lib_path(), "include"))
 
-
-def bin_path():
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "bin"))
-
-
-def lib_path():
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "lib"))
