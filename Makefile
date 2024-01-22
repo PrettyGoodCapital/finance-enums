@@ -7,6 +7,9 @@ lint: ## run linter
 fix: ## run black
 	python -m black finance_enums setup.py
 
+checks: ## run check-manifest
+	check-manifest -v
+
 clean: ## clean the repository
 	find . -name "__pycache__" | xargs  rm -rf 
 	find . -name "*.pyc" | xargs rm -rf 
@@ -35,4 +38,4 @@ help:
 print-%:
 	@echo '$*=$($*)'
 
-.PHONY: clean test tests help annotate annotate_l docs dist
+.PHONY: tests lint checks fix clean docs install dist publish help
