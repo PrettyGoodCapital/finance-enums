@@ -1,17 +1,11 @@
 tests: ## Clean and Make unit tests
-	python3.7 -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
-
-test: lint ## run the tests for travis CI
-	@ python3.7 -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
+	python -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 lint: ## run linter
-	python3.7 -m flake8 finance_enums 
+	python -m flake8 finance_enums setup.py 
 
-annotate: ## MyPy type annotation check
-	mypy -s finance_enums
-
-annotate_l: ## MyPy type annotation check - count only
-	mypy -s finance_enums | wc -l 
+fix: ## run black
+	python -m black finance_enums setup.py
 
 clean: ## clean the repository
 	find . -name "__pycache__" | xargs  rm -rf 
@@ -23,13 +17,15 @@ docs:  ## make documentation
 	make -C ./docs html
 
 install:  ## install to site-packages
-	pip3 install .
+	python -m pip install .
 
-dist:  ## dist to pypi
+dist:  ## create dists
 	rm -rf dist build
-	python3.7 setup.py sdist
-	python3.7 setup.py bdist_wheel
-	twine check dist/* && twine upload dist/*
+	python setup.py sdist bdist_wheel
+	python -m twine check dist/*
+	
+publish: dist  ## dist to pypi
+	python -m twine upload dist/* --skip-existing
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
