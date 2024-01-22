@@ -1,8 +1,8 @@
 tests: ## Clean and Make unit tests
-	python3.7 -m pytest -v tests --cov=finance_enums
+	python3.7 -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 test: lint ## run the tests for travis CI
-	@ python3.7 -m pytest -v tests --cov=finance_enums
+	@ python3.7 -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 lint: ## run linter
 	python3.7 -m flake8 finance_enums 
