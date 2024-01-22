@@ -38,3 +38,14 @@ pub enum OrderFlag {
     ImmediateOrCancel,
     AllOrNone,
 }
+
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
+#[strum(serialize_all = "PascalCase")]
+pub enum TradingType {
+    Live,
+    Paper,
+    Simulation,
+    Backtest,
+}

@@ -13,7 +13,7 @@ use currency::Currency;
 use exchange::Exchange;
 use sector::{Sector, IndustryGroup, Industry, SubIndustry};
 use security::{SecurityType, EquityType, OptionType, BondType, CommodityType, FundType, OptionExerciseType, FundSubType, MutualFundEndedness};
-use trading::{OrderType, Side, TimeInForce, OrderFlag};
+use trading::{OrderType, Side, TimeInForce, OrderFlag, TradingType};
 
 #[pymodule]
 fn finance_enums(_py: Python, m: &PyModule) -> PyResult<()> {
@@ -47,5 +47,6 @@ fn finance_enums(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Side>()?;
     m.add_class::<TimeInForce>()?;
     m.add_class::<OrderFlag>()?;
+    m.add_class::<TradingType>()?;
     Ok(())
 }
