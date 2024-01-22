@@ -1,5 +1,5 @@
 tests: ## Clean and Make unit tests
-	python -m pytest -v tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
+	python -m pytest -v finance_enums/tests --cov=finance_enums --junitxml=python_junit.xml --cov-report=xml --cov-branch
 
 lint: ## run linter
 	python -m flake8 finance_enums setup.py 
