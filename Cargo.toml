@@ -1,12 +1,10 @@
 [package]
-# Name this finance_enums_rs so as to not conflict with the rust library
-name = "finance_enums_rs"
-version = "0.1.0"
+name = "finance_enums_py"
+version = "0.2.3"
 edition = "2021"
 publish = false
 
 [lib]
-# Name this finance_enums to match the python library
 name = "finance_enums"
 path = "src/lib.rs"
 crate-type = ["cdylib"]
@@ -20,5 +18,3 @@ strum = "0.24.1"
 panic = 'abort'
 lto = true
 
-[package.metadata.maturin]
-# python-source = "python" 
