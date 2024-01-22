@@ -1,22 +1,12 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
 
 use finance_enums::{OrderType as BaseOrderType, Side as BaseSide, TimeInForce as BaseTimeInForce, OrderFlag as BaseOrderFlag};
-
-// pub enum TimeInForce {
-//     Day,
-//     GTC,
-// }
-
-// pub enum OrderFlag {
-//     None,
-//     FillOrKill,
-//     ImmediateOrCancel,
-//     AllOrNone,
-// }
-
 
 
 #[pyclass]
@@ -42,9 +32,17 @@ impl OrderType {
     fn __repr__(&self) -> PyResult<String>   {
         Ok(format!("OrderType<{}>", self.typ.to_string()))
     }
-    
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
+
+
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
     }
     
     #[classmethod]
@@ -60,21 +58,18 @@ impl OrderType {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Market() -> OrderType {
         OrderType {
             typ: BaseOrderType::Market
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Limit() -> OrderType {
         OrderType {
             typ: BaseOrderType::Limit
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Stop() -> OrderType {
         OrderType {
             typ: BaseOrderType::Stop
@@ -107,10 +102,17 @@ impl Side {
         Ok(format!("Side<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
-    
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
+
     #[classmethod]
     fn __len__(_cls: &PyType) -> PyResult<usize> {
         Ok(BaseSide::iter().count())
@@ -124,14 +126,12 @@ impl Side {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Buy() -> Side {
         Side {
             typ: BaseSide::Buy
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Sell() -> Side {
         Side {
             typ: BaseSide::Sell
@@ -164,9 +164,16 @@ impl TimeInForce {
         Ok(format!("TimeInForce<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
     
     #[classmethod]
     fn __len__(_cls: &PyType) -> PyResult<usize> {
@@ -181,14 +188,12 @@ impl TimeInForce {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Day() -> TimeInForce {
         TimeInForce {
             typ: BaseTimeInForce::Day
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn GTC() -> TimeInForce {
         TimeInForce {
             typ: BaseTimeInForce::GTC
@@ -222,8 +227,15 @@ impl OrderFlag {
         Ok(format!("OrderFlag<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
     }
     
     #[classmethod]
@@ -240,28 +252,24 @@ impl OrderFlag {
 
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn None() -> OrderFlag {
         OrderFlag {
             typ: BaseOrderFlag::None
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FillOrKill() -> OrderFlag {
         OrderFlag {
             typ: BaseOrderFlag::FillOrKill
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ImmediateOrCancel() -> OrderFlag {
         OrderFlag {
             typ: BaseOrderFlag::ImmediateOrCancel
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn AllOrNone() -> OrderFlag {
         OrderFlag {
             typ: BaseOrderFlag::AllOrNone

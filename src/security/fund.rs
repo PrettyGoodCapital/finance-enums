@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -30,8 +33,15 @@ impl FundType {
         Ok(format!("FundType<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
     }
     
     #[classmethod]
@@ -47,21 +57,18 @@ impl FundType {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn ETF() -> FundType {
         FundType {
             typ: BaseFundType::ETF
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MutualFund() -> FundType {
         FundType {
             typ: BaseFundType::MutualFund
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn REIT() -> FundType {
         FundType {
             typ: BaseFundType::REIT
@@ -93,9 +100,16 @@ impl FundSubType {
         Ok(format!("FundSubType<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
     
     #[classmethod]
     fn __len__(_cls: &PyType) -> PyResult<usize> {
@@ -110,28 +124,24 @@ impl FundSubType {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Index() -> FundSubType {
         FundSubType {
             typ: BaseFundSubType::Index
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Sector() -> FundSubType {
         FundSubType {
             typ: BaseFundSubType::Sector
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Active() -> FundSubType {
         FundSubType {
             typ: BaseFundSubType::Active
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Passive() -> FundSubType {
         FundSubType {
             typ: BaseFundSubType::Passive
@@ -163,8 +173,15 @@ impl MutualFundEndedness {
         Ok(format!("MutualFundEndedness<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
     }
     
     #[classmethod]
@@ -180,14 +197,12 @@ impl MutualFundEndedness {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Open() -> MutualFundEndedness {
         MutualFundEndedness {
             typ: BaseMutualFundEndedness::Open
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Close() -> MutualFundEndedness {
         MutualFundEndedness {
             typ: BaseMutualFundEndedness::Close

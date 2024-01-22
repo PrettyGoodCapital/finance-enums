@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -31,9 +34,16 @@ impl Exchange {
         Ok(format!("Exchange<{}>", self.mic.to_string()))
     }
 
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.mic == other.mic
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.mic.to_string() < other.mic.to_string()),
+            CompareOp::Le => Ok(self.mic.to_string() <= other.mic.to_string()),
+            CompareOp::Eq => Ok(self.mic == other.mic),
+            CompareOp::Ne => Ok(self.mic != other.mic),
+            CompareOp::Gt => Ok(self.mic.to_string() > other.mic.to_string()),
+            CompareOp::Ge => Ok(self.mic.to_string() >= other.mic.to_string()),
+        }
+    }    
 
     fn country(&self) -> Country {
         Country {
@@ -56,147 +66,126 @@ impl Exchange {
     }
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn XNYS() -> Exchange {
         Exchange {
             mic: MIC::XNYS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn ARCX() -> Exchange {
         Exchange {
             mic: MIC::ARCX
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XASE() -> Exchange {
         Exchange {
             mic: MIC::XASE
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XCIS() -> Exchange {
         Exchange {
             mic: MIC::XCIS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XCHI() -> Exchange {
         Exchange {
             mic: MIC::XCHI
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XNAS() -> Exchange {
         Exchange {
             mic: MIC::XNAS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XNGS() -> Exchange {
         Exchange {
             mic: MIC::XNGS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XBOS() -> Exchange {
         Exchange {
             mic: MIC::XBOS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XPHL() -> Exchange {
         Exchange {
             mic: MIC::XPHL
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XCBO() -> Exchange {
         Exchange {
             mic: MIC::XCBO
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BATS() -> Exchange {
         Exchange {
             mic: MIC::BATS
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn BATY() -> Exchange {
         Exchange {
             mic: MIC::BATY
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EDGX() -> Exchange {
         Exchange {
             mic: MIC::EDGX
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn EDGA() -> Exchange {
         Exchange {
             mic: MIC::EDGA
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MPRL() -> Exchange {
         Exchange {
             mic: MIC::MPRL
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MIHI() -> Exchange {
         Exchange {
             mic: MIC::MIHI
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn MEMX() -> Exchange {
         Exchange {
             mic: MIC::MEMX
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn IEXG() -> Exchange {
         Exchange {
             mic: MIC::IEXG
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn LTSE() -> Exchange {
         Exchange {
             mic: MIC::LTSE
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn XADF() -> Exchange {
         Exchange {
             mic: MIC::XADF
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn FINR() -> Exchange {
         Exchange {
             mic: MIC::FINR

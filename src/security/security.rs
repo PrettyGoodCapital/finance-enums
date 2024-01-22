@@ -1,4 +1,7 @@
+#![allow(non_snake_case)]
+
 use pyo3::prelude::*;
+use pyo3::class::basic::CompareOp;
 use pyo3::types::PyType;
 use strum::IntoEnumIterator;
 use std::str::FromStr;
@@ -29,9 +32,16 @@ impl SecurityType {
         Ok(format!("SecurityType<{}>", self.typ.to_string()))
     }
     
-    fn __eq__(&self, other: &Self) -> bool   {
-        self.typ == other.typ
-    }
+    fn __richcmp__(&self, other: &Self, op: CompareOp) -> PyResult<bool> {
+        match op {
+            CompareOp::Lt => Ok(self.typ.to_string() < other.typ.to_string()),
+            CompareOp::Le => Ok(self.typ.to_string() <= other.typ.to_string()),
+            CompareOp::Eq => Ok(self.typ == other.typ),
+            CompareOp::Ne => Ok(self.typ != other.typ),
+            CompareOp::Gt => Ok(self.typ.to_string() > other.typ.to_string()),
+            CompareOp::Ge => Ok(self.typ.to_string() >= other.typ.to_string()),
+        }
+    }    
     
     #[classmethod]
     fn __len__(_cls: &PyType) -> PyResult<usize> {
@@ -47,84 +57,72 @@ impl SecurityType {
 
 
     #[classattr]
-    #[allow(non_snake_case)]
     fn Equity() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Equity
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Option() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Option
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Bond() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Bond
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Forward() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Forward
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Future() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Future
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn PerpetualFuture() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::PerpetualFuture
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Spread() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Spread
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Fund() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Fund
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Commodity() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Commodity
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Currency() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Currency
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Pair() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Pair
         }
     }
     #[classattr]
-    #[allow(non_snake_case)]
     fn Index() -> SecurityType {
         SecurityType {
             typ: BaseSecurityType::Index
