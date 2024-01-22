@@ -17,11 +17,8 @@ requires_dev = requires + [
     "check-manifest",
     "flake8>=3.7.8",
     "flake8-black>=0.2.1",
-    "mock",
     "pytest>=4.3.0",
     "pytest-cov>=2.6.1",
-    "Sphinx>=1.8.4",
-    "sphinx-markdown-builder>=0.5.2",
 ]
 
 setup(
