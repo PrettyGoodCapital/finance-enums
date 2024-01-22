@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum FundType {
     ETF,
@@ -8,7 +10,9 @@ pub enum FundType {
     REIT,
 }
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum FundSubType {
     Index,
@@ -17,7 +21,9 @@ pub enum FundSubType {
     Passive,
 }
 
-#[derive(Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize)]
+#[derive(
+    Copy, Clone, Debug, Deserialize, Display, EnumIter, EnumString, Eq, PartialEq, Serialize,
+)]
 #[strum(serialize_all = "PascalCase")]
 pub enum MutualFundEndedness {
     Open,
