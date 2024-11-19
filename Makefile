@@ -31,7 +31,8 @@ build: build-cpp build-py  ## Build the project
 
 .PHONY: lint-py lint-cpp lint
 lint-py:
-	python -m ruff finance_enums
+	python -m ruff check finance_enums
+	python -m ruff format --check finance_enums
 
 lint-cpp:
 	clang-format --dry-run -Werror -i -style=file `find ./cpp/{src,include} -name "*.*pp"`
@@ -40,7 +41,8 @@ lint: lint-cpp lint-py  ## Run project linters
 
 .PHONY: fix-py fix-cpp fix
 fix-py:
-	python -m ruff finance_enums --fix
+	python -m ruff check --fix finance_enums
+	python -m ruff format finance_enums
 
 fix-cpp:
 	clang-format -i -style=file `find ./cpp/{src,include} -name "*.*pp"`
