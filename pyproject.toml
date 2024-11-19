@@ -12,7 +12,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "finance-enums"
-authors = [{name = "Tim Paine", email = "t.paine154@gmail.com"}]
+authors = [{name = "prettygoodcapital", email = "prettygoodcapital@gmail.com"}]
 description="Standard Financial Enumerations"
 version = "0.3.0"
 readme = "README.md"
@@ -56,9 +56,9 @@ test = [
 ]
 
 [project.urls]
-Repository = "https://github.com/timkpaine/finance-enums"
-Homepage = "https://github.com/timkpaine/finance-enums"
-Issues = "https://github.com/timkpaine/finance-enums/issues"
+Repository = "https://github.com/prettygoodcapital/finance-enums"
+Homepage = "https://github.com/prettygoodcapital/finance-enums"
+Issues = "https://github.com/prettygoodcapital/finance-enums/issues"
 
 [tool.black]
 color = true
