@@ -6,7 +6,7 @@ class TestCurrency:
         assert len(Currency.__members__) == 183
         assert str(Currency.USD) == "USD"
         assert Currency.USD.currency_name() == "United States dollar"
-    
+
     def test_noniso_currency_pennies(self):
         assert Currency("EUr") == Currency.EUX
         assert Currency("GBp") == Currency.GBX
