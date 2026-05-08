@@ -1,0 +1,15 @@
+[package]
+name = "finance_enums"
+version = "0.3.0"
+edition = "2021"
+publish = false
+
+[lib]
+name = "finance_enums"
+path = "src/lib.rs"
+crate-type = ["rlib"]
+
+[dependencies]
+
+[profile.release]
+opt-level = 3

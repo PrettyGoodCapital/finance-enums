@@ -1,0 +1,1 @@
+/Users/timkpaine/Developer/miscellaneous/preferences/ai/projects/pgc/finance-enums/AGENTS.md
