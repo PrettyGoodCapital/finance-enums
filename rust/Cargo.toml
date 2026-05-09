@@ -1,8 +1,12 @@
 [package]
 name = "finance_enums"
 version = "0.3.0"
+authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
 edition = "2021"
-publish = false
+license = "Apache-2.0"
+readme = "../README.md"
+repository = "https://github.com/prettygoodcapital/finance enums"
+description = "Standard financial enumerations"
 
 [lib]
 name = "finance_enums"
@@ -11,5 +15,6 @@ crate-type = ["rlib"]
 
 [dependencies]
 
-[profile.release]
-opt-level = 3
+[profile.test.junit]
+path = "junit.xml"
+

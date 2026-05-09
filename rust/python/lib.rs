@@ -1,13 +1,16 @@
-//! pyo3 bindings exposing the static enum tables to Python.
-
 use pyo3::prelude::*;
+use pyo3::types::PyCapsule;
+use std::ffi::c_void;
+use std::ptr::NonNull;
 
 use ::finance_enums::data::*;
 
 macro_rules! variant_fn {
     ($name:ident, $arr:ident) => {
         #[pyfunction]
-        fn $name() -> Vec<&'static str> { $arr.to_vec() }
+        fn $name() -> Vec<&'static str> {
+            $arr.to_vec()
+        }
     };
 }
 
@@ -47,10 +50,40 @@ fn currency_aliases() -> Vec<(&'static str, &'static str)> {
     Currency_ALIASES.to_vec()
 }
 
+#[pyfunction]
+fn currency_records() -> Vec<(&'static str, &'static str, bool)> {
+    CURRENCY_RECORDS
+        .iter()
+        .map(|record| (record.code, record.display_name, record.is_iso4217))
+        .collect()
+}
+
+#[pyfunction]
+fn currency_alias_records() -> Vec<(&'static str, &'static str)> {
+    CURRENCY_ALIAS_RECORDS
+        .iter()
+        .map(|record| (record.alias, record.canonical_code))
+        .collect()
+}
+
+#[pyfunction]
+fn currency_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
+    let pointer = NonNull::from(&CURRENCY_EXPORT_V1).cast::<c_void>();
+
+    unsafe { PyCapsule::new_with_pointer(py, pointer, c"finance_enums.currency_export_v1") }
+}
+
+#[no_mangle]
+pub extern "C" fn finance_enums_currency_export_v1() -> *const CurrencyDataExportV1 {
+    &CURRENCY_EXPORT_V1
+}
+
 #[pymodule]
 fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     macro_rules! reg {
-        ($f:ident) => { m.add_function(wrap_pyfunction!($f, m)?)?; };
+        ($f:ident) => {
+            m.add_function(wrap_pyfunction!($f, m)?)?;
+        };
     }
     reg!(country_code_variants);
     reg!(country_code3_variants);
@@ -58,6 +91,9 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(currency_variants);
     reg!(currency_names);
     reg!(currency_aliases);
+    reg!(currency_records);
+    reg!(currency_alias_records);
+    reg!(currency_export_capsule);
     reg!(exchange_code_variants);
     reg!(sector_variants);
     reg!(industry_group_variants);

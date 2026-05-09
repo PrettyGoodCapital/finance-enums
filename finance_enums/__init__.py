@@ -1,52 +1,68 @@
 """Standard financial enumerations.
 
-Variant names and display tables are stored in Rust (see ``rust/src/data.rs``).
+Variant names and structured currency metadata are stored in Rust.
 This module reads those tables at import time and constructs Python ``Enum``
 classes with attached lookup methods.
 """
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from enum import Enum
 from typing import Any
 
-from .frequency import Frequency, to_frequency  # noqa: F401
-
 from .finance_enums import (
-    country_code_variants,
-    country_code3_variants,
-    country_names,
-    currency_variants,
-    currency_names,
-    currency_aliases,
-    exchange_code_variants,
-    sector_variants,
-    industry_group_variants,
-    industry_variants,
-    sub_industry_variants,
-    security_type_variants,
-    instrument_type_variants,
-    equity_type_variants,
-    option_type_variants,
-    option_exercise_type_variants,
+    agriculture_type_variants,
     bond_type_variants,
     commodity_type_variants,
+    country_code3_variants,
+    country_code_variants,
+    country_names,
+    currency_alias_records as _currency_alias_records_raw,
+    currency_aliases,
+    currency_export_capsule,
+    currency_names,
+    currency_records as _currency_records_raw,
+    currency_variants,
     energy_type_variants,
-    metals_type_variants,
-    agriculture_type_variants,
-    fund_type_variants,
+    equity_type_variants,
+    exchange_code_variants,
     fund_subtype_variants,
-    mutual_fund_endedness_variants,
-    future_type_variants,
+    fund_type_variants,
     future_delivery_type_variants,
-    order_type_variants,
-    side_variants,
+    future_type_variants,
+    industry_group_variants,
+    industry_variants,
+    instrument_type_variants,
+    metals_type_variants,
+    mutual_fund_endedness_variants,
+    option_exercise_type_variants,
+    option_type_variants,
     order_flag_variants,
+    order_type_variants,
+    sector_variants,
+    security_type_variants,
+    side_variants,
+    sub_industry_variants,
     time_in_force_variants,
     trading_type_variants,
 )
+from .frequency import Frequency, to_frequency  # noqa: F401
 
 __version__ = "0.3.0"
+
+
+@dataclass(frozen=True)
+class CurrencyRecord:
+    code: str
+    display_name: str
+    is_iso4217: bool
+
+
+@dataclass(frozen=True)
+class CurrencyAliasRecord:
+    alias: str
+    canonical_code: str
 
 
 def _make_str_enum(name: str, members: list[str], aliases: dict[str, str] | None = None) -> Any:
@@ -92,18 +108,38 @@ CountryCode3.country_name = lambda self: _country_names[_country_codes3.index(se
 
 # --- Currency ----------------------------------------------------------------
 
-_currency_codes = currency_variants()
-_currency_full = currency_names()
-_currency_aliases = {k: v for k, v in currency_aliases() if v in _currency_codes}
+_currency_record_data = [CurrencyRecord(code, display_name, is_iso4217) for code, display_name, is_iso4217 in _currency_records_raw()]
+_currency_alias_record_data = [CurrencyAliasRecord(alias, canonical_code) for alias, canonical_code in _currency_alias_records_raw()]
+_currency_codes = [record.code for record in _currency_record_data]
+_currency_by_code = {record.code: record for record in _currency_record_data}
+_currency_aliases = {record.alias: record.canonical_code for record in _currency_alias_record_data if record.canonical_code in _currency_by_code}
 
 Currency = _make_str_enum("Currency", _currency_codes, aliases=_currency_aliases)
 
 
+def currency_records() -> list[CurrencyRecord]:
+    return list(_currency_record_data)
+
+
+def currency_alias_records() -> list[CurrencyAliasRecord]:
+    return list(_currency_alias_record_data)
+
+
 def _currency_currency_name(self):
-    return _currency_full[_currency_codes.index(self.value)]
+    return _currency_by_code[self.value].display_name
+
+
+def _currency_is_iso4217(self):
+    return _currency_by_code[self.value].is_iso4217
+
+
+def _currency_record(self):
+    return _currency_by_code[self.value]
 
 
 Currency.currency_name = _currency_currency_name  # type: ignore[attr-defined]
+Currency.is_iso4217 = _currency_is_iso4217  # type: ignore[attr-defined]
+Currency.record = _currency_record  # type: ignore[attr-defined]
 
 
 # --- Exchange ----------------------------------------------------------------
@@ -154,6 +190,8 @@ __all__ = [
     "CountryCode",
     "CountryCode3",
     "Currency",
+    "CurrencyAliasRecord",
+    "CurrencyRecord",
     "EnergyType",
     "EquityType",
     "ExchangeCode",
@@ -177,5 +215,8 @@ __all__ = [
     "SubIndustry",
     "TimeInForce",
     "TradingType",
+    "currency_alias_records",
+    "currency_export_capsule",
+    "currency_records",
     "to_frequency",
 ]

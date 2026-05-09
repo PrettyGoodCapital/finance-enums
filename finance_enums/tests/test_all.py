@@ -1,3 +1,5 @@
-class TestAll:
-    def test_all(self):
-        pass
+from finance_enums import *  # noqa
+
+
+def test_all():
+    assert True

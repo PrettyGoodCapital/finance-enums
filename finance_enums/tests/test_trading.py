@@ -1,4 +1,4 @@
-from finance_enums import OrderType, Side, TimeInForce, OrderFlag, TradingType
+from finance_enums import OrderFlag, OrderType, Side, TimeInForce, TradingType
 
 
 class TestCurrency:

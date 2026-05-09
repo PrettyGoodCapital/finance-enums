@@ -53,20 +53,33 @@ class Frequency(str, Enum):
 
 _ALIASES: dict[str, Frequency] = {
     # Day
-    "d": Frequency.Day, "day": Frequency.Day, "daily": Frequency.Day,
+    "d": Frequency.Day,
+    "day": Frequency.Day,
+    "daily": Frequency.Day,
     "1d": Frequency.Day,
     # Week
-    "w": Frequency.Week, "week": Frequency.Week, "weekly": Frequency.Week,
+    "w": Frequency.Week,
+    "week": Frequency.Week,
+    "weekly": Frequency.Week,
     "1w": Frequency.Week,
     # Month
-    "m": Frequency.Month, "mo": Frequency.Month, "month": Frequency.Month,
-    "monthly": Frequency.Month, "1mo": Frequency.Month,
+    "m": Frequency.Month,
+    "mo": Frequency.Month,
+    "month": Frequency.Month,
+    "monthly": Frequency.Month,
+    "1mo": Frequency.Month,
     # Quarter
-    "q": Frequency.Quarter, "quarter": Frequency.Quarter,
-    "quarterly": Frequency.Quarter, "1q": Frequency.Quarter,
+    "q": Frequency.Quarter,
+    "quarter": Frequency.Quarter,
+    "quarterly": Frequency.Quarter,
+    "1q": Frequency.Quarter,
     # Year
-    "y": Frequency.Year, "year": Frequency.Year, "yearly": Frequency.Year,
-    "annual": Frequency.Year, "annually": Frequency.Year, "1y": Frequency.Year,
+    "y": Frequency.Year,
+    "year": Frequency.Year,
+    "yearly": Frequency.Year,
+    "annual": Frequency.Year,
+    "annually": Frequency.Year,
+    "1y": Frequency.Year,
 }
 
 

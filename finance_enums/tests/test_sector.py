@@ -1,4 +1,4 @@
-from finance_enums import Sector, IndustryGroup, Industry, SubIndustry
+from finance_enums import Industry, IndustryGroup, Sector, SubIndustry
 
 
 class TestSector:
