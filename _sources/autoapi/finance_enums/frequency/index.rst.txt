@@ -1,0 +1,99 @@
+finance_enums.frequency
+=======================
+
+.. py:module:: finance_enums.frequency
+
+.. autoapi-nested-parse::
+
+   Calendar-frequency enum shared by all finance-* libraries.
+
+   This is the canonical location for the ``period`` / ``window`` argument
+   values used across ``finance-calcs``, ``finance-plots``, ``finance-etl``,
+   and ``finance-dates``. Any function that takes a calendar-aware
+   ``period=`` or ``window=`` argument should accept either a
+   :class:`Frequency` member or one of the string aliases below.
+
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   finance_enums.frequency.Frequency
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   finance_enums.frequency.to_frequency
+
+
+Module Contents
+---------------
+
+.. py:class:: Frequency
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Canonical calendar frequency.
+
+   The string value is the lower-case canonical alias; additional
+   aliases are accepted by :func:`to_frequency` (e.g. ``"D"``,
+   ``"daily"``, ``"M"``, ``"monthly"``, ``"yearly"``).
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: Day
+      :value: 'day'
+
+
+
+   .. py:attribute:: Week
+      :value: 'week'
+
+
+
+   .. py:attribute:: Month
+      :value: 'month'
+
+
+
+   .. py:attribute:: Quarter
+      :value: 'quarter'
+
+
+
+   .. py:attribute:: Year
+      :value: 'year'
+
+
+
+   .. py:property:: periods_per_year
+      :type: int
+
+
+      Approximate number of periods per year for annualisation.
+
+
+   .. py:property:: polars_truncate
+      :type: str
+
+
+      Polars ``dt.truncate`` rule string for bucketing dates.
+
+
+.. py:function:: to_frequency(value: Frequency | str) -> Frequency
+
+   Coerce ``value`` to a :class:`Frequency` member.
+
+   Accepts a :class:`Frequency` instance directly, the canonical
+   lower-case name, or any of the common aliases listed above.
+
+   :raises ValueError: If ``value`` is not a recognised frequency.
+
+

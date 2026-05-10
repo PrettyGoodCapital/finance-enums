@@ -1,0 +1,229 @@
+finance_enums
+=============
+
+.. py:module:: finance_enums
+
+.. autoapi-nested-parse::
+
+   Standard financial enumerations.
+
+   Variant names and structured currency metadata are stored in Rust.
+   This module reads those tables at import time and constructs Python ``Enum``
+   classes with attached lookup methods.
+
+
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 1
+
+   /autoapi/finance_enums/frequency/index
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   finance_enums.CountryCode3
+   finance_enums.CountryCode
+   finance_enums.Currency
+   finance_enums.ExchangeCode
+   finance_enums.Sector
+   finance_enums.IndustryGroup
+   finance_enums.Industry
+   finance_enums.SubIndustry
+   finance_enums.SecurityType
+   finance_enums.InstrumentType
+   finance_enums.EquityType
+   finance_enums.OptionType
+   finance_enums.OptionExerciseType
+   finance_enums.BondType
+   finance_enums.CommodityType
+   finance_enums.EnergyType
+   finance_enums.MetalsType
+   finance_enums.AgricultureType
+   finance_enums.FundType
+   finance_enums.FundSubType
+   finance_enums.MutualFundEndedness
+   finance_enums.FutureType
+   finance_enums.FutureDeliveryType
+   finance_enums.OrderType
+   finance_enums.Side
+   finance_enums.OrderFlag
+   finance_enums.TimeInForce
+   finance_enums.TradingType
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   finance_enums.Frequency
+   finance_enums.CurrencyRecord
+   finance_enums.CurrencyAliasRecord
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   finance_enums.to_frequency
+   finance_enums.currency_records
+   finance_enums.currency_alias_records
+
+
+Package Contents
+----------------
+
+.. py:class:: Frequency
+
+   Bases: :py:obj:`str`, :py:obj:`enum.Enum`
+
+
+   Canonical calendar frequency.
+
+   The string value is the lower-case canonical alias; additional
+   aliases are accepted by :func:`to_frequency` (e.g. ``"D"``,
+   ``"daily"``, ``"M"``, ``"monthly"``, ``"yearly"``).
+
+   Initialize self.  See help(type(self)) for accurate signature.
+
+
+   .. py:attribute:: Day
+      :value: 'day'
+
+
+
+   .. py:attribute:: Week
+      :value: 'week'
+
+
+
+   .. py:attribute:: Month
+      :value: 'month'
+
+
+
+   .. py:attribute:: Quarter
+      :value: 'quarter'
+
+
+
+   .. py:attribute:: Year
+      :value: 'year'
+
+
+
+   .. py:property:: periods_per_year
+      :type: int
+
+
+      Approximate number of periods per year for annualisation.
+
+
+   .. py:property:: polars_truncate
+      :type: str
+
+
+      Polars ``dt.truncate`` rule string for bucketing dates.
+
+
+.. py:function:: to_frequency(value: Frequency | str) -> Frequency
+
+   Coerce ``value`` to a :class:`Frequency` member.
+
+   Accepts a :class:`Frequency` instance directly, the canonical
+   lower-case name, or any of the common aliases listed above.
+
+   :raises ValueError: If ``value`` is not a recognised frequency.
+
+
+.. py:class:: CurrencyRecord
+
+   .. py:attribute:: code
+      :type:  str
+
+
+   .. py:attribute:: display_name
+      :type:  str
+
+
+   .. py:attribute:: is_iso4217
+      :type:  bool
+
+
+.. py:class:: CurrencyAliasRecord
+
+   .. py:attribute:: alias
+      :type:  str
+
+
+   .. py:attribute:: canonical_code
+      :type:  str
+
+
+.. py:data:: CountryCode3
+
+.. py:data:: CountryCode
+
+.. py:data:: Currency
+
+.. py:function:: currency_records() -> list[CurrencyRecord]
+
+.. py:function:: currency_alias_records() -> list[CurrencyAliasRecord]
+
+.. py:data:: ExchangeCode
+
+.. py:data:: Sector
+
+.. py:data:: IndustryGroup
+
+.. py:data:: Industry
+
+.. py:data:: SubIndustry
+
+.. py:data:: SecurityType
+
+.. py:data:: InstrumentType
+
+.. py:data:: EquityType
+
+.. py:data:: OptionType
+
+.. py:data:: OptionExerciseType
+
+.. py:data:: BondType
+
+.. py:data:: CommodityType
+
+.. py:data:: EnergyType
+
+.. py:data:: MetalsType
+
+.. py:data:: AgricultureType
+
+.. py:data:: FundType
+
+.. py:data:: FundSubType
+
+.. py:data:: MutualFundEndedness
+
+.. py:data:: FutureType
+
+.. py:data:: FutureDeliveryType
+
+.. py:data:: OrderType
+
+.. py:data:: Side
+
+.. py:data:: OrderFlag
+
+.. py:data:: TimeInForce
+
+.. py:data:: TradingType
+

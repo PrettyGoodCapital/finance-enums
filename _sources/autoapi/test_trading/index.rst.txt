@@ -1,0 +1,34 @@
+test_trading
+============
+
+.. py:module:: test_trading
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_trading.TestCurrency
+
+
+Module Contents
+---------------
+
+.. py:class:: TestCurrency
+
+   .. py:method:: test_order_type_basic()
+
+
+   .. py:method:: test_side_basic()
+
+
+   .. py:method:: test_time_in_force_basic()
+
+
+   .. py:method:: test_order_flag_basic()
+
+
+   .. py:method:: test_trading_type_basic()
+
+

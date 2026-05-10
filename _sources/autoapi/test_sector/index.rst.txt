@@ -1,0 +1,31 @@
+test_sector
+===========
+
+.. py:module:: test_sector
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_sector.TestSector
+
+
+Module Contents
+---------------
+
+.. py:class:: TestSector
+
+   .. py:method:: test_sector_basic()
+
+
+   .. py:method:: test_industry_group_basic()
+
+
+   .. py:method:: test_industry_basic()
+
+
+   .. py:method:: test_subindustry_basic()
+
+

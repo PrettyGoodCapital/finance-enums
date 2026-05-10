@@ -1,0 +1,22 @@
+test_country
+============
+
+.. py:module:: test_country
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   test_country.TestCountry
+
+
+Module Contents
+---------------
+
+.. py:class:: TestCountry
+
+   .. py:method:: test_country_basic()
+
+
