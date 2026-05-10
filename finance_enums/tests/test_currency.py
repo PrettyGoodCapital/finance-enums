@@ -55,8 +55,12 @@ class TestCurrency:
 
         assert records["USD"].display_name == "United States dollar"
         assert records["USN"].display_name == "United States dollar (next day)"
+        assert records["XAD"].display_name == "Arab Accounting Dinar"
+        assert records["XCG"].display_name == "Caribbean Guilder"
+        assert records["ZWG"].display_name == "Zimbabwe Gold"
         assert records["CNH"].display_name == "Offshore renminbi"
         assert records["ECNY"].display_name == "Digital yuan (e-CNY)"
+        assert records["ZWG"].is_iso4217 is True
         assert records["ECNY"].is_iso4217 is False
 
         alias_records = {record.alias: record.canonical_code for record in currency_alias_records()}

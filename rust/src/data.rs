@@ -8,6 +8,8 @@ pub use crate::currency_data::{
     Currency_VARIANTS, Currency_names_ARRAY, CURRENCY_ALIAS_RECORDS, CURRENCY_ALIAS_RECORDS_RAW,
     CURRENCY_EXPORT_ABI_VERSION, CURRENCY_EXPORT_V1, CURRENCY_RECORDS, CURRENCY_RECORDS_RAW,
 };
+pub use crate::exchange_codes::ExchangeCode_VARIANTS;
+pub use crate::exchange_data::{exchange_record, exchange_records, ExchangeRecord};
 
 pub static AgricultureType_VARIANTS: &[&str] = &[
     "Corn",
@@ -40,7 +42,7 @@ pub static CountryCode_VARIANTS: &[&str] = &[
     "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS",
     "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO",
     "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI",
-    "VN", "VU", "WF", "WS", "XX", "YE", "YT", "ZA", "ZM", "ZW",
+    "VN", "VU", "WF", "WS", "XX", "YE", "YT", "ZA", "ZM", "ZW", "XK",
 ];
 pub static CountryCode3_VARIANTS: &[&str] = &[
     "AND", "ARE", "AFG", "ATG", "AIA", "ALB", "ARM", "AGO", "ATA", "ARG", "ASM", "AUT", "AUS",
@@ -62,7 +64,7 @@ pub static CountryCode3_VARIANTS: &[&str] = &[
     "STP", "SLV", "SXM", "SYR", "SWZ", "TCA", "TCD", "ATF", "TGO", "THA", "TJK", "TKL", "TLS",
     "TKM", "TUN", "TON", "TUR", "TTO", "TUV", "TWN", "TZA", "UKR", "UGA", "UMI", "USA", "URY",
     "UZB", "VAT", "VCT", "VEN", "VGB", "VIR", "VNM", "VUT", "WLF", "WSM", "XXX", "YEM", "MYT",
-    "ZAF", "ZMB", "ZWE",
+    "ZAF", "ZMB", "ZWE", "UNK",
 ];
 pub static EnergyType_VARIANTS: &[&str] = &["Crude", "NaturalGas"];
 pub static EquityType_VARIANTS: &[&str] = &[
@@ -72,7 +74,7 @@ pub static EquityType_VARIANTS: &[&str] = &[
     "PreferredConvertibleShares",
     "DepositoryReceipt",
 ];
-pub static ExchangeCode_VARIANTS: &[&str] = &[
+pub static ExchangeCode_VARIANTS_LEGACY: &[&str] = &[
     "XNYS", "NYSD", "XCIS", "CISD", "XCHI", "ARCX", "ARCD", "ARCO", "XASE", "AMXO", "XNAS", "XNGS",
     "XNCM", "XNMS", "NASD", "XNDQ", "XBOS", "BOSD", "XBXO", "XPHL", "XPSX", "PSXD", "XPHO", "XPBT",
     "XPOR", "XNFI", "EDGA", "EDGD", "EDGX", "EDDP", "EDGO", "BATS", "BZXD", "BATO", "BATY", "BYXD",
@@ -89,8 +91,431 @@ pub static ExchangeCode_VARIANTS: &[&str] = &[
 ];
 pub static FundSubType_VARIANTS: &[&str] = &["Index", "Sector", "Active", "Passive"];
 pub static FundType_VARIANTS: &[&str] = &["ETF", "MutualFund", "REIT"];
+pub static VenueType_VARIANTS: &[&str] = &[
+    "Exchange",
+    "AlternativeTradingSystem",
+    "MultilateralTradingFacility",
+    "OrganizedTradingFacility",
+    "DarkPool",
+    "ElectronicCommunicationNetwork",
+    "Dealer",
+    "RequestForQuote",
+];
+pub static MarketType_VARIANTS: &[&str] = &[
+    "Equities",
+    "FixedIncome",
+    "ForeignExchange",
+    "Commodities",
+    "Derivatives",
+    "Funds",
+    "DigitalAssets",
+    "OTC",
+];
+pub static TradingSession_VARIANTS: &[&str] = &[
+    "PreOpen",
+    "OpeningAuction",
+    "Continuous",
+    "IntradayAuction",
+    "ClosingAuction",
+    "PostClose",
+    "AfterHours",
+    "Overnight",
+];
+pub static MarketState_VARIANTS: &[&str] = &[
+    "PreOpen",
+    "Open",
+    "Auction",
+    "Closed",
+    "Halted",
+    "Suspended",
+];
+pub static AuctionType_VARIANTS: &[&str] = &[
+    "Opening",
+    "Closing",
+    "Intraday",
+    "Volatility",
+    "Call",
+    "Indicative",
+];
+pub static SegmentType_VARIANTS: &[&str] = &[
+    "Primary",
+    "Secondary",
+    "Segment",
+    "Composite",
+    "Lit",
+    "Dark",
+    "Retail",
+];
+pub static MarketStatusReason_VARIANTS: &[&str] = &[
+    "ScheduledOpen",
+    "ScheduledClose",
+    "Halt",
+    "CircuitBreaker",
+    "Regulatory",
+    "Technical",
+    "Volatility",
+    "Holiday",
+];
+pub static IdentifierType_VARIANTS: &[&str] = &[
+    "Ticker",
+    "ISIN",
+    "CUSIP",
+    "SEDOL",
+    "FIGI",
+    "LEI",
+    "RIC",
+    "Bloomberg",
+    "MIC",
+    "Internal",
+];
+pub static TickerNamespace_VARIANTS: &[&str] = &[
+    "Exchange",
+    "Composite",
+    "Bloomberg",
+    "Reuters",
+    "Vendor",
+    "OTC",
+    "Internal",
+    "Synthetic",
+];
+pub static PriceNotation_VARIANTS: &[&str] = &[
+    "Decimal",
+    "PercentageOfPar",
+    "Yield",
+    "Spread",
+    "BasisPoints",
+    "Volatility",
+    "IndexPoints",
+    "Pips",
+];
+pub static QuantityUnit_VARIANTS: &[&str] = &[
+    "Shares",
+    "Contracts",
+    "Units",
+    "Lots",
+    "CurrencyAmount",
+    "NotionalAmount",
+    "FaceValue",
+    "Weight",
+];
+pub static CurrencyRole_VARIANTS: &[&str] =
+    &["Base", "Quote", "Settlement", "Margin", "PnL", "Reporting"];
+pub static MICMarketCategory_VARIANTS: &[&str] = &[
+    "NotSpecified",
+    "MultilateralTradingFacility",
+    "SystematicInternaliser",
+    "RegulatedMarket",
+    "AlternativeTradingSystem",
+    "OrganizedTradingFacility",
+    "Other",
+    "SwapExecutionFacility",
+    "RegulatedMarketOffBookSegment",
+    "ApprovedPublicationArrangement",
+    "CryptoAssetServiceProvider",
+    "DesignatedContractMarket",
+    "TradeReportingFacility",
+    "InterDealerQuotationSystem",
+];
+pub static VenueRegulatoryFlag_VARIANTS: &[&str] = &[
+    "Multilateral",
+    "OrganizedTrading",
+    "TradeReporting",
+    "SwapExecution",
+    "Publication",
+    "SystematicInternaliser",
+    "RegulatedMarket",
+    "AlternativeTradingSystem",
+    "OffBookSegment",
+    "CryptoAssetServiceProvider",
+    "DesignatedContractMarket",
+    "InterDealerQuotation",
+];
+pub static ContractStyle_VARIANTS: &[&str] = &["Standardized", "NonStandardized"];
+pub static ContractUnit_VARIANTS: &[&str] = &[
+    "Share",
+    "Unit",
+    "Contract",
+    "CurrencyAmount",
+    "NotionalAmount",
+    "IndexPoint",
+];
+pub static DeliveryType_VARIANTS: &[&str] = &[
+    "Physical",
+    "Cash",
+    "NonDeliverable",
+    "ElectAtExercise",
+    "DeliveryVersusPayment",
+    "FreeOfPayment",
+    "HoldInCustody",
+    "TriParty",
+];
+pub static CouponType_VARIANTS: &[&str] = &[
+    "Fixed",
+    "Floating",
+    "Zero",
+    "StepUp",
+    "InflationLinked",
+    "PaymentInKind",
+];
+pub static CouponFrequency_VARIANTS: &[&str] = &[
+    "Monthly",
+    "Quarterly",
+    "SemiAnnual",
+    "Annual",
+    "ZeroCoupon",
+    "AtMaturity",
+];
+pub static DayCountConvention_VARIANTS: &[&str] = &[
+    "Actual360",
+    "Actual365Fixed",
+    "ActualActual",
+    "Thirty360",
+    "ThirtyE360",
+    "Business252",
+];
+pub static AmortizationType_VARIANTS: &[&str] = &[
+    "Bullet",
+    "Linear",
+    "MortgageStyle",
+    "NegativeAmortization",
+    "SinkingFund",
+    "Accreting",
+];
+pub static Seniority_VARIANTS: &[&str] = &[
+    "SeniorSecured",
+    "SeniorUnsecured",
+    "SeniorSubordinated",
+    "Subordinated",
+    "JuniorSubordinated",
+    "Preferred",
+];
+pub static CollateralType_VARIANTS: &[&str] = &[
+    "GeneralCollateral",
+    "SpecificCollateral",
+    "CashCollateral",
+    "GovernmentBonds",
+    "CorporateBonds",
+    "Equities",
+];
+pub static MarginType_VARIANTS: &[&str] = &[
+    "Initial",
+    "Variation",
+    "IndependentAmount",
+    "Maintenance",
+    "CrossMargin",
+    "PortfolioMargin",
+];
+pub static BorrowType_VARIANTS: &[&str] = &[
+    "StockLoan",
+    "SecuritiesLending",
+    "MarginLoan",
+    "RepoBorrow",
+    "UnsecuredBorrow",
+];
+pub static RepoType_VARIANTS: &[&str] = &[
+    "Bilateral",
+    "TriParty",
+    "HoldInCustody",
+    "Open",
+    "Term",
+    "Evergreen",
+];
+pub static AccountType_VARIANTS: &[&str] = &[
+    "Cash",
+    "Margin",
+    "PrimeBrokerage",
+    "Custody",
+    "Settlement",
+    "Omnibus",
+];
+pub static BookType_VARIANTS: &[&str] = &[
+    "Trading",
+    "Hedging",
+    "Treasury",
+    "Financing",
+    "Inventory",
+    "Custody",
+];
+pub static PositionType_VARIANTS: &[&str] = &["Long", "Short", "Flat", "Net", "Gross"];
+pub static InventoryType_VARIANTS: &[&str] = &[
+    "Available",
+    "Reserved",
+    "Borrowed",
+    "Lent",
+    "Encumbered",
+    "PendingSettlement",
+];
+pub static StrategyType_VARIANTS: &[&str] = &[
+    "MarketMaking",
+    "Arbitrage",
+    "Hedging",
+    "Directional",
+    "Execution",
+    "RelativeValue",
+];
+pub static NettingType_VARIANTS: &[&str] = &[
+    "None",
+    "Bilateral",
+    "Multilateral",
+    "Portfolio",
+    "CrossProduct",
+];
+pub static VehicleWrapper_VARIANTS: &[&str] = &[
+    "ETF",
+    "MutualFund",
+    "UnitTrust",
+    "SICAV",
+    "OEIC",
+    "LimitedPartnership",
+];
+pub static DistributionPolicy_VARIANTS: &[&str] =
+    &["Accumulating", "Distributing", "Income", "Growth", "Mixed"];
+pub static ShareClassHedging_VARIANTS: &[&str] = &[
+    "Unhedged",
+    "CurrencyHedged",
+    "DurationHedged",
+    "CommodityHedged",
+    "PartialHedged",
+];
+pub static LiquidityTerm_VARIANTS: &[&str] = &[
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Quarterly",
+    "SemiAnnual",
+    "Annual",
+];
+pub static RedemptionFrequency_VARIANTS: &[&str] = &[
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Quarterly",
+    "Annual",
+    "AtMaturity",
+];
+pub static FinancingType_VARIANTS: &[&str] =
+    &["LoanLease", "RepurchaseAgreement", "SecuritiesLending"];
 pub static FutureDeliveryType_VARIANTS: &[&str] = &["Physical", "Cash"];
 pub static FutureType_VARIANTS: &[&str] = &["Financial", "Commodity"];
+pub static SwapLegType_VARIANTS: &[&str] = &[
+    "Fixed",
+    "Floating",
+    "Inflation",
+    "Credit",
+    "Equity",
+    "Commodity",
+    "ForeignExchange",
+    "Basis",
+];
+pub static RateIndex_VARIANTS: &[&str] = &[
+    "SOFR", "FedFunds", "ESTR", "SONIA", "EURIBOR", "TONAR", "SARON", "CPI",
+];
+pub static ResetFrequency_VARIANTS: &[&str] = &[
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Quarterly",
+    "SemiAnnual",
+    "Annual",
+];
+pub static CompoundingMethod_VARIANTS: &[&str] =
+    &["Simple", "Compounded", "Averaged", "Flat", "Straight"];
+pub static StubType_VARIANTS: &[&str] =
+    &["None", "ShortFront", "ShortBack", "LongFront", "LongBack"];
+pub static BarrierType_VARIANTS: &[&str] = &[
+    "UpAndIn",
+    "UpAndOut",
+    "DownAndIn",
+    "DownAndOut",
+    "DoubleKnockIn",
+    "DoubleKnockOut",
+];
+pub static AveragingMethod_VARIANTS: &[&str] = &[
+    "Arithmetic",
+    "Geometric",
+    "Weighted",
+    "VolumeWeighted",
+    "SpotAverage",
+];
+pub static ExoticOptionFeature_VARIANTS: &[&str] = &[
+    "Barrier", "Digital", "Asian", "Lookback", "Cliquet", "Chooser", "Compound", "Quanto",
+];
+pub static CorporateActionType_VARIANTS: &[&str] = &[
+    "CashDividend",
+    "StockDividend",
+    "StockSplit",
+    "ReverseSplit",
+    "RightsIssue",
+    "SpinOff",
+    "Merger",
+    "TenderOffer",
+    "Delisting",
+];
+pub static ListingStatus_VARIANTS: &[&str] = &[
+    "Listed",
+    "Suspended",
+    "Delisted",
+    "PendingListing",
+    "PendingDelisting",
+    "Unlisted",
+];
+pub static SecurityStatus_VARIANTS: &[&str] = &[
+    "Active",
+    "Inactive",
+    "Matured",
+    "Defaulted",
+    "Called",
+    "Converted",
+    "Expired",
+];
+pub static ExerciseEventType_VARIANTS: &[&str] = &[
+    "Automatic",
+    "Voluntary",
+    "Assignment",
+    "Expiration",
+    "EarlyExercise",
+];
+pub static TenderOfferType_VARIANTS: &[&str] =
+    &["Cash", "Stock", "Mixed", "DutchAuction", "ExchangeOffer"];
+pub static DelistingReason_VARIANTS: &[&str] = &[
+    "Merger",
+    "Acquisition",
+    "Bankruptcy",
+    "Regulatory",
+    "Voluntary",
+    "FailureToMeetRequirements",
+];
+pub static LegRole_VARIANTS: &[&str] = &["Payer", "Receiver", "Buyer", "Seller"];
+pub static PayoffStyle_VARIANTS: &[&str] = &["Linear", "Optional", "Binary"];
+pub static PerpetualFutureType_VARIANTS: &[&str] = &["Financial", "Commodity"];
+pub static SettlementType_VARIANTS: &[&str] =
+    &["Physical", "Cash", "NonDeliverable", "ElectAtExercise"];
+pub static UnderlyingAssetClass_VARIANTS: &[&str] = &[
+    "Agriculture",
+    "Basket",
+    "Commodity",
+    "Credit",
+    "Currency",
+    "Debt",
+    "Energy",
+    "Environmental",
+    "Equity",
+    "ExtractionResources",
+    "Future",
+    "GeneratedResources",
+    "Index",
+    "IndustrialProducts",
+    "InterestRate",
+    "Metals",
+    "MixedAssets",
+    "Option",
+    "Other",
+    "Paper",
+    "PolypropyleneProducts",
+    "Services",
+    "StockDividend",
+    "Swap",
+];
 pub static Industry_VARIANTS: &[&str] = &[
     "EnergyEquipmentAndServices",
     "OilGasAndConsumableFuels",
@@ -195,14 +620,108 @@ pub static IndustryGroup_VARIANTS: &[&str] = &[
     "RealEstateManagementAndDevelopment",
 ];
 pub static InstrumentType_VARIANTS: &[&str] = &[
-    "Spot", "Option", "Forward", "Future", "Right", "Spread", "Pair", "Basket",
+    "Spot",
+    "Option",
+    "Forward",
+    "Future",
+    "Swap",
+    "Financing",
+    "Right",
+    "Spread",
+    "Pair",
+    "Basket",
 ];
 pub static MetalsType_VARIANTS: &[&str] = &["Gold", "Silver", "Copper", "Platinum", "Palladium"];
 pub static MutualFundEndedness_VARIANTS: &[&str] = &["Open", "Close"];
 pub static OptionExerciseType_VARIANTS: &[&str] = &["American", "European", "Bermudan"];
 pub static OptionType_VARIANTS: &[&str] = &["Call", "Put"];
+pub static OrderStatus_VARIANTS: &[&str] = &[
+    "New",
+    "PendingNew",
+    "PartiallyFilled",
+    "Filled",
+    "Canceled",
+    "Rejected",
+    "Expired",
+    "Suspended",
+    "PendingCancel",
+];
+pub static ExecType_VARIANTS: &[&str] = &[
+    "New",
+    "Trade",
+    "Canceled",
+    "Replaced",
+    "Rejected",
+    "Expired",
+    "TradeCorrect",
+    "TradeCancel",
+];
+pub static ExecutionInstruction_VARIANTS: &[&str] = &[
+    "AllOrNone",
+    "DoNotIncrease",
+    "DoNotReduce",
+    "ParticipateDoNotInitiate",
+    "StayOnOfferSide",
+    "StayOnBidSide",
+    "LastPeg",
+    "MidPricePeg",
+];
+pub static LiquidityFlag_VARIANTS: &[&str] = &["Added", "Removed", "RoutedOut", "Auction", "None"];
+pub static PositionEffect_VARIANTS: &[&str] =
+    &["Open", "Close", "CloseToday", "CloseYesterday", "Rolled"];
+pub static OpenClose_VARIANTS: &[&str] = &["Open", "Close", "CloseToday", "CloseYesterday"];
+pub static OrderCapacity_VARIANTS: &[&str] = &[
+    "Agency",
+    "Principal",
+    "RisklessPrincipal",
+    "Proprietary",
+    "MarketMaker",
+];
+pub static ShortSaleRestriction_VARIANTS: &[&str] = &[
+    "None",
+    "RegSHOPriceTest",
+    "UptickRule",
+    "LocateRequired",
+    "BorrowRequired",
+];
 pub static OrderFlag_VARIANTS: &[&str] = &["None", "FillOrKill", "AllOrNone", "ImmediateOrCancel"];
 pub static OrderType_VARIANTS: &[&str] = &["Limit", "Market", "Stop"];
+pub static QuoteCondition_VARIANTS: &[&str] = &[
+    "Regular",
+    "Indicative",
+    "Manual",
+    "FastTrading",
+    "SlowTrading",
+    "Closed",
+];
+pub static TradeCondition_VARIANTS: &[&str] = &[
+    "Regular",
+    "Auction",
+    "AveragePrice",
+    "Block",
+    "DerivativelyPriced",
+    "PriorReferencePrice",
+    "OutOfSequence",
+    "Canceled",
+];
+pub static AggressorSide_VARIANTS: &[&str] = &["Buy", "Sell", "Unknown"];
+pub static CrossType_VARIANTS: &[&str] = &[
+    "Internal",
+    "Exchange",
+    "Broker",
+    "OpeningAuction",
+    "ClosingAuction",
+];
+pub static PriceType_VARIANTS: &[&str] = &[
+    "PerUnit",
+    "Percentage",
+    "Yield",
+    "Spread",
+    "BasisPoints",
+    "CleanPrice",
+    "DirtyPrice",
+    "Volatility",
+];
 pub static Sector_VARIANTS: &[&str] = &[
     "Energy",
     "Materials",
@@ -223,6 +742,8 @@ pub static SecurityType_VARIANTS: &[&str] = &[
     "Forward",
     "Future",
     "PerpetualFuture",
+    "Swap",
+    "Financing",
     "Spread",
     "Fund",
     "Commodity",
@@ -231,6 +752,14 @@ pub static SecurityType_VARIANTS: &[&str] = &[
     "Index",
 ];
 pub static Side_VARIANTS: &[&str] = &["None", "Buy", "Sell"];
+pub static SwapType_VARIANTS: &[&str] = &[
+    "Rates",
+    "Commodities",
+    "Equity",
+    "Credit",
+    "ForeignExchange",
+    "Other",
+];
 pub static SubIndustry_VARIANTS: &[&str] = &[
     "OilAndGasDrilling",
     "OilAndGasEquipmentAndServices",
@@ -418,7 +947,7 @@ pub static CountryCode3_names_ARRAY: &[&str] = &[
     "STP", "SLV", "SXM", "SYR", "SWZ", "TCA", "TCD", "ATF", "TGO", "THA", "TJK", "TKL", "TLS",
     "TKM", "TUN", "TON", "TUR", "TTO", "TUV", "TWN", "TZA", "UKR", "UGA", "UMI", "USA", "URY",
     "UZB", "VAT", "VCT", "VEN", "VGB", "VIR", "VNM", "VUT", "WLF", "WSM", "XXX", "YEM", "MYT",
-    "ZAF", "ZMB", "ZWE",
+    "ZAF", "ZMB", "ZWE", "UNK",
 ];
 pub static CountryCode_names_ARRAY: &[&str] = &[
     "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ",
@@ -436,7 +965,7 @@ pub static CountryCode_names_ARRAY: &[&str] = &[
     "SA", "SB", "SC", "SD", "SE", "SG", "SH", "SI", "SJ", "SK", "SL", "SM", "SN", "SO", "SR", "SS",
     "ST", "SV", "SX", "SY", "SZ", "TC", "TD", "TF", "TG", "TH", "TJ", "TK", "TL", "TM", "TN", "TO",
     "TR", "TT", "TV", "TW", "TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE", "VG", "VI",
-    "VN", "VU", "WF", "WS", "XX", "YE", "YT", "ZA", "ZM", "ZW",
+    "VN", "VU", "WF", "WS", "XX", "YE", "YT", "ZA", "ZM", "ZW", "XK",
 ];
 pub static CountryNames_ARRAY: &[&str] = &[
     "Andorra",
@@ -689,6 +1218,7 @@ pub static CountryNames_ARRAY: &[&str] = &[
     "South Africa",
     "Zambia",
     "Zimbabwe",
+    "Kosovo",
 ];
 pub static SubIndustry_names_ARRAY: &[&str] = &[
     "OilAndGasDrilling",

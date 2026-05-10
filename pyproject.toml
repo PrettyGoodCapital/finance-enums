@@ -51,6 +51,7 @@ develop = [
     "ty",
     "uv",
     "wheel",
+    "yardang",
 ]
 
 [project.scripts]
@@ -110,9 +111,6 @@ skip = "*win32 *arm_64"
 
 [tool.coverage.run]
 branch = true
-omit = [
-    "finance_enums/tests/integration/",
-]
 
 [tool.coverage.report]
 exclude_also = [
@@ -197,6 +195,9 @@ section-order = [
 [tool.yardang]
 title = "finance enums"
 root = "README.md"
-pages = []
-use-autoapi = true
+pages = [
+    "docs/src/ENUMS.md",
+    "docs/src/API.md",
+]
+use-autoapi = false
 
