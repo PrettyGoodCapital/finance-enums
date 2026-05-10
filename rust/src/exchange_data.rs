@@ -1,5 +1,6 @@
 #![allow(non_upper_case_globals)]
 
+use std::ffi::{c_char, CString};
 use std::sync::OnceLock;
 
 const EXCHANGE_RECORD_PARTS: &[&str] = &[
@@ -28,6 +29,96 @@ pub struct ExchangeRecord {
     pub subregion: &'static str,
     pub is_segment: bool,
     pub is_official: bool,
+}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub struct ExchangeRecordRaw {
+    pub mic: *const c_char,
+    pub market_name: *const c_char,
+    pub legal_entity_name: *const c_char,
+    pub operating_mic: *const c_char,
+    pub parent_mic: *const c_char,
+    pub market_category_code: *const c_char,
+    pub acronym: *const c_char,
+    pub iso_country_code: *const c_char,
+    pub city: *const c_char,
+    pub website: *const c_char,
+    pub status: *const c_char,
+    pub region: *const c_char,
+    pub subregion: *const c_char,
+    pub is_segment: bool,
+    pub is_official: bool,
+}
+
+unsafe impl Sync for ExchangeRecordRaw {}
+unsafe impl Send for ExchangeRecordRaw {}
+
+#[repr(C)]
+#[derive(Clone, Copy, Debug)]
+pub struct ExchangeDataExportV1 {
+    pub abi_version: u32,
+    pub export_struct_size: usize,
+    pub exchange_record_size: usize,
+    pub records: *const ExchangeRecordRaw,
+    pub records_len: usize,
+}
+
+unsafe impl Sync for ExchangeDataExportV1 {}
+unsafe impl Send for ExchangeDataExportV1 {}
+
+pub const EXCHANGE_EXPORT_ABI_VERSION: u32 = 1;
+
+struct ExchangeDataExportBacking {
+    _records: Box<[ExchangeRecordRaw]>,
+    export: ExchangeDataExportV1,
+}
+
+unsafe impl Sync for ExchangeDataExportBacking {}
+unsafe impl Send for ExchangeDataExportBacking {}
+
+fn leak_c_string(value: &'static str) -> *const c_char {
+    CString::new(value)
+        .expect("exchange field contained interior NUL")
+        .into_raw()
+        .cast_const()
+}
+
+fn build_exchange_export_v1() -> ExchangeDataExportBacking {
+    let records = exchange_records()
+        .iter()
+        .map(|record| ExchangeRecordRaw {
+            mic: leak_c_string(record.mic),
+            market_name: leak_c_string(record.market_name),
+            legal_entity_name: leak_c_string(record.legal_entity_name),
+            operating_mic: leak_c_string(record.operating_mic),
+            parent_mic: leak_c_string(record.parent_mic),
+            market_category_code: leak_c_string(record.market_category_code),
+            acronym: leak_c_string(record.acronym),
+            iso_country_code: leak_c_string(record.iso_country_code),
+            city: leak_c_string(record.city),
+            website: leak_c_string(record.website),
+            status: leak_c_string(record.status),
+            region: leak_c_string(record.region),
+            subregion: leak_c_string(record.subregion),
+            is_segment: record.is_segment,
+            is_official: record.is_official,
+        })
+        .collect::<Vec<_>>()
+        .into_boxed_slice();
+
+    let export = ExchangeDataExportV1 {
+        abi_version: EXCHANGE_EXPORT_ABI_VERSION,
+        export_struct_size: std::mem::size_of::<ExchangeDataExportV1>(),
+        exchange_record_size: std::mem::size_of::<ExchangeRecordRaw>(),
+        records: records.as_ptr(),
+        records_len: records.len(),
+    };
+
+    ExchangeDataExportBacking {
+        _records: records,
+        export,
+    }
 }
 
 fn parse_bool(value: &str, field_name: &str, mic: &str) -> bool {
@@ -81,6 +172,7 @@ fn build_exchange_records() -> Box<[ExchangeRecord]> {
 }
 
 static EXCHANGE_RECORDS_INNER: OnceLock<Box<[ExchangeRecord]>> = OnceLock::new();
+static EXCHANGE_EXPORT_V1_INNER: OnceLock<ExchangeDataExportBacking> = OnceLock::new();
 
 pub fn exchange_records() -> &'static [ExchangeRecord] {
     EXCHANGE_RECORDS_INNER
@@ -90,6 +182,12 @@ pub fn exchange_records() -> &'static [ExchangeRecord] {
 
 pub fn exchange_record(mic: &str) -> Option<&'static ExchangeRecord> {
     exchange_records().iter().find(|record| record.mic == mic)
+}
+
+pub fn exchange_export_v1() -> &'static ExchangeDataExportV1 {
+    &EXCHANGE_EXPORT_V1_INNER
+        .get_or_init(build_exchange_export_v1)
+        .export
 }
 
 #[cfg(test)]

@@ -92,17 +92,23 @@ Currency("e-CNY") # Currency.ECNY
 
 `currency_alias_records()` returns alias-to-canonical mappings.
 
-### Native currency export
+### Native currency and exchange exports
 
-Native consumers that need the currency tables without importing Python
-enum objects can read the same immutable data through either:
+Native consumers that need the immutable metadata tables without
+importing Python enum objects can read the same data through either:
 
 - `currency_export_capsule()`, a `PyCapsule` named
   `finance_enums.currency_export_v1`
-- the exported C ABI symbol `finance_enums_currency_export_v1`
+- the exported C ABI symbols `finance_enums_currency_export_v1` and
+  `finance_enums_exchange_export_v1`
 
 The exported struct is versioned so future changes can add a new export
 without changing the meaning of version 1.
+
+The Rust build also generates a public header at
+`finance_enums/include/finance_enums.h`, and wheel builds install that
+header to `include/finance_enums/finance_enums.h` while bundling the
+standalone shared library under `finance_enums/lib/`.
 
 ______________________________________________________________________
 

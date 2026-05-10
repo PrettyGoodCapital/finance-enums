@@ -232,14 +232,9 @@ fn exchange_record_typed(mic: &str) -> Option<PyExchangeRecord> {
 
 #[pyfunction]
 fn currency_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
-    let pointer = NonNull::from(&CURRENCY_EXPORT_V1).cast::<c_void>();
+    let pointer = NonNull::from(&::finance_enums::currency_data::CURRENCY_EXPORT_V1).cast::<c_void>();
 
     unsafe { PyCapsule::new_with_pointer(py, pointer, c"finance_enums.currency_export_v1") }
-}
-
-#[no_mangle]
-pub extern "C" fn finance_enums_currency_export_v1() -> *const CurrencyDataExportV1 {
-    &CURRENCY_EXPORT_V1
 }
 
 #[pymodule]

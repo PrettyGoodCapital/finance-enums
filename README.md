@@ -138,6 +138,14 @@ Exchange coverage is now backed by bundled ISO 10383 MIC records plus a small se
 - Bundled exchange metadata includes market name, legal entity, operating and parent MICs, market category, acronym, ISO country code, city, website, status, region, subregion, segment flag, and official/project provenance.
 - Project-defined non-ISO venue families remain available for downstream calendar consumers: `PYPR`, `SIMU`, `FOREX`, `CRYPTO`, `SIFMA_US`, `ICE_US`, and `CFE`.
 
+## Native C ABI
+
+`finance-enums` now ships a minimal versioned C ABI for immutable currency and exchange metadata.
+
+- The core Rust crate exports `finance_enums_currency_export_v1` and `finance_enums_exchange_export_v1`.
+- The Rust build generates `finance_enums/include/finance_enums.h`, and wheel builds install that header to `include/finance_enums/finance_enums.h`.
+- Wheels also bundle a standalone shared library inside `finance_enums/lib/` so downstream C or C++ code can link against the same versioned export surface.
+
 ## CFI Helpers
 
 `finance-enums` now includes a broader ISO 10962 / CFI parser and builder.
