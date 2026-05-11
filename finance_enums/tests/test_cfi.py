@@ -1,3 +1,5 @@
+from dataclasses import replace
+
 import pytest
 
 from finance_enums import (
@@ -19,7 +21,9 @@ from finance_enums import (
     SwapType,
     UnderlyingAssetClass,
     build_cfi,
+    build_cfi_from_classification,
     parse_cfi,
+    validate_cfi_classification,
 )
 
 
@@ -216,3 +220,82 @@ class TestCFI:
     def test_build_cfi_rejects_unsupported_security_types(self):
         with pytest.raises(NotImplementedError):
             build_cfi(security_type=SecurityType.Pair)
+
+    def test_raw_cfi_inputs_are_normalized_and_validated(self):
+        assert build_cfi(category=" t ", group=" i ", attributes=("x", "x", "x", "x")) == "TIXXXX"
+        assert parse_cfi(" dnxxxx ").bond_type == BondType.Municipal
+        assert parse_cfi("DBXTXX").bond_type == BondType.Government
+        assert parse_cfi("CICXXX").mutual_fund_endedness == MutualFundEndedness.Close
+        assert parse_cfi("TCXXXX").security_type == SecurityType.Currency
+        assert parse_cfi("TTXXXX").security_type == SecurityType.Commodity
+        assert parse_cfi("TBXXXX").instrument_type == InstrumentType.Basket
+        assert parse_cfi("TDXXXX").security_type == SecurityType.Equity
+        assert parse_cfi("RXXXXX").instrument_type == InstrumentType.Right
+
+        with pytest.raises(ValueError, match="exactly 6"):
+            parse_cfi("ABC")
+        with pytest.raises(ValueError, match="category and group"):
+            build_cfi(category="E", attributes="XXXX")
+        with pytest.raises(ValueError, match="exactly 4"):
+            build_cfi(category="E", group="S", attributes="XXX")
+        with pytest.raises(ValueError, match="contain exactly 4"):
+            build_cfi(category="E", group="S", attributes=("X", "X"))
+
+    def test_cfi_typed_inputs_are_validated(self):
+        with pytest.raises(ValueError, match="invalid security_type"):
+            build_cfi(security_type="NotAType")
+        with pytest.raises(ValueError, match="listed option"):
+            build_cfi(security_type=SecurityType.Option)
+        with pytest.raises(ValueError, match="different underliers"):
+            build_cfi(
+                security_type=SecurityType.Forward,
+                underlying_asset_class=UnderlyingAssetClass.Equity,
+                underlying_security_type=SecurityType.Currency,
+            )
+        with pytest.raises(ValueError, match="settlement_type and delivery_type"):
+            build_cfi(
+                security_type=SecurityType.Future,
+                settlement_type=SettlementType.Cash,
+                delivery_type=DeliveryType.Physical,
+            )
+        with pytest.raises(ValueError, match="future_delivery_type"):
+            build_cfi(
+                security_type=SecurityType.Future,
+                settlement_type=SettlementType.Cash,
+                future_delivery_type=FutureDeliveryType.Physical,
+            )
+        with pytest.raises(ValueError, match="swap_type"):
+            build_cfi(security_type=SecurityType.Swap)
+        with pytest.raises(ValueError, match="financing_type"):
+            build_cfi(security_type=SecurityType.Financing)
+        with pytest.raises(ValueError, match="forward CFI"):
+            build_cfi(security_type=SecurityType.Forward)
+        with pytest.raises(ValueError, match="spread CFI"):
+            build_cfi(security_type=SecurityType.Spread)
+
+    def test_cfi_unsupported_underliers_and_classification_fallbacks(self):
+        with pytest.raises(NotImplementedError, match="complex option"):
+            build_cfi(security_type=SecurityType.Option, underlying_asset_class=UnderlyingAssetClass.Index)
+        with pytest.raises(NotImplementedError, match="forward"):
+            build_cfi(security_type=SecurityType.Forward, underlying_asset_class=UnderlyingAssetClass.Index)
+        with pytest.raises(NotImplementedError, match="spread"):
+            build_cfi(security_type=SecurityType.Spread, underlying_asset_class=UnderlyingAssetClass.Index)
+        with pytest.raises(NotImplementedError, match="asset-class resolution"):
+            build_cfi(security_type=SecurityType.Future, underlying_security_type=SecurityType.Pair)
+
+        forward = replace(
+            parse_cfi("JRXXXX"),
+            code="JIXXXX",
+            group="I",
+            underlying_asset_class=UnderlyingAssetClass.Index,
+            underlying_security_type=SecurityType.Index,
+        )
+        assert build_cfi_from_classification(forward) == "JIXXXX"
+
+        option = parse_cfi("OCASPS")
+        with pytest.raises(TypeError, match="classification"):
+            build_cfi_from_classification("OCASPS")
+        with pytest.raises(TypeError, match="classification"):
+            validate_cfi_classification("OCASPS")
+        with pytest.raises(ValueError, match="typed fields"):
+            validate_cfi_classification(replace(option, option_type=OptionType.Put))

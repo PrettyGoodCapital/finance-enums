@@ -2,16 +2,15 @@ import csv
 import io
 import json
 import subprocess
+import sys
 import xml.etree.ElementTree as ET
 
 import pytest
 
 from finance_enums import CountryCode, CountryCode3, Currency, ExchangeCode
 
-pytestmark = pytest.mark.live_source
 
-
-def _fetch_text(url: str) -> str:
+def _fetch_text(url: str) -> str:  # pragma: no cover - exercised only by explicit live-source runs
     result = subprocess.run(
         ["curl", "-fsSL", url],
         capture_output=True,
@@ -44,17 +43,48 @@ def _country_feeds() -> tuple[set[str], set[str]]:
     return alpha2, alpha3
 
 
-def test_exchange_codes_cover_all_active_iso10383_mics() -> None:
+def test_reference_source_parsers_accept_canonical_fixture_shapes(monkeypatch) -> None:
+    def fetch_text(url: str) -> str:
+        if "ISO10383_MIC" in url:
+            return "MIC,STATUS\nXNYS,ACTIVE\nXNAS,EXPIRED\n,ACTIVE\n"
+        if "iso-currrency" in url:
+            return """
+            <ISO_4217><CcyTbl>
+                <CcyNtry><Ccy>USD</Ccy></CcyNtry>
+                <CcyNtry><Ccy>EUR</Ccy></CcyNtry>
+                <CcyNtry><CcyNm>No currency</CcyNm></CcyNtry>
+            </CcyTbl></ISO_4217>
+            """
+        if "restcountries" in url:
+            return '[{"cca2": "US", "cca3": "USA"}, {"cca2": "GB"}, {"cca3": "CAN"}]'
+        raise AssertionError(f"unexpected URL: {url}")  # pragma: no cover
+
+    monkeypatch.setattr(sys.modules[__name__], "_fetch_text", fetch_text)
+
+    assert _fetch_json("https://restcountries.com/v3.1/all?fields=cca2,cca3") == [
+        {"cca2": "US", "cca3": "USA"},
+        {"cca2": "GB"},
+        {"cca3": "CAN"},
+    ]
+    assert _active_mics() == {"XNYS"}
+    assert _iso4217_codes() == {"USD", "EUR"}
+    assert _country_feeds() == ({"US", "GB"}, {"USA", "CAN"})
+
+
+@pytest.mark.live_source
+def test_exchange_codes_cover_all_active_iso10383_mics() -> None:  # pragma: no cover
     missing = sorted(_active_mics() - {member.value for member in ExchangeCode})
     assert missing == []
 
 
-def test_currency_codes_cover_live_iso4217_list() -> None:
+@pytest.mark.live_source
+def test_currency_codes_cover_live_iso4217_list() -> None:  # pragma: no cover
     missing = sorted(_iso4217_codes() - {member.value for member in Currency})
     assert missing == []
 
 
-def test_country_codes_cover_live_country_feed() -> None:
+@pytest.mark.live_source
+def test_country_codes_cover_live_country_feed() -> None:  # pragma: no cover
     alpha2, alpha3 = _country_feeds()
     missing_alpha2 = sorted(alpha2 - {member.value for member in CountryCode})
     missing_alpha3 = sorted(alpha3 - {member.value for member in CountryCode3})
