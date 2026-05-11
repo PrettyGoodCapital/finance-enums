@@ -24,6 +24,7 @@ class FinanceEnumsCAbiBuildHook(BuildHookInterface):
         destination.parent.mkdir(parents=True, exist_ok=True)
         destination.unlink(missing_ok=True)
 
+        # Avoid reusing host-built shared objects when cibuildwheel mounts the source into manylinux.
         with tempfile.TemporaryDirectory(prefix="finance-enums-capi-") as target_dir:
             env = os.environ.copy()
             env["CARGO_TARGET_DIR"] = target_dir
