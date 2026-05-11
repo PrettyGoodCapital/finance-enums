@@ -9,7 +9,8 @@ except ModuleNotFoundError:  # pragma: no cover - Python < 3.11 fallback
 
 
 def test_c_api_build_hook_does_not_import_unbuilt_package():
-    pyproject = tomllib.loads(Path("pyproject.toml").read_text())
+    pyproject_path = Path(__file__).resolve().parents[2] / "pyproject.toml"
+    pyproject = tomllib.loads(pyproject_path.read_text(encoding="utf-8"))
 
     build_system = pyproject["build-system"]
     hooks = pyproject["tool"]["hatch"]["build"]["hooks"]
