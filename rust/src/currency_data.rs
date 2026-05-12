@@ -261,6 +261,7 @@ currency_table!(
     { code: "VND", display_name: "Vietnamese đồng", is_iso4217: true, aliases: [] },
     { code: "VUV", display_name: "Vanuatu vatu", is_iso4217: true, aliases: [] },
     { code: "WST", display_name: "Samoan tala", is_iso4217: true, aliases: [] },
+    { code: "XAD", display_name: "Arab Accounting Dinar", is_iso4217: true, aliases: [] },
     { code: "XAF", display_name: "CFA franc BEAC", is_iso4217: true, aliases: [] },
     { code: "XAG", display_name: "Silver", is_iso4217: true, aliases: [] },
     { code: "XAU", display_name: "Gold", is_iso4217: true, aliases: [] },
@@ -269,6 +270,7 @@ currency_table!(
     { code: "XBC", display_name: "European Unit of Account 9", is_iso4217: true, aliases: [] },
     { code: "XBD", display_name: "European Unit of Account 17", is_iso4217: true, aliases: [] },
     { code: "XCD", display_name: "East Caribbean dollar", is_iso4217: true, aliases: [] },
+    { code: "XCG", display_name: "Caribbean Guilder", is_iso4217: true, aliases: [] },
     { code: "XDR", display_name: "Special drawing rights", is_iso4217: true, aliases: [] },
     { code: "XOF", display_name: "CFA franc BCEAO", is_iso4217: true, aliases: [] },
     { code: "XPD", display_name: "Palladium", is_iso4217: true, aliases: [] },
@@ -281,6 +283,7 @@ currency_table!(
     { code: "YER", display_name: "Yemeni rial", is_iso4217: true, aliases: [] },
     { code: "ZAR", display_name: "South African rand", is_iso4217: true, aliases: [] },
     { code: "ZMW", display_name: "Zambian kwacha", is_iso4217: true, aliases: [] },
+    { code: "ZWG", display_name: "Zimbabwe Gold", is_iso4217: true, aliases: [] },
     { code: "ZWL", display_name: "Zimbabwean dollar", is_iso4217: true, aliases: [] },
     { code: "CNH", display_name: "Offshore renminbi", is_iso4217: false, aliases: [] },
     { code: "ECNY", display_name: "Digital yuan (e-CNY)", is_iso4217: false, aliases: ["e-CNY"] }
