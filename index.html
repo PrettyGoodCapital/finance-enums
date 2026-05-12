@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="API Reference" href="autoapi/index.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Enums" href="docs/src/ENUMS.html">
 
     <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
         <title>finance enums v0.1.0</title>
@@ -197,21 +197,8 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1 has-children"><a class="reference internal" href="autoapi/index.html">API Reference</a><input aria-label="Toggle navigation of API Reference" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_all/index.html">test_all</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_sector/index.html">test_sector</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_trading/index.html">test_trading</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_country/index.html">test_country</a></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="autoapi/finance_enums/index.html">finance_enums</a><input aria-label="Toggle navigation of finance_enums" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
-<li class="toctree-l3"><a class="reference internal" href="autoapi/finance_enums/frequency/index.html">finance_enums.frequency</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_security/index.html">test_security</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_currency/index.html">test_currency</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_exchange/index.html">test_exchange</a></li>
-<li class="toctree-l2"><a class="reference internal" href="autoapi/test_instrument/index.html">test_instrument</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/ENUMS.html">Enums</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/src/API.html">API</a></li>
 </ul>
 
 </div>
@@ -261,53 +248,114 @@
 <a class="reference external" href="https://pypi.python.org/pypi/finance-enums"><img alt="PyPI" src="https://img.shields.io/pypi/v/finance-enums.svg" /></a></p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">finance-enums</span></code> is the shared vocabulary layer for the <code class="docutils literal notranslate"><span class="pre">finance-*</span></code>
+stack. It exposes string-valued Python enums backed by Rust static data
+tables, plus structured currency metadata and a small frequency enum used
+by calendar-aware libraries.</p>
+<p>The goal is to make identifiers boring and consistent: country codes,
+currencies, exchange codes, GICS-like sector taxonomy, security types,
+instrument types, portfolio labels, lifecycle states, order flags,
+trade sides, and time-in-force values all come from one package.</p>
+<section id="quick-start">
+<h3>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CommodityType</span><span class="p">,</span>
+    <span class="n">ContractStyle</span><span class="p">,</span>
+    <span class="n">Currency</span><span class="p">,</span>
+    <span class="n">ExchangeCode</span><span class="p">,</span>
+    <span class="n">OptionExerciseType</span><span class="p">,</span>
+    <span class="n">OptionType</span><span class="p">,</span>
+    <span class="n">SecurityType</span><span class="p">,</span>
+    <span class="n">SettlementType</span><span class="p">,</span>
+    <span class="n">Sector</span><span class="p">,</span>
+    <span class="n">UnderlyingAssetClass</span><span class="p">,</span>
+    <span class="n">exchange_record</span><span class="p">,</span>
+    <span class="n">exchange_records_by_country</span><span class="p">,</span>
+    <span class="n">build_cfi</span><span class="p">,</span>
+    <span class="n">parse_cfi</span><span class="p">,</span>
+    <span class="n">Frequency</span><span class="p">,</span>
+    <span class="n">to_frequency</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">str</span><span class="p">(</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>                    <span class="c1"># &quot;USD&quot;</span>
+<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>         <span class="c1"># &quot;United States dollar&quot;</span>
+<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">is_iso4217</span><span class="p">()</span>            <span class="c1"># True</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;e-CNY&quot;</span><span class="p">)</span>                    <span class="c1"># Currency.ECNY</span>
+
+<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">value</span>              <span class="c1"># &quot;XNYS&quot;</span>
+<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">region</span>    <span class="c1"># &quot;Americas&quot;</span>
+<span class="n">exchange_record</span><span class="p">(</span><span class="s2">&quot;XNYS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">market_name</span>  <span class="c1"># &quot;NEW YORK STOCK EXCHANGE, INC.&quot;</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">exchange_records_by_country</span><span class="p">(</span><span class="s2">&quot;US&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+<span class="n">parse_cfi</span><span class="p">(</span><span class="s2">&quot;ESVUFB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equity_type</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># &quot;Shares&quot;</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="n">OptionType</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span>  <span class="c1"># &quot;OCXXXX&quot;</span>
+<span class="n">build_cfi</span><span class="p">(</span>
+    <span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
+    <span class="n">option_type</span><span class="o">=</span><span class="n">OptionType</span><span class="o">.</span><span class="n">Call</span><span class="p">,</span>
+    <span class="n">option_exercise_type</span><span class="o">=</span><span class="n">OptionExerciseType</span><span class="o">.</span><span class="n">American</span><span class="p">,</span>
+    <span class="n">underlying_asset_class</span><span class="o">=</span><span class="n">UnderlyingAssetClass</span><span class="o">.</span><span class="n">Equity</span><span class="p">,</span>
+    <span class="n">settlement_type</span><span class="o">=</span><span class="n">SettlementType</span><span class="o">.</span><span class="n">Physical</span><span class="p">,</span>
+    <span class="n">contract_style</span><span class="o">=</span><span class="n">ContractStyle</span><span class="o">.</span><span class="n">Standardized</span><span class="p">,</span>
+<span class="p">)</span>  <span class="c1"># &quot;OCASPS&quot;</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Currency</span><span class="p">)</span>                              <span class="c1"># &quot;IFXXXP&quot;</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Commodity</span><span class="p">,</span> <span class="n">commodity_type</span><span class="o">=</span><span class="n">CommodityType</span><span class="o">.</span><span class="n">Agriculture</span><span class="p">)</span>  <span class="c1"># &quot;ITAXXX&quot;</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>                                        <span class="c1"># &quot;SFXXXX&quot;</span>
+
+<span class="n">Sector</span><span class="o">.</span><span class="n">InformationTechnology</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># &quot;InformationTechnology&quot;</span>
+
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;monthly&quot;</span><span class="p">)</span>             <span class="c1"># Frequency.Month</span>
+<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">periods_per_year</span>     <span class="c1"># 12</span>
+<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">polars_truncate</span>      <span class="c1"># &quot;1mo&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="enum-families">
+<h3>Enum families<a class="headerlink" href="#enum-families" title="Link to this heading">¶</a></h3>
+<p>The public Python API includes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">CountryCode</span></code> (<code class="docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">3166-1</span> <span class="pre">alpha-2</span></code>)</p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">Country</span></code> in Python</p></li>
+<li><p>Countries: <code class="docutils literal notranslate"><span class="pre">CountryCode</span></code>, <code class="docutils literal notranslate"><span class="pre">CountryCode3</span></code></p></li>
+<li><p>Currencies: <code class="docutils literal notranslate"><span class="pre">Currency</span></code>, <code class="docutils literal notranslate"><span class="pre">CurrencyRecord</span></code>, <code class="docutils literal notranslate"><span class="pre">CurrencyAliasRecord</span></code>, <code class="docutils literal notranslate"><span class="pre">currency_records</span></code>, <code class="docutils literal notranslate"><span class="pre">currency_alias_records</span></code></p></li>
+<li><p>Venues: <code class="docutils literal notranslate"><span class="pre">ExchangeCode</span></code>, <code class="docutils literal notranslate"><span class="pre">ExchangeRecord</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_record</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_country</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_operating_mic</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_parent_mic</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_status</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_region</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_market_category</span></code>, <code class="docutils literal notranslate"><span class="pre">MICMarketCategory</span></code>, <code class="docutils literal notranslate"><span class="pre">VenueRegulatoryFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_market_category_type</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_regulatory_flag</span></code></p></li>
+<li><p>Sector taxonomy: <code class="docutils literal notranslate"><span class="pre">Sector</span></code>, <code class="docutils literal notranslate"><span class="pre">IndustryGroup</span></code>, <code class="docutils literal notranslate"><span class="pre">Industry</span></code>, <code class="docutils literal notranslate"><span class="pre">SubIndustry</span></code></p></li>
+<li><p>Market structure: <code class="docutils literal notranslate"><span class="pre">VenueType</span></code>, <code class="docutils literal notranslate"><span class="pre">MarketType</span></code>, <code class="docutils literal notranslate"><span class="pre">TradingSession</span></code>, <code class="docutils literal notranslate"><span class="pre">MarketState</span></code>, <code class="docutils literal notranslate"><span class="pre">AuctionType</span></code>, <code class="docutils literal notranslate"><span class="pre">SegmentType</span></code>, <code class="docutils literal notranslate"><span class="pre">MarketStatusReason</span></code></p></li>
+<li><p>Identifier and notation: <code class="docutils literal notranslate"><span class="pre">IdentifierType</span></code>, <code class="docutils literal notranslate"><span class="pre">TickerNamespace</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceNotation</span></code>, <code class="docutils literal notranslate"><span class="pre">QuantityUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">CurrencyRole</span></code></p></li>
+<li><p>Instruments: <code class="docutils literal notranslate"><span class="pre">SecurityType</span></code>, <code class="docutils literal notranslate"><span class="pre">InstrumentType</span></code>, <code class="docutils literal notranslate"><span class="pre">EquityType</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionType</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionExerciseType</span></code>, <code class="docutils literal notranslate"><span class="pre">BondType</span></code>, <code class="docutils literal notranslate"><span class="pre">CommodityType</span></code>, <code class="docutils literal notranslate"><span class="pre">EnergyType</span></code>, <code class="docutils literal notranslate"><span class="pre">MetalsType</span></code>, <code class="docutils literal notranslate"><span class="pre">AgricultureType</span></code>, <code class="docutils literal notranslate"><span class="pre">FundType</span></code>, <code class="docutils literal notranslate"><span class="pre">FundSubType</span></code>, <code class="docutils literal notranslate"><span class="pre">MutualFundEndedness</span></code>, <code class="docutils literal notranslate"><span class="pre">FutureType</span></code>, <code class="docutils literal notranslate"><span class="pre">FutureDeliveryType</span></code>, <code class="docutils literal notranslate"><span class="pre">SettlementType</span></code>, <code class="docutils literal notranslate"><span class="pre">DeliveryType</span></code>, <code class="docutils literal notranslate"><span class="pre">UnderlyingAssetClass</span></code>, <code class="docutils literal notranslate"><span class="pre">ContractStyle</span></code>, <code class="docutils literal notranslate"><span class="pre">PayoffStyle</span></code>, <code class="docutils literal notranslate"><span class="pre">ContractUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">LegRole</span></code></p></li>
+<li><p>Fixed income and financing: <code class="docutils literal notranslate"><span class="pre">CouponType</span></code>, <code class="docutils literal notranslate"><span class="pre">CouponFrequency</span></code>, <code class="docutils literal notranslate"><span class="pre">DayCountConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">AmortizationType</span></code>, <code class="docutils literal notranslate"><span class="pre">Seniority</span></code>, <code class="docutils literal notranslate"><span class="pre">CollateralType</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginType</span></code>, <code class="docutils literal notranslate"><span class="pre">BorrowType</span></code>, <code class="docutils literal notranslate"><span class="pre">RepoType</span></code>, <code class="docutils literal notranslate"><span class="pre">FinancingType</span></code></p></li>
+<li><p>Swaps and structured products: <code class="docutils literal notranslate"><span class="pre">SwapType</span></code>, <code class="docutils literal notranslate"><span class="pre">SwapLegType</span></code>, <code class="docutils literal notranslate"><span class="pre">RateIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">ResetFrequency</span></code>, <code class="docutils literal notranslate"><span class="pre">CompoundingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">StubType</span></code>, <code class="docutils literal notranslate"><span class="pre">BarrierType</span></code>, <code class="docutils literal notranslate"><span class="pre">AveragingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">ExoticOptionFeature</span></code></p></li>
+<li><p>Portfolio and fund structure: <code class="docutils literal notranslate"><span class="pre">AccountType</span></code>, <code class="docutils literal notranslate"><span class="pre">BookType</span></code>, <code class="docutils literal notranslate"><span class="pre">PositionType</span></code>, <code class="docutils literal notranslate"><span class="pre">InventoryType</span></code>, <code class="docutils literal notranslate"><span class="pre">StrategyType</span></code>, <code class="docutils literal notranslate"><span class="pre">NettingType</span></code>, <code class="docutils literal notranslate"><span class="pre">VehicleWrapper</span></code>, <code class="docutils literal notranslate"><span class="pre">DistributionPolicy</span></code>, <code class="docutils literal notranslate"><span class="pre">ShareClassHedging</span></code>, <code class="docutils literal notranslate"><span class="pre">LiquidityTerm</span></code>, <code class="docutils literal notranslate"><span class="pre">RedemptionFrequency</span></code></p></li>
+<li><p>Corporate actions and lifecycle: <code class="docutils literal notranslate"><span class="pre">CorporateActionType</span></code>, <code class="docutils literal notranslate"><span class="pre">ListingStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">SecurityStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ExerciseEventType</span></code>, <code class="docutils literal notranslate"><span class="pre">TenderOfferType</span></code>, <code class="docutils literal notranslate"><span class="pre">DelistingReason</span></code></p></li>
+<li><p>CFI helpers: <code class="docutils literal notranslate"><span class="pre">CFIClassification</span></code>, <code class="docutils literal notranslate"><span class="pre">parse_cfi</span></code>, <code class="docutils literal notranslate"><span class="pre">build_cfi</span></code>, <code class="docutils literal notranslate"><span class="pre">build_cfi_from_classification</span></code>, <code class="docutils literal notranslate"><span class="pre">validate_cfi_classification</span></code></p></li>
+<li><p>Trading: <code class="docutils literal notranslate"><span class="pre">OrderType</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecType</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutionInstruction</span></code>, <code class="docutils literal notranslate"><span class="pre">LiquidityFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">PositionEffect</span></code>, <code class="docutils literal notranslate"><span class="pre">OpenClose</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderCapacity</span></code>, <code class="docutils literal notranslate"><span class="pre">ShortSaleRestriction</span></code>, <code class="docutils literal notranslate"><span class="pre">Side</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">TimeInForce</span></code>, <code class="docutils literal notranslate"><span class="pre">TradingType</span></code></p></li>
+<li><p>Market data: <code class="docutils literal notranslate"><span class="pre">QuoteCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">TradeCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">AggressorSide</span></code>, <code class="docutils literal notranslate"><span class="pre">CrossType</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceType</span></code></p></li>
+<li><p>Frequencies: <code class="docutils literal notranslate"><span class="pre">Frequency</span></code>, <code class="docutils literal notranslate"><span class="pre">to_frequency</span></code></p></li>
 </ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CountryCode3</span></code> (<code class="docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">3166-1</span> <span class="pre">alpha-3</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CountryCode.name</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CountryCode.flag</span></code> (<code class="docutils literal notranslate"><span class="pre">base64</span></code> encoded <code class="docutils literal notranslate"><span class="pre">png</span></code> of flag)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Currency</span></code> (<code class="docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">4217</span></code> plus explicit project-defined extensions marked as non-ISO)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Currency.name</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Exchange</span></code> (<code class="docutils literal notranslate"><span class="pre">ISO</span> <span class="pre">10383</span></code>)</p>
-<ul>
-<li><p>Note: NMS US Equities only for now</p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Sector</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">IndustryGroup</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Industry</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SubIndustry</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SecurityType</span></code></p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">EquityType</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OptionType</span></code></p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">OptionExerciseType</span></code></p></li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">BondType</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">CommodityType</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">FundType</span></code></p>
-<ul>
-<li><p><code class="docutils literal notranslate"><span class="pre">FundSubType</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MutualFundEndedness</span></code></p></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OrderType</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Side</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TimeInForce</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OrderFlag</span></code></p></li>
-</ul>
+</section>
+<section id="documentation">
+<h3>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">¶</a></h3>
+<p>See the <a class="reference internal" href="docs/src/ENUMS.html"><span class="std std-doc">Enums</span></a> page for the enum families,
+metadata conventions, exchange-code relationship with <code class="docutils literal notranslate"><span class="pre">finance-dates</span></code>,
+and Rust/Python naming notes. See the <a class="reference internal" href="docs/src/API.html"><span class="std std-doc">API</span></a> page for a
+reference and recipes.</p>
+</section>
+<section id="rust-crate">
+<h3>Rust crate<a class="headerlink" href="#rust-crate" title="Link to this heading">¶</a></h3>
+<p>The Rust crate is published as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> on crates.io and imported
+as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> in Rust code:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
+<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.3.0&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The Python package name is <code class="docutils literal notranslate"><span class="pre">finance-enums</span></code>; the Rust package uses an
+underscore because the original crates.io name cannot be renamed to the
+hyphenated spelling.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This library was generated using <a class="reference external" href="https://copier.readthedocs.io/en/stable/">copier</a> from the <a class="reference external" href="https://github.com/python-project-templates/base">Base Python Project Template repository</a>.</p>
 </div>
+</section>
 </section>
 <section id="currency-metadata">
 <h2>Currency Metadata<a class="headerlink" href="#currency-metadata" title="Link to this heading">¶</a></h2>
@@ -318,6 +366,48 @@
 <li><p>Native consumers can re-extract the same immutable dataset through the versioned <code class="docutils literal notranslate"><span class="pre">finance_enums.currency_export_v1</span></code> <code class="docutils literal notranslate"><span class="pre">PyCapsule</span></code> or the exported <code class="docutils literal notranslate"><span class="pre">finance_enums_currency_export_v1</span></code> C ABI symbol.</p></li>
 </ul>
 </section>
+<section id="exchange-metadata">
+<h2>Exchange Metadata<a class="headerlink" href="#exchange-metadata" title="Link to this heading">¶</a></h2>
+<p>Exchange coverage is now backed by bundled ISO 10383 MIC records plus a small set of project-defined calendar families.</p>
+<ul class="simple">
+<li><p>Python exposes structured exchange access through <code class="docutils literal notranslate"><span class="pre">exchange_records()</span></code> and <code class="docutils literal notranslate"><span class="pre">ExchangeCode.record()</span></code>.</p></li>
+<li><p>Python also exposes direct venue lookups through <code class="docutils literal notranslate"><span class="pre">exchange_record()</span></code> and indexed filters through <code class="docutils literal notranslate"><span class="pre">exchange_records_by_country()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_operating_mic()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_parent_mic()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_status()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_region()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_market_category()</span></code>, <code class="docutils literal notranslate"><span class="pre">exchange_records_by_market_category_type()</span></code>, and <code class="docutils literal notranslate"><span class="pre">exchange_records_by_regulatory_flag()</span></code>.</p></li>
+<li><p>Each <code class="docutils literal notranslate"><span class="pre">ExchangeRecord</span></code> and <code class="docutils literal notranslate"><span class="pre">ExchangeCode</span></code> can derive a typed MIC market category through <code class="docutils literal notranslate"><span class="pre">.market_category()</span></code> and standards-backed regulatory flags through <code class="docutils literal notranslate"><span class="pre">.regulatory_flags()</span></code> / <code class="docutils literal notranslate"><span class="pre">.has_regulatory_flag()</span></code>.</p></li>
+<li><p>Bundled exchange metadata includes market name, legal entity, operating and parent MICs, market category, acronym, ISO country code, city, website, status, region, subregion, segment flag, and official/project provenance.</p></li>
+<li><p>Project-defined non-ISO venue families remain available for downstream calendar consumers: <code class="docutils literal notranslate"><span class="pre">PYPR</span></code>, <code class="docutils literal notranslate"><span class="pre">SIMU</span></code>, <code class="docutils literal notranslate"><span class="pre">FOREX</span></code>, <code class="docutils literal notranslate"><span class="pre">CRYPTO</span></code>, <code class="docutils literal notranslate"><span class="pre">SIFMA_US</span></code>, <code class="docutils literal notranslate"><span class="pre">ICE_US</span></code>, and <code class="docutils literal notranslate"><span class="pre">CFE</span></code>.</p></li>
+</ul>
+</section>
+<section id="native-c-abi">
+<h2>Native C ABI<a class="headerlink" href="#native-c-abi" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">finance-enums</span></code> now ships a minimal versioned C ABI for immutable currency and exchange metadata.</p>
+<ul class="simple">
+<li><p>The core Rust crate exports <code class="docutils literal notranslate"><span class="pre">finance_enums_currency_export_v1</span></code> and <code class="docutils literal notranslate"><span class="pre">finance_enums_exchange_export_v1</span></code>.</p></li>
+<li><p>The Rust build generates <code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums.h</span></code>, and wheel builds install that header to <code class="docutils literal notranslate"><span class="pre">include/finance_enums/finance_enums.h</span></code>.</p></li>
+<li><p>Wheels also bundle a standalone shared library inside <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code> so downstream C or C++ code can link against the same versioned export surface.</p></li>
+</ul>
+</section>
+<section id="cfi-helpers">
+<h2>CFI Helpers<a class="headerlink" href="#cfi-helpers" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">finance-enums</span></code> now includes a broader ISO 10962 / CFI parser and builder.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">parse_cfi()</span></code> maps supported families into the existing enum surface for equities, bonds, funds, options, futures, swaps, financing, spot FX, spot commodities, forwards, spreads, and indices, while preserving the raw category, group, and attribute characters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_cfi()</span></code> emits category/group-correct codes for the supported enum-backed families and also accepts raw <code class="docutils literal notranslate"><span class="pre">category</span></code>, <code class="docutils literal notranslate"><span class="pre">group</span></code>, and <code class="docutils literal notranslate"><span class="pre">attributes</span></code> inputs for ISO categories that the library does not model with dedicated enums yet.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">build_cfi_from_classification()</span></code> and <code class="docutils literal notranslate"><span class="pre">CFIClassification.to_code()</span></code> provide a structured round-trip path from typed enum-backed classifications back into ISO 10962 strings.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">validate_cfi_classification()</span></code> and <code class="docutils literal notranslate"><span class="pre">CFIClassification.validate()</span></code> check that the typed fields, raw CFI positions, and stored <code class="docutils literal notranslate"><span class="pre">code</span></code> all agree before downstream code persists or republishes a classification.</p></li>
+<li><p>Listed options and futures now expose typed derivative attributes for underlier asset class, settlement or delivery semantics, and contract standardization instead of leaving those positions opaque.</p></li>
+<li><p>Non-listed options, forwards, and strategies now support rate, credit, mixed-asset, and other high-value CFI underlier groups through <code class="docutils literal notranslate"><span class="pre">UnderlyingAssetClass</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SecurityType.PerpetualFuture</span></code> is available as a standalone library type and builds through the ISO futures CFI envelope, because ISO 10962 does not encode a dedicated perpetual-future category.</p></li>
+<li><p>Remaining unsupported enum families still raise <code class="docutils literal notranslate"><span class="pre">NotImplementedError</span></code> during generation rather than guessing invalid codes.</p></li>
+</ul>
+</section>
+<section id="live-reference-tests">
+<h2>Live Reference Tests<a class="headerlink" href="#live-reference-tests" title="Link to this heading">¶</a></h2>
+<p>Live standards coverage tests are part of the normal pytest suite and are marked <code class="docutils literal notranslate"><span class="pre">live_source</span></code>.</p>
+<ul class="simple">
+<li><p>Default local test runs skip them automatically.</p></li>
+<li><p>Enable them by running <code class="docutils literal notranslate"><span class="pre">FINANCE_ENUMS_RUN_LIVE_TESTS=1</span> <span class="pre">/opt/homebrew/bin/python</span> <span class="pre">-m</span> <span class="pre">pytest</span> <span class="pre">-q</span> <span class="pre">finance_enums/tests</span></code>.</p></li>
+</ul>
+</section>
 </section>
 
         </article>
@@ -325,12 +415,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="autoapi/index.html">
+          <a class="next-page" href="docs/src/ENUMS.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">API Reference</div>
+                <div class="title">Enums</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
