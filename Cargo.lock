@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "finance_enums"
-version = "0.3.0"
+version = "0.4.0"
 
 [[package]]
 name = "finance_enums_py"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "finance_enums",
  "pyo3",
