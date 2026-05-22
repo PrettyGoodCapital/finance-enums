@@ -1,0 +1,234 @@
+[build-system]
+requires = [
+    "hatchling",
+    "hatch-rs>=0.2.0",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "finance-enums"
+authors = [
+    {name = "PrettyGoodCapital", email = "prettygoodcapital@gmail.com"},
+]
+description = "Standard financial enumerations"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+version = "0.4.0"
+requires-python = ">=3.10"
+keywords = []
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Rust",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+develop = [
+    "build",
+    "bump-my-version",
+    "check-dist",
+    "cibuildwheel",
+    "codespell",
+    "hatch-rs>=0.2.0",
+    "hatchling",
+    "mdformat",
+    "mdformat-tables>=1",
+    "pytest",
+    "pytest-cov",
+    "ruff",
+    "twine",
+    "ty",
+    "uv",
+    "wheel",
+    "yardang",
+    # tests
+    "tomli; python_version < '3.11'",
+]
+
+[project.scripts]
+
+[project.urls]
+Repository = "https://github.com/prettygoodcapital/finance-enums"
+Homepage = "https://github.com/prettygoodcapital/finance-enums"
+
+[tool.bumpversion]
+current_version = "0.4.0"
+commit = true
+tag = true
+commit_args = "-s"
+
+[[tool.bumpversion.files]]
+filename = "finance_enums/__init__.py"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "Cargo.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "rust/Cargo.toml"
+search = 'version = "{current_version}"'
+replace = 'version = "{new_version}"'
+
+[tool.cibuildwheel]
+build = "cp310-*"
+test-command = "pytest -vvv {project}/finance_enums/tests"
+test-extras = "develop"
+
+[tool.cibuildwheel.linux]
+before-all = """
+curl https://sh.rustup.rs -sSf | sh -s -- --default-toolchain=stable --profile=minimal -y
+rustup target add aarch64-unknown-linux-gnu
+rustup target add x86_64-unknown-linux-gnu
+rustup show
+"""
+environment = {PATH="$HOME/.cargo/bin:$PATH", CARGO_TERM_COLOR="always"}
+skip = "*i686* *musllinux*"
+
+[tool.cibuildwheel.macos]
+environment = {PATH="$HOME/.cargo/bin:$PATH", CARGO_TERM_COLOR="always", MACOS_DEPLOYMENT_TARGET=11.0}
+archs = "arm64"
+
+[tool.cibuildwheel.windows]
+environment = {PATH="$UserProfile\\.cargo\bin;$PATH", CARGO_TERM_COLOR="always"}
+skip = "*win32 *arm_64"
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_also = [
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@(abc\\.)?abstractmethod",
+]
+ignore_errors = true
+fail_under = 50
+
+[tool.hatch.build]
+artifacts = [
+    "finance_enums/*.dll",
+    "finance_enums/*.dylib",
+    "finance_enums/*.pyd",
+    "finance_enums/*.so",
+    "finance_enums/include/*.h",
+    "finance_enums/lib/*.dll",
+    "finance_enums/lib/*.dylib",
+    "finance_enums/lib/*.lib",
+    "finance_enums/lib/*.so",
+]
+
+[tool.hatch.build.sources]
+src = "/"
+
+[tool.hatch.build.hooks.hatch-rs]
+verbose = true
+abi3 = true
+module = "finance_enums"
+path = "."
+target-dir = "isolated"
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts]]
+name = "finance_enums"
+manifest = "Cargo.toml"
+destination = "finance_enums/{python_extension_name}"
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts]]
+name = "finance_enums"
+manifest = "rust/Cargo.toml"
+destination = "finance_enums/lib/{shared_library}"
+expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1"]
+expected-headers = ["finance_enums/include/finance_enums.h"]
+expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION"]
+validate = true
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]
+source = "finance_enums/include/finance_enums.h"
+destination = "include/finance_enums/finance_enums.h"
+install-scheme = "shared-data"
+
+[tool.hatch.build.targets.sdist]
+packages = [
+    "finance_enums",
+    "rust",
+    "Cargo.toml",
+    "Cargo.lock",
+]
+exclude = [
+    "rust/Makefile",
+    "target",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "finance_enums",
+]
+exclude = [
+    "rust",
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"finance_enums/include/finance_enums.h" = "include/finance_enums/finance_enums.h"
+
+[tool.pytest.ini_options]
+addopts = [
+    "-vvv",
+    "--junitxml=junit.xml",
+]
+testpaths = "finance_enums/tests"
+
+[tool.ruff]
+line-length = 150
+
+[tool.ruff.lint]
+extend-select = [
+    "I",
+]
+
+[tool.ruff.lint.isort]
+combine-as-imports = true
+default-section = "third-party"
+known-first-party = [
+    "finance_enums",
+]
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "local-folder",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = [
+    "F401",
+    "F403",
+]
+
+[tool.yardang]
+title = "finance enums"
+root = "README.md"
+pages = [
+    "docs/src/ENUMS.md",
+    "docs/src/API.md",
+]
+use-autoapi = false
+
