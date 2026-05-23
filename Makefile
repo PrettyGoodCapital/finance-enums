@@ -3,18 +3,22 @@
 #########
 .PHONY: develop-py develop-rs develop
 develop-py:
-	uv pip install -e .[develop]
+	uv pip install -e ".[develop]"
 
 develop-rs:
 	make -C rust develop
 
 develop: develop-rs develop-py  ## setup project for development
 
+.PHONY: rebuild-extension
+rebuild-extension:  ## rebuild the local Python extension in-place
+	uv pip install -e . --no-build-isolation
+
 .PHONY: requirements-py requirements-rs requirements
 requirements-py:  ## install prerequisite python build requirements
-	python -m pip install --upgrade pip toml
-	python -m pip install `python -c 'import toml; c = toml.load("pyproject.toml"); print("\n".join(c["build-system"]["requires"]))'`
-	python -m pip install `python -c 'import toml; c = toml.load("pyproject.toml"); print(" ".join(c["project"]["optional-dependencies"]["develop"]))'`
+	uv pip install --upgrade pip toml
+	uv pip install `python -c 'import toml; c = toml.load("pyproject.toml"); print("\n".join(c["build-system"]["requires"]))'`
+	uv pip install `python -c 'import toml; c = toml.load("pyproject.toml"); print(" ".join(c["project"]["optional-dependencies"]["develop"]))'`
 
 requirements-rs:  ## install prerequisite rust build requirements
 	make -C rust requirements
@@ -46,8 +50,8 @@ lint-rs:  ## run rust linter
 	make -C rust lint
 
 lint-docs:  ## lint docs with mdformat and codespell
-	python -m mdformat --check README.md 
-	python -m codespell_lib README.md 
+	python -m mdformat --check README.md
+	python -m codespell_lib README.md
 
 lint: lint-rs lint-py lint-docs  ## run project linters
 
@@ -63,8 +67,8 @@ fix-rs:  ## fix rust formatting
 	make -C rust fix
 
 fix-docs:  ## autoformat docs with mdformat and codespell
-	python -m mdformat README.md 
-	python -m codespell_lib --write README.md 
+	python -m mdformat README.md
+	python -m codespell_lib --write README.md
 
 fix: fix-rs fix-py fix-docs  ## run project autoformatters
 

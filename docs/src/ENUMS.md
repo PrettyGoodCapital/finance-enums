@@ -92,23 +92,30 @@ Currency("e-CNY") # Currency.ECNY
 
 `currency_alias_records()` returns alias-to-canonical mappings.
 
-### Native currency and exchange exports
+### Native metadata and enum exports
 
 Native consumers that need the immutable metadata tables without
 importing Python enum objects can read the same data through either:
 
 - `currency_export_capsule()`, a `PyCapsule` named
   `finance_enums.currency_export_v1`
-- the exported C ABI symbols `finance_enums_currency_export_v1` and
-  `finance_enums_exchange_export_v1`
+- the exported C ABI symbols `finance_enums_currency_export_v1`,
+  `finance_enums_exchange_export_v1`, and `finance_enums_enum_export_v1`
 
-The exported struct is versioned so future changes can add a new export
-without changing the meaning of version 1.
+The exported structs are versioned so future changes can add a new
+export without changing the meaning of version 1. The enum export is a
+flat family / variant table, which lets C and C++ consumers discover all
+Rust-backed enum values from the shared library.
 
-The Rust build also generates a public header at
-`finance_enums/include/finance_enums.h`, and wheel builds install that
-header to `include/finance_enums/finance_enums.h` while bundling the
-standalone shared library under `finance_enums/lib/`.
+The public header lives at `finance_enums/include/finance_enums.h`.
+hatch-rs validates it as an expected artifact, and wheel builds install
+the header to `include/finance_enums/finance_enums.h` while bundling
+the standalone shared library under `finance_enums/lib/`.
+
+Python exposes the same vocabulary as `EnumVariantRecord` and
+`EnumFamilySchema` dataclasses through `enum_variant_records()` and
+`enum_family_schemas()`. `enum_schema_json()` emits deterministic JSON
+with Python, Rust, C ABI, JSON, and Arrow-compatible schema metadata.
 
 ______________________________________________________________________
 
@@ -172,6 +179,7 @@ subtypes:
 - Futures: `FutureType`, `FutureDeliveryType`, `ContractUnit`, `LegRole`
 - Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
 - Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 
 The taxonomy is deliberately descriptive rather than behavioral. It does
 not attempt to price or model instruments; it standardizes labels.
@@ -185,6 +193,7 @@ Shared post-trade and fund-operation vocabularies now include:
 - Portfolio and booking: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`
 - Fund and vehicle structure: `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
 - Security lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
+- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
 
 These enums are intended for validation and shared schemas across
 execution, risk, portfolio, and reference-data workflows.
@@ -214,6 +223,28 @@ Trading workflow identifiers include:
 - Side: `Side`
 
 These enums are intended for validation and shared API contracts rather than order routing logic.
+
+`Side` is direction only: `None`, `Buy`, and `Sell`. Short-sale and
+cover semantics are represented as `Side` plus `PositionEffect`, with
+`OpenClose` and `PositionType` available when a transaction schema needs
+those fields. `transaction_intent()` returns canonical bundles for
+`open_long`, `close_long`, `open_short`, and `cover_short`.
+
+______________________________________________________________________
+
+## Reference-data maintenance
+
+Standards-backed data has two local maintenance tools:
+
+- `scripts/generate_reference_data.py --check` validates that the
+  generated exchange-code compatibility table remains aligned with the
+  vendored MIC records.
+- `scripts/snapshot_reference_diffs.py --check` compares checked-in
+  snapshots for MIC, currency, country, and future-related datasets with
+  the current Rust source of truth.
+
+Use `--write` on either script after an intentional data refresh, then
+review the resulting diff.
 
 ______________________________________________________________________
 

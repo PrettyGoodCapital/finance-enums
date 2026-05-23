@@ -7,18 +7,24 @@ from finance_enums import (
    AccountType,
    AggressorSide,
    AgricultureType,
+   AllocationMethod,
    AmortizationType,
    AuctionType,
    AveragingMethod,
    BarrierType,
+   BenchmarkType,
    BondType,
    BookType,
    BorrowType,
+   CalculationAgentType,
+   ClearingHouse,
+   ClearingModel,
    CollateralType,
    CommodityType,
    CompoundingMethod,
    ContractStyle,
    ContractUnit,
+   CorporateActionAdjustmentType,
    CorporateActionType,
    CountryCode,
    CountryCode3,
@@ -36,17 +42,22 @@ from finance_enums import (
    DistributionPolicy,
    EnergyType,
    EquityType,
+   EnumFamilySchema,
+   EnumVariantRecord,
    ExchangeCode,
    ExecType,
    ExerciseEventType,
    ExoticOptionFeature,
+   FailsReason,
    FinancingType,
    Frequency,
    FundSubType,
    FundType,
    FutureDeliveryType,
    FutureType,
+   GiveUpType,
    IdentifierType,
+   IndexWeightingMethod,
    Industry,
    IndustryGroup,
    InstrumentType,
@@ -78,6 +89,7 @@ from finance_enums import (
    QuantityUnit,
    QuoteCondition,
    RateIndex,
+   RebalanceFrequency,
    RedemptionFrequency,
    RepoType,
    ResetFrequency,
@@ -86,6 +98,7 @@ from finance_enums import (
    Seniority,
    SecurityStatus,
    SecurityType,
+   SettlementStatus,
    SettlementType,
    ShareClassHedging,
    ShortSaleRestriction,
@@ -101,6 +114,7 @@ from finance_enums import (
    TradeCondition,
    TradingSession,
    TradingType,
+   TransactionIntent,
    UnderlyingAssetClass,
    VenueRegulatoryFlag,
    VehicleWrapper,
@@ -110,6 +124,11 @@ from finance_enums import (
    currency_alias_records,
    currency_export_capsule,
    currency_records,
+   enum_export_capsule,
+   enum_family_schemas,
+   enum_schema,
+   enum_schema_json,
+   enum_variant_records,
    exchange_record,
    exchange_records,
    exchange_records_by_country,
@@ -122,6 +141,8 @@ from finance_enums import (
    exchange_records_by_status,
    parse_cfi,
    to_frequency,
+   transaction_intent,
+   transaction_intent_records,
    validate_cfi_classification,
 )
 ```
@@ -161,6 +182,29 @@ ______________________________________________________________________
 
 .. autofunction:: currency_export_capsule
 
+.. autoclass:: EnumVariantRecord
+   :members:
+
+.. autoclass:: EnumFamilySchema
+   :members:
+
+.. autofunction:: enum_variant_records
+
+.. autofunction:: enum_family_schemas
+
+.. autofunction:: enum_schema
+
+.. autofunction:: enum_schema_json
+
+.. autofunction:: enum_export_capsule
+
+.. autoclass:: TransactionIntent
+   :members:
+
+.. autofunction:: transaction_intent_records
+
+.. autofunction:: transaction_intent
+
 .. autoclass:: Frequency
    :members:
 
@@ -193,6 +237,8 @@ Generated enum classes:
 - Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureType`, `FutureDeliveryType`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
 - Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
 - Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
+- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 - Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
 - Corporate actions and lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
 - Trading: `OrderType`, `OrderStatus`, `ExecType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OpenClose`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`, `TradingType`
@@ -201,6 +247,10 @@ Generated enum classes:
 Exchange helpers now also support typed MIC category access through `ExchangeRecord.market_category()` / `ExchangeCode.market_category()`, standards-backed flags through `.regulatory_flags()`, and indexed lookups through `exchange_records_by_market_category_type()` and `exchange_records_by_regulatory_flag()`.
 
 CFI helpers now support structured round trips through `build_cfi_from_classification()` and validation through `validate_cfi_classification()`, plus the equivalent `CFIClassification.to_code()` and `CFIClassification.validate()` convenience methods.
+
+`Side` stays limited to buy/sell direction. Use `transaction_intent()` or `transaction_intent_records()` when a downstream transaction model needs common intent bundles such as opening a long, closing a long, opening a short, or covering a short.
+
+`enum_family_schemas()` and `enum_schema_json()` expose the same Rust-backed enum vocabulary as versioned Python, JSON, Arrow-compatible, and C ABI metadata. The C ABI entry point is `finance_enums_enum_export_v1`.
 
 Inspect available values with `.__members__`:
 

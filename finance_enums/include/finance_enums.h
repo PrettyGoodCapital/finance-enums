@@ -12,6 +12,8 @@ extern "C" {
 #define FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION 1u
 #define FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION 1u
 
+#define FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION 1u
+
 typedef struct CurrencyRecordRaw {
     const char *code;
     const char *display_name;
@@ -60,8 +62,25 @@ typedef struct ExchangeDataExportV1 {
     size_t records_len;
 } ExchangeDataExportV1;
 
+typedef struct EnumVariantRecordRaw {
+    const char *enum_name;
+    const char *variant;
+    size_t ordinal;
+} EnumVariantRecordRaw;
+
+typedef struct EnumDataExportV1 {
+    uint32_t abi_version;
+    size_t export_struct_size;
+    size_t enum_variant_record_size;
+    const EnumVariantRecordRaw *records;
+    size_t records_len;
+    size_t family_count;
+} EnumDataExportV1;
+
 const CurrencyDataExportV1 *finance_enums_currency_export_v1(void);
 const ExchangeDataExportV1 *finance_enums_exchange_export_v1(void);
+
+const EnumDataExportV1 *finance_enums_enum_export_v1(void);
 
 #ifdef __cplusplus
 }

@@ -57,7 +57,7 @@ class TestSecurityType:
         assert len(OptionExerciseType.__members__) == 3
 
     def test_settlement_type_basic(self):
-        assert len(SettlementType.__members__) == 4
+        assert len(SettlementType.__members__) == 7
 
     def test_delivery_type_basic(self):
         assert len(DeliveryType.__members__) == 8

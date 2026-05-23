@@ -488,8 +488,120 @@ pub static DelistingReason_VARIANTS: &[&str] = &[
 pub static LegRole_VARIANTS: &[&str] = &["Payer", "Receiver", "Buyer", "Seller"];
 pub static PayoffStyle_VARIANTS: &[&str] = &["Linear", "Optional", "Binary"];
 pub static PerpetualFutureType_VARIANTS: &[&str] = &["Financial", "Commodity"];
-pub static SettlementType_VARIANTS: &[&str] =
-    &["Physical", "Cash", "NonDeliverable", "ElectAtExercise"];
+pub static SettlementType_VARIANTS: &[&str] = &[
+    "Physical",
+    "Cash",
+    "NonDeliverable",
+    "ElectAtExercise",
+    "DeliveryVersusPayment",
+    "PaymentVersusPayment",
+    "FreeOfPayment",
+];
+pub static SettlementStatus_VARIANTS: &[&str] = &[
+    "Pending",
+    "Instructed",
+    "Matched",
+    "Unmatched",
+    "Settled",
+    "PartiallySettled",
+    "Failed",
+    "Canceled",
+];
+pub static ClearingModel_VARIANTS: &[&str] = &[
+    "Bilateral",
+    "CentralCounterparty",
+    "PrimeBroker",
+    "SponsoredAccess",
+    "AgentCleared",
+];
+pub static ClearingHouse_VARIANTS: &[&str] = &[
+    "NSCC",
+    "FICC",
+    "OCC",
+    "CME",
+    "ICEClear",
+    "LCH",
+    "EurexClearing",
+    "DTCC",
+    "Euroclear",
+    "Clearstream",
+    "Other",
+];
+pub static FailsReason_VARIANTS: &[&str] = &[
+    "InsufficientSecurities",
+    "InsufficientCash",
+    "CounterpartyMismatch",
+    "InstructionMismatch",
+    "RegulatoryHold",
+    "MarketDeadlineMissed",
+    "CorporateAction",
+    "SystemIssue",
+    "Other",
+];
+pub static AllocationMethod_VARIANTS: &[&str] = &[
+    "AveragePrice",
+    "SpecificLot",
+    "ProRata",
+    "FIFO",
+    "LIFO",
+    "Manual",
+    "Automated",
+    "StepOut",
+];
+pub static GiveUpType_VARIANTS: &[&str] = &[
+    "None",
+    "GiveUp",
+    "GiveIn",
+    "AveragePriceGiveUp",
+    "ClearingGiveUp",
+];
+pub static BenchmarkType_VARIANTS: &[&str] = &[
+    "InterestRate",
+    "EquityIndex",
+    "FixedIncomeIndex",
+    "CommodityIndex",
+    "FXFixing",
+    "InflationIndex",
+    "CreditIndex",
+    "Custom",
+];
+pub static IndexWeightingMethod_VARIANTS: &[&str] = &[
+    "MarketCap",
+    "FloatAdjustedMarketCap",
+    "PriceWeighted",
+    "EqualWeighted",
+    "Fundamental",
+    "VolatilityWeighted",
+    "RiskParity",
+    "ModifiedMarketCap",
+];
+pub static RebalanceFrequency_VARIANTS: &[&str] = &[
+    "Daily",
+    "Weekly",
+    "Monthly",
+    "Quarterly",
+    "SemiAnnual",
+    "Annual",
+    "AdHoc",
+];
+pub static CorporateActionAdjustmentType_VARIANTS: &[&str] = &[
+    "None",
+    "PriceReturn",
+    "TotalReturn",
+    "NetTotalReturn",
+    "GrossTotalReturn",
+    "CapitalOnly",
+    "DivisorAdjustment",
+];
+pub static CalculationAgentType_VARIANTS: &[&str] = &[
+    "Exchange",
+    "BenchmarkAdministrator",
+    "IndexProvider",
+    "CalculationAgent",
+    "Dealer",
+    "IndependentAgent",
+    "Internal",
+];
 pub static UnderlyingAssetClass_VARIANTS: &[&str] = &[
     "Agriculture",
     "Basket",
