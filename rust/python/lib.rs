@@ -5,7 +5,7 @@ use std::ptr::NonNull;
 
 use ::finance_enums::data::*;
 
-#[pyclass(frozen, name = "_ExchangeRecordRaw")]
+#[pyclass(frozen, name = "_ExchangeRecordRaw", skip_from_py_object)]
 #[derive(Clone)]
 struct PyExchangeRecord {
     #[pyo3(get)]
@@ -142,6 +142,11 @@ variant_fn!(stub_type_variants, StubType_VARIANTS);
 variant_fn!(barrier_type_variants, BarrierType_VARIANTS);
 variant_fn!(averaging_method_variants, AveragingMethod_VARIANTS);
 variant_fn!(exotic_option_feature_variants, ExoticOptionFeature_VARIANTS);
+variant_fn!(benchmark_type_variants, BenchmarkType_VARIANTS);
+variant_fn!(index_weighting_method_variants, IndexWeightingMethod_VARIANTS);
+variant_fn!(rebalance_frequency_variants, RebalanceFrequency_VARIANTS);
+variant_fn!(corporate_action_adjustment_type_variants, CorporateActionAdjustmentType_VARIANTS);
+variant_fn!(calculation_agent_type_variants, CalculationAgentType_VARIANTS);
 variant_fn!(corporate_action_type_variants, CorporateActionType_VARIANTS);
 variant_fn!(listing_status_variants, ListingStatus_VARIANTS);
 variant_fn!(security_status_variants, SecurityStatus_VARIANTS);
@@ -152,6 +157,12 @@ variant_fn!(leg_role_variants, LegRole_VARIANTS);
 variant_fn!(payoff_style_variants, PayoffStyle_VARIANTS);
 variant_fn!(perpetual_future_type_variants, PerpetualFutureType_VARIANTS);
 variant_fn!(settlement_type_variants, SettlementType_VARIANTS);
+variant_fn!(settlement_status_variants, SettlementStatus_VARIANTS);
+variant_fn!(clearing_model_variants, ClearingModel_VARIANTS);
+variant_fn!(clearing_house_variants, ClearingHouse_VARIANTS);
+variant_fn!(fails_reason_variants, FailsReason_VARIANTS);
+variant_fn!(allocation_method_variants, AllocationMethod_VARIANTS);
+variant_fn!(give_up_type_variants, GiveUpType_VARIANTS);
 variant_fn!(swap_type_variants, SwapType_VARIANTS);
 variant_fn!(order_status_variants, OrderStatus_VARIANTS);
 variant_fn!(exec_type_variants, ExecType_VARIANTS);
@@ -231,10 +242,22 @@ fn exchange_record_typed(mic: &str) -> Option<PyExchangeRecord> {
 }
 
 #[pyfunction]
+fn enum_records_raw() -> Vec<(&'static str, &'static str, usize)> {
+    ::finance_enums::enum_data::enum_variant_records()
+}
+
+#[pyfunction]
 fn currency_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
     let pointer = NonNull::from(&::finance_enums::currency_data::CURRENCY_EXPORT_V1).cast::<c_void>();
 
     unsafe { PyCapsule::new_with_pointer(py, pointer, c"finance_enums.currency_export_v1") }
+}
+
+#[pyfunction]
+fn enum_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
+    let pointer = NonNull::from(::finance_enums::enum_data::enum_export_v1()).cast::<c_void>();
+
+    unsafe { PyCapsule::new_with_pointer(py, pointer, c"finance_enums.enum_export_v1") }
 }
 
 #[pymodule]
@@ -253,6 +276,8 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(currency_records);
     reg!(currency_alias_records);
     reg!(currency_export_capsule);
+    reg!(enum_records_raw);
+    reg!(enum_export_capsule);
     reg!(exchange_records_raw);
     reg!(exchange_records_typed);
     reg!(exchange_record_typed);
@@ -322,6 +347,11 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(barrier_type_variants);
     reg!(averaging_method_variants);
     reg!(exotic_option_feature_variants);
+    reg!(benchmark_type_variants);
+    reg!(index_weighting_method_variants);
+    reg!(rebalance_frequency_variants);
+    reg!(corporate_action_adjustment_type_variants);
+    reg!(calculation_agent_type_variants);
     reg!(corporate_action_type_variants);
     reg!(listing_status_variants);
     reg!(security_status_variants);
@@ -332,6 +362,12 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(payoff_style_variants);
     reg!(perpetual_future_type_variants);
     reg!(settlement_type_variants);
+    reg!(settlement_status_variants);
+    reg!(clearing_model_variants);
+    reg!(clearing_house_variants);
+    reg!(fails_reason_variants);
+    reg!(allocation_method_variants);
+    reg!(give_up_type_variants);
     reg!(swap_type_variants);
     reg!(order_status_variants);
     reg!(exec_type_variants);

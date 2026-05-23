@@ -30,8 +30,10 @@ from finance_enums import (
     OptionExerciseType,
     OptionType,
     SecurityType,
+    SettlementStatus,
     SettlementType,
     Sector,
+    transaction_intent,
     UnderlyingAssetClass,
     exchange_record,
     exchange_records_by_country,
@@ -64,6 +66,8 @@ build_cfi(
 build_cfi(security_type=SecurityType.Currency)                              # "IFXXXP"
 build_cfi(security_type=SecurityType.Commodity, commodity_type=CommodityType.Agriculture)  # "ITAXXX"
 build_cfi(category="S", group="F")                                        # "SFXXXX"
+transaction_intent("open_short").side.value                               # "Sell"
+SettlementStatus.Settled.value                                             # "Settled"
 
 Sector.InformationTechnology.value   # "InformationTechnology"
 
@@ -85,9 +89,12 @@ The public Python API includes:
 - Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureType`, `FutureDeliveryType`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
 - Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
 - Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
+- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 - Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
 - Corporate actions and lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
 - CFI helpers: `CFIClassification`, `parse_cfi`, `build_cfi`, `build_cfi_from_classification`, `validate_cfi_classification`
+- Versioned enum schema helpers: `EnumVariantRecord`, `EnumFamilySchema`, `enum_variant_records`, `enum_family_schemas`, `enum_schema`, `enum_schema_json`, `enum_export_capsule`
 - Trading: `OrderType`, `OrderStatus`, `ExecType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OpenClose`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`, `TradingType`
 - Market data: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceType`
 - Frequencies: `Frequency`, `to_frequency`
@@ -106,7 +113,7 @@ as `finance_enums` in Rust code:
 
 ```toml
 [dependencies]
-finance_enums = "0.3.0"
+finance_enums = "0.4.0"
 ```
 
 ```rust
@@ -140,11 +147,36 @@ Exchange coverage is now backed by bundled ISO 10383 MIC records plus a small se
 
 ## Native C ABI
 
-`finance-enums` now ships a minimal versioned C ABI for immutable currency and exchange metadata.
+`finance-enums` ships a versioned C ABI for immutable metadata and enum-family discovery.
 
 - The core Rust crate exports `finance_enums_currency_export_v1` and `finance_enums_exchange_export_v1`.
-- The Rust build generates `finance_enums/include/finance_enums.h`, and wheel builds install that header to `include/finance_enums/finance_enums.h`.
+- The core Rust crate also exports `finance_enums_enum_export_v1`, a flat enum-family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.
+- The public header lives at `finance_enums/include/finance_enums.h`; hatch-rs validates it as an expected artifact and wheel builds install it to `include/finance_enums/finance_enums.h`.
 - Wheels also bundle a standalone shared library inside `finance_enums/lib/` so downstream C or C++ code can link against the same versioned export surface.
+- Python exposes the same schema as dataclasses through `enum_variant_records()` and `enum_family_schemas()`, and as deterministic JSON through `enum_schema_json()` for Arrow/JSON schema bridges.
+
+## Trading Intent Helpers
+
+`Side` intentionally remains trade direction only: `None`, `Buy`, and `Sell`. Short-sale and cover semantics are represented by combining `Side` with `PositionEffect`, `OpenClose`, and `PositionType`.
+
+```python
+from finance_enums import transaction_intent
+
+transaction_intent("open_long")   # Buy + Open + Long
+transaction_intent("close_long")  # Sell + Close + Long
+transaction_intent("open_short")  # Sell + Open + Short
+transaction_intent("cover_short") # Buy + Close + Short
+```
+
+This follows the FIX-style separation between side/direction and position effect while giving downstream transaction schemas one canonical helper for common intents.
+
+## Reference Data Maintenance
+
+The repository includes deterministic local tooling for standards-backed data maintenance.
+
+- `scripts/generate_reference_data.py --check` validates that `rust/src/exchange_codes.rs` remains aligned with the vendored MIC records in `rust/src/exchange_records/*.tsv`; `--write` can regenerate the compatibility table.
+- `scripts/snapshot_reference_diffs.py --check` compares current MIC, currency, country, and future-related snapshots with `reference_snapshots/standards.json`; `--write` refreshes the checked-in snapshot after an intentional data update.
+- `make develop` now performs an editable install with build isolation, and `make rebuild-extension` rebuilds the local extension in-place after Rust or PyO3 changes.
 
 ## CFI Helpers
 

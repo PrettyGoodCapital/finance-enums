@@ -299,3 +299,46 @@ class TestCFI:
             validate_cfi_classification("OCASPS")
         with pytest.raises(ValueError, match="typed fields"):
             validate_cfi_classification(replace(option, option_type=OptionType.Put))
+
+
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"security_type": SecurityType.Equity},
+        {"security_type": SecurityType.Bond, "bond_type": BondType.Government},
+        {"security_type": SecurityType.Currency},
+        {"security_type": SecurityType.Commodity, "commodity_type": CommodityType.Agriculture},
+        {"security_type": SecurityType.Fund, "fund_type": FundType.MutualFund, "mutual_fund_endedness": MutualFundEndedness.Open},
+        {
+            "security_type": SecurityType.Option,
+            "option_type": OptionType.Call,
+            "option_exercise_type": OptionExerciseType.American,
+            "underlying_asset_class": UnderlyingAssetClass.Equity,
+            "settlement_type": SettlementType.Physical,
+            "contract_style": ContractStyle.Standardized,
+        },
+        {
+            "security_type": SecurityType.Future,
+            "future_type": FutureType.Financial,
+            "underlying_asset_class": UnderlyingAssetClass.Index,
+            "settlement_type": SettlementType.Cash,
+            "contract_style": ContractStyle.Standardized,
+        },
+        {"security_type": SecurityType.Swap, "swap_type": SwapType.ForeignExchange},
+        {
+            "security_type": SecurityType.Financing,
+            "financing_type": FinancingType.RepurchaseAgreement,
+            "delivery_type": DeliveryType.DeliveryVersusPayment,
+        },
+        {"security_type": SecurityType.Forward, "underlying_security_type": SecurityType.Currency},
+        {"security_type": SecurityType.Spread, "underlying_security_type": SecurityType.Commodity},
+        {"security_type": SecurityType.Index},
+    ],
+)
+def test_supported_cfi_build_parse_round_trips(kwargs):
+    code = build_cfi(**kwargs)
+    classification = parse_cfi(code)
+
+    assert classification.code == code
+    assert build_cfi_from_classification(classification) == code
+    assert validate_cfi_classification(classification) == classification

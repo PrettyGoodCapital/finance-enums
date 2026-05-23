@@ -155,9 +155,9 @@ destination = "finance_enums/{python_extension_name}"
 name = "finance_enums"
 manifest = "rust/Cargo.toml"
 destination = "finance_enums/lib/{shared_library}"
-expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1"]
+expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1", "finance_enums_enum_export_v1"]
 expected-headers = ["finance_enums/include/finance_enums.h"]
-expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION"]
+expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION"]
 validate = true
 
 [[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]

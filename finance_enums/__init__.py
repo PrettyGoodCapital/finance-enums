@@ -7,6 +7,7 @@ classes with attached lookup methods.
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass, replace
 from enum import Enum
 from typing import Any
@@ -16,18 +17,24 @@ from .finance_enums import (
     account_type_variants,
     aggressor_side_variants,
     agriculture_type_variants,
+    allocation_method_variants,
     amortization_type_variants,
     auction_type_variants,
     averaging_method_variants,
     barrier_type_variants,
+    benchmark_type_variants,
     bond_type_variants,
     book_type_variants,
     borrow_type_variants,
+    calculation_agent_type_variants,
+    clearing_house_variants,
+    clearing_model_variants,
     collateral_type_variants,
     commodity_type_variants,
     compounding_method_variants,
     contract_style_variants,
     contract_unit_variants,
+    corporate_action_adjustment_type_variants,
     corporate_action_type_variants,
     country_code3_variants,
     country_code_variants,
@@ -47,6 +54,8 @@ from .finance_enums import (
     delivery_type_variants,
     distribution_policy_variants,
     energy_type_variants,
+    enum_export_capsule,
+    enum_records_raw as _enum_records_raw,
     equity_type_variants,
     exchange_code_variants,
     exchange_records_raw as _exchange_records_raw,
@@ -54,12 +63,15 @@ from .finance_enums import (
     execution_instruction_variants,
     exercise_event_type_variants,
     exotic_option_feature_variants,
+    fails_reason_variants,
     financing_type_variants,
     fund_subtype_variants,
     fund_type_variants,
     future_delivery_type_variants,
     future_type_variants,
+    give_up_type_variants,
     identifier_type_variants,
+    index_weighting_method_variants,
     industry_group_variants,
     industry_variants,
     instrument_type_variants,
@@ -92,6 +104,7 @@ from .finance_enums import (
     quantity_unit_variants,
     quote_condition_variants,
     rate_index_variants,
+    rebalance_frequency_variants,
     redemption_frequency_variants,
     repo_type_variants,
     reset_frequency_variants,
@@ -100,6 +113,7 @@ from .finance_enums import (
     security_type_variants,
     segment_type_variants,
     seniority_variants,
+    settlement_status_variants,
     settlement_type_variants,
     share_class_hedging_variants,
     short_sale_restriction_variants,
@@ -139,6 +153,24 @@ class CurrencyRecord:
 class CurrencyAliasRecord:
     alias: str
     canonical_code: str
+
+
+@dataclass(frozen=True)
+class EnumVariantRecord:
+    enum_name: str
+    variant: str
+    ordinal: int
+
+
+@dataclass(frozen=True)
+class EnumFamilySchema:
+    name: str
+    rust_static: str
+    python_symbol: str
+    c_abi_family: str
+    json_type: str
+    arrow_type: str
+    variants: tuple[str, ...]
 
 
 @dataclass(frozen=True)
@@ -523,6 +555,11 @@ StubType = _make_str_enum("StubType", stub_type_variants())
 BarrierType = _make_str_enum("BarrierType", barrier_type_variants())
 AveragingMethod = _make_str_enum("AveragingMethod", averaging_method_variants())
 ExoticOptionFeature = _make_str_enum("ExoticOptionFeature", exotic_option_feature_variants())
+BenchmarkType = _make_str_enum("BenchmarkType", benchmark_type_variants())
+IndexWeightingMethod = _make_str_enum("IndexWeightingMethod", index_weighting_method_variants())
+RebalanceFrequency = _make_str_enum("RebalanceFrequency", rebalance_frequency_variants())
+CorporateActionAdjustmentType = _make_str_enum("CorporateActionAdjustmentType", corporate_action_adjustment_type_variants())
+CalculationAgentType = _make_str_enum("CalculationAgentType", calculation_agent_type_variants())
 CorporateActionType = _make_str_enum("CorporateActionType", corporate_action_type_variants())
 ListingStatus = _make_str_enum("ListingStatus", listing_status_variants())
 SecurityStatus = _make_str_enum("SecurityStatus", security_status_variants())
@@ -532,6 +569,12 @@ DelistingReason = _make_str_enum("DelistingReason", delisting_reason_variants())
 LegRole = _make_str_enum("LegRole", leg_role_variants())
 PerpetualFutureType = _make_str_enum("PerpetualFutureType", perpetual_future_type_variants())
 SwapType = _make_str_enum("SwapType", swap_type_variants())
+SettlementStatus = _make_str_enum("SettlementStatus", settlement_status_variants())
+ClearingModel = _make_str_enum("ClearingModel", clearing_model_variants())
+ClearingHouse = _make_str_enum("ClearingHouse", clearing_house_variants())
+FailsReason = _make_str_enum("FailsReason", fails_reason_variants())
+AllocationMethod = _make_str_enum("AllocationMethod", allocation_method_variants())
+GiveUpType = _make_str_enum("GiveUpType", give_up_type_variants())
 
 
 # --- Trading -----------------------------------------------------------------
@@ -554,6 +597,43 @@ Side = _make_str_enum("Side", side_variants())
 OrderFlag = _make_str_enum("OrderFlag", order_flag_variants())
 TimeInForce = _make_str_enum("TimeInForce", time_in_force_variants())
 TradingType = _make_str_enum("TradingType", trading_type_variants())
+
+
+@dataclass(frozen=True)
+class TransactionIntent:
+    name: str
+    side: Side
+    position_effect: PositionEffect
+    open_close: OpenClose
+    position_type: PositionType
+
+
+_TRANSACTION_INTENT_RECORDS = (
+    TransactionIntent("open_long", Side.Buy, PositionEffect.Open, OpenClose.Open, PositionType.Long),
+    TransactionIntent("close_long", Side.Sell, PositionEffect.Close, OpenClose.Close, PositionType.Long),
+    TransactionIntent("open_short", Side.Sell, PositionEffect.Open, OpenClose.Open, PositionType.Short),
+    TransactionIntent("cover_short", Side.Buy, PositionEffect.Close, OpenClose.Close, PositionType.Short),
+)
+_TRANSACTION_INTENT_BY_NAME = {record.name: record for record in _TRANSACTION_INTENT_RECORDS}
+
+
+def _normalize_transaction_intent_name(value: str) -> str:
+    return str(value).strip().lower().replace("-", "_").replace(" ", "_")
+
+
+def transaction_intent_records() -> list[TransactionIntent]:
+    return list(_TRANSACTION_INTENT_RECORDS)
+
+
+def transaction_intent(intent: TransactionIntent | str) -> TransactionIntent:
+    if isinstance(intent, TransactionIntent):
+        return intent
+
+    normalized = _normalize_transaction_intent_name(intent)
+    try:
+        return _TRANSACTION_INTENT_BY_NAME[normalized]
+    except KeyError as exc:
+        raise ValueError(f"unknown transaction intent: {intent!r}") from exc
 
 
 # --- CFI ---------------------------------------------------------------------
@@ -615,6 +695,8 @@ _SETTLEMENT_TYPE_TO_DELIVERY_TYPE = {
     SettlementType.Cash: DeliveryType.Cash,
     SettlementType.NonDeliverable: DeliveryType.NonDeliverable,
     SettlementType.ElectAtExercise: DeliveryType.ElectAtExercise,
+    SettlementType.DeliveryVersusPayment: DeliveryType.DeliveryVersusPayment,
+    SettlementType.FreeOfPayment: DeliveryType.FreeOfPayment,
 }
 _DELIVERY_TYPE_TO_SETTLEMENT_TYPE = {value: key for key, value in _SETTLEMENT_TYPE_TO_DELIVERY_TYPE.items()}
 _FUTURE_DELIVERY_TYPE_TO_DELIVERY_TYPE = {
@@ -808,7 +890,9 @@ def _resolve_delivery_fields(
     resolved_delivery_type = delivery_type
 
     if settlement_type is not None:
-        settlement_delivery_type = _SETTLEMENT_TYPE_TO_DELIVERY_TYPE[settlement_type]
+        settlement_delivery_type = _SETTLEMENT_TYPE_TO_DELIVERY_TYPE.get(settlement_type)
+        if settlement_delivery_type is None:
+            raise ValueError(f"settlement_type {settlement_type.value} is not supported by CFI delivery attributes")
         if resolved_delivery_type is not None and resolved_delivery_type != settlement_delivery_type:
             raise ValueError("settlement_type and delivery_type refer to different delivery semantics")
         resolved_delivery_type = settlement_delivery_type
@@ -1222,22 +1306,85 @@ CFIClassification.to_code = _cfi_classification_to_code  # type: ignore[attr-def
 CFIClassification.validate = _cfi_classification_validate  # type: ignore[attr-defined]
 
 
+_ENUM_SCHEMA_VERSION = 1
+_ENUM_VARIANT_RECORDS = [EnumVariantRecord(enum_name, variant, ordinal) for enum_name, variant, ordinal in _enum_records_raw()]
+
+
+def enum_variant_records() -> list[EnumVariantRecord]:
+    return list(_ENUM_VARIANT_RECORDS)
+
+
+def enum_family_schemas() -> list[EnumFamilySchema]:
+    families: dict[str, list[str]] = {}
+    for record in _ENUM_VARIANT_RECORDS:
+        families.setdefault(record.enum_name, []).append(record.variant)
+
+    return [
+        EnumFamilySchema(
+            name=name,
+            rust_static=f"{name}_VARIANTS",
+            python_symbol=name,
+            c_abi_family=name,
+            json_type="string",
+            arrow_type="dictionary<utf8>",
+            variants=tuple(variants),
+        )
+        for name, variants in families.items()
+    ]
+
+
+def _enum_family_schema_to_dict(schema: EnumFamilySchema) -> dict[str, Any]:
+    return {
+        "name": schema.name,
+        "rust_static": schema.rust_static,
+        "python_symbol": schema.python_symbol,
+        "c_abi_family": schema.c_abi_family,
+        "json_type": schema.json_type,
+        "arrow_type": schema.arrow_type,
+        "variants": list(schema.variants),
+    }
+
+
+def enum_schema() -> dict[str, Any]:
+    return {
+        "schema_version": _ENUM_SCHEMA_VERSION,
+        "exports": {
+            "rust": "finance_enums::enum_data::enum_family_specs",
+            "python": "finance_enums.enum_family_schemas",
+            "json": "finance_enums.enum_schema_json",
+            "arrow": "dictionary<utf8>",
+            "c_abi": "finance_enums_enum_export_v1",
+        },
+        "families": [_enum_family_schema_to_dict(schema) for schema in enum_family_schemas()],
+    }
+
+
+def enum_schema_json() -> str:
+    return json.dumps(enum_schema(), sort_keys=True, separators=(",", ":"))
+
+
 __all__ = [
     "AggressorSide",
     "AgricultureType",
+    "AllocationMethod",
     "AmortizationType",
     "AuctionType",
     "AveragingMethod",
     "BarrierType",
+    "BenchmarkType",
     "BondType",
     "BookType",
     "BorrowType",
     "AccountType",
+    "CalculationAgentType",
+    "ClearingHouse",
+    "ClearingModel",
     "CollateralType",
     "CommodityType",
     "CompoundingMethod",
     "ContractStyle",
     "ContractUnit",
+    "CorporateActionAdjustmentType",
     "CorporateActionType",
     "CFIClassification",
     "CouponFrequency",
@@ -1256,19 +1403,24 @@ __all__ = [
     "DistributionPolicy",
     "EnergyType",
     "EquityType",
+    "EnumFamilySchema",
+    "EnumVariantRecord",
     "ExchangeCode",
     "ExchangeRecord",
     "ExecType",
     "ExecutionInstruction",
     "ExerciseEventType",
     "ExoticOptionFeature",
+    "FailsReason",
     "Frequency",
     "FinancingType",
     "FundSubType",
     "FundType",
     "FutureDeliveryType",
     "FutureType",
+    "GiveUpType",
     "IdentifierType",
+    "IndexWeightingMethod",
     "Industry",
     "IndustryGroup",
     "InventoryType",
@@ -1300,6 +1452,7 @@ __all__ = [
     "QuantityUnit",
     "QuoteCondition",
     "RateIndex",
+    "RebalanceFrequency",
     "RedemptionFrequency",
     "RepoType",
     "ResetFrequency",
@@ -1308,6 +1461,7 @@ __all__ = [
     "Seniority",
     "SecurityStatus",
     "SecurityType",
+    "SettlementStatus",
     "SettlementType",
     "ShareClassHedging",
     "ShortSaleRestriction",
@@ -1323,6 +1477,7 @@ __all__ = [
     "TradeCondition",
     "TradingSession",
     "TradingType",
+    "TransactionIntent",
     "UnderlyingAssetClass",
     "VenueRegulatoryFlag",
     "VenueType",
@@ -1332,6 +1487,11 @@ __all__ = [
     "currency_export_capsule",
     "currency_records",
     "build_cfi",
+    "enum_export_capsule",
+    "enum_family_schemas",
+    "enum_schema",
+    "enum_schema_json",
+    "enum_variant_records",
     "exchange_record",
     "exchange_records",
     "exchange_records_by_country",
@@ -1344,5 +1504,7 @@ __all__ = [
     "exchange_records_by_status",
     "parse_cfi",
     "to_frequency",
+    "transaction_intent",
+    "transaction_intent_records",
     "validate_cfi_classification",
 ]

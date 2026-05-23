@@ -18,5 +18,8 @@ def test_generated_c_header_exists_and_exposes_versioned_exports():
 
     assert "finance_enums_currency_export_v1" in header
     assert "finance_enums_exchange_export_v1" in header
+    assert "finance_enums_enum_export_v1" in header
     assert "CurrencyDataExportV1" in header
     assert "ExchangeDataExportV1" in header
+    assert "EnumDataExportV1" in header
+    assert "EnumVariantRecordRaw" in header
