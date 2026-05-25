@@ -137,7 +137,7 @@ from .finance_enums import (
 )
 from .frequency import Frequency, to_frequency  # noqa: F401
 
-__version__ = "0.4.1"
+__version__ = "0.5.0"
 
 _exchange_records_typed = getattr(_rust_enums, "exchange_records_typed", None)
 _exchange_record_typed = getattr(_rust_enums, "exchange_record_typed", None)
