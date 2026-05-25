@@ -9,6 +9,25 @@ pub struct EnumFamilySpec {
     pub variants: &'static [&'static str],
 }
 
+impl EnumFamilySpec {
+    pub fn variant(&self, variant: &str) -> Option<&'static str> {
+        self.variants
+            .iter()
+            .copied()
+            .find(|candidate| *candidate == variant)
+    }
+
+    pub fn variant_ordinal(&self, variant: &str) -> Option<usize> {
+        self.variants
+            .iter()
+            .position(|candidate| *candidate == variant)
+    }
+
+    pub fn contains_variant(&self, variant: &str) -> bool {
+        self.variant(variant).is_some()
+    }
+}
+
 #[repr(C)]
 #[derive(Clone, Copy, Debug)]
 pub struct EnumVariantRecordRaw {
@@ -211,6 +230,24 @@ pub fn enum_family_specs() -> &'static [EnumFamilySpec] {
     ENUM_FAMILY_SPECS
 }
 
+pub fn enum_family_spec(name: &str) -> Option<&'static EnumFamilySpec> {
+    enum_family_specs()
+        .iter()
+        .find(|family| family.name == name)
+}
+
+pub fn enum_variants(name: &str) -> Option<&'static [&'static str]> {
+    enum_family_spec(name).map(|family| family.variants)
+}
+
+pub fn enum_variant(name: &str, variant: &str) -> Option<&'static str> {
+    enum_family_spec(name).and_then(|family| family.variant(variant))
+}
+
+pub fn enum_variant_ordinal(name: &str, variant: &str) -> Option<usize> {
+    enum_family_spec(name).and_then(|family| family.variant_ordinal(variant))
+}
+
 pub fn enum_variant_records() -> Vec<(&'static str, &'static str, usize)> {
     enum_family_specs()
         .iter()
@@ -228,4 +265,27 @@ pub fn enum_export_v1() -> &'static EnumDataExportV1 {
     &ENUM_EXPORT_V1_INNER
         .get_or_init(build_enum_export_v1)
         .export
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn enum_family_lookup_returns_registered_family() {
+        let spec = enum_family_spec("MarketType").expect("MarketType should be registered");
+        assert_eq!(spec.name, "MarketType");
+        assert_eq!(spec.variants, MarketType_VARIANTS);
+        assert!(spec.contains_variant("Options"));
+        assert!(!spec.contains_variant("Other"));
+    }
+
+    #[test]
+    fn enum_variant_lookup_uses_names_not_positions() {
+        assert_eq!(enum_variant("MarketType", "Options"), Some("Options"));
+        assert_eq!(enum_variant("EnergyType", "NaturalGas"), Some("NaturalGas"));
+        assert_eq!(enum_variant_ordinal("MarketType", "Options"), Some(5));
+        assert_eq!(enum_variant("MarketType", "Other"), None);
+        assert_eq!(enum_variant("MissingFamily", "Options"), None);
+    }
 }
