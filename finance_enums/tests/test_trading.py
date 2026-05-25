@@ -16,19 +16,19 @@ from finance_enums import (
 
 class TestCurrency:
     def test_order_type_basic(self):
-        assert len(OrderType.__members__) == 3
+        assert len(OrderType) == 3
 
     def test_side_basic(self):
-        assert len(Side.__members__) == 3
+        assert len(Side) == 3
 
     def test_time_in_force_basic(self):
-        assert len(TimeInForce.__members__) == 3
+        assert len(TimeInForce) == 3
 
     def test_order_flag_basic(self):
-        assert len(OrderFlag.__members__) == 4
+        assert len(OrderFlag) == 4
 
     def test_trading_type_basic(self):
-        assert len(TradingType.__members__) == 4
+        assert len(TradingType) == 4
 
 
 def test_side_remains_direction_only_without_position_intent_aliases():

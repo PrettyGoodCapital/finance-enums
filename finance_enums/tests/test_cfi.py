@@ -74,6 +74,10 @@ class TestCFI:
             == "FCXPXX"
         )
 
+    def test_build_cfi_accepts_acronym_string_aliases(self):
+        assert build_cfi(security_type="Fund", fund_type="ETF") == "CEXXXX"
+        assert build_cfi(security_type="Fund", fund_type="REIT") == "CBXXXX"
+
     def test_parse_fund_and_future_cfis(self):
         fund = parse_cfi("CIOIYU")
         future = parse_cfi("FFXCXS")

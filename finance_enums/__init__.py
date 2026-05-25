@@ -246,16 +246,104 @@ def _exchange_record_from_typed(record: Any) -> ExchangeRecord:
     )
 
 
+_ENUM_ACRONYM_ALIASES: dict[str, dict[str, str]] = {
+    "AllocationMethod": {
+        "FIFO": "FirstInFirstOut",
+        "LIFO": "LastInFirstOut",
+    },
+    "BenchmarkType": {"FXFixing": "ForeignExchangeFixing"},
+    "ClearingHouse": {
+        "NSCC": "NationalSecuritiesClearingCorporation",
+        "FICC": "FixedIncomeClearingCorporation",
+        "OCC": "OptionsClearingCorporation",
+        "CME": "ChicagoMercantileExchange",
+        "ICEClear": "IntercontinentalExchangeClear",
+        "LCH": "LondonClearingHouse",
+        "DTCC": "DepositoryTrustClearingCorporation",
+    },
+    "CurrencyRole": {"PnL": "ProfitAndLoss"},
+    "EnergyType": {"LNG": "LiquefiedNaturalGas"},
+    "FundType": {
+        "ETF": "ExchangeTradedFund",
+        "REIT": "RealEstateInvestmentTrust",
+    },
+    "IdentifierType": {
+        "ISIN": "InternationalSecuritiesIdentificationNumber",
+        "CUSIP": "CommitteeOnUniformSecuritiesIdentificationProcedures",
+        "SEDOL": "StockExchangeDailyOfficialList",
+        "FIGI": "FinancialInstrumentGlobalIdentifier",
+        "LEI": "LegalEntityIdentifier",
+        "RIC": "ReutersInstrumentCode",
+        "MIC": "MarketIdentifierCode",
+    },
+    "Industry": {
+        "ITServices": "InformationTechnologyServices",
+        "DiversifiedREITs": "DiversifiedRealEstateInvestmentTrusts",
+        "IndustrialREITs": "IndustrialRealEstateInvestmentTrusts",
+        "HotelAndResortREITs": "HotelAndResortRealEstateInvestmentTrusts",
+        "OfficeREITs": "OfficeRealEstateInvestmentTrusts",
+        "HealthCareREITs": "HealthCareRealEstateInvestmentTrusts",
+        "ResidentialREITs": "ResidentialRealEstateInvestmentTrusts",
+        "RetailREITs": "RetailRealEstateInvestmentTrusts",
+        "SpecializedREITs": "SpecializedRealEstateInvestmentTrusts",
+    },
+    "MarketType": {"OTC": "OverTheCounter"},
+    "RateIndex": {
+        "SOFR": "SecuredOvernightFinancingRate",
+        "ESTR": "EuroShortTermRate",
+        "SONIA": "SterlingOvernightIndexAverage",
+        "EURIBOR": "EuroInterbankOfferedRate",
+        "TONAR": "TokyoOvernightAverageRate",
+        "SARON": "SwissAverageRateOvernight",
+        "CPI": "ConsumerPriceIndex",
+    },
+    "ShortSaleRestriction": {"RegSHOPriceTest": "RegulationShoPriceTest"},
+    "SubIndustry": {
+        "ITConsultingAndOtherServices": "InformationTechnologyConsultingAndOtherServices",
+        "DiversifiedREITs": "DiversifiedRealEstateInvestmentTrusts",
+        "IndustrialREITs": "IndustrialRealEstateInvestmentTrusts",
+        "HotelAndResortREITs": "HotelAndResortRealEstateInvestmentTrusts",
+        "OfficeREITs": "OfficeRealEstateInvestmentTrusts",
+        "HealthCareREITs": "HealthCareRealEstateInvestmentTrusts",
+        "MultiFamilyResidentialREITs": "MultiFamilyResidentialRealEstateInvestmentTrusts",
+        "SingleFamilyResidentialREITs": "SingleFamilyResidentialRealEstateInvestmentTrusts",
+        "RetailREITs": "RetailRealEstateInvestmentTrusts",
+        "OtherSpecializedREITs": "OtherSpecializedRealEstateInvestmentTrusts",
+        "SelfStorageREITs": "SelfStorageRealEstateInvestmentTrusts",
+        "TelecomTowerREITs": "TelecomTowerRealEstateInvestmentTrusts",
+        "TimberREITs": "TimberRealEstateInvestmentTrusts",
+        "DataCenterREITs": "DataCenterRealEstateInvestmentTrusts",
+    },
+    "TickerNamespace": {"OTC": "OverTheCounter"},
+    "VehicleWrapper": {
+        "ETF": "ExchangeTradedFund",
+        "SICAV": "SocieteInvestissementCapitalVariable",
+        "OEIC": "OpenEndedInvestmentCompany",
+    },
+}
+
+
 def _make_str_enum(name: str, members: list[str], aliases: dict[str, str] | None = None) -> Any:
     """Build a string-valued ``Enum`` whose value equals its name."""
 
-    cls = Enum(name, {m: m for m in members}, type=str)
+    enum_aliases = aliases if aliases is not None else _ENUM_ACRONYM_ALIASES.get(name)
+    expose_alias_members = aliases is None and enum_aliases is not None
+    enum_members = {member: member for member in members}
 
-    if aliases:
+    if enum_aliases:
+        unknown_canonicals = sorted({canonical for canonical in enum_aliases.values() if canonical not in enum_members})
+        if unknown_canonicals:
+            raise ValueError(f"aliases for {name} reference unknown members: {unknown_canonicals}")
+        if expose_alias_members:
+            enum_members.update({alias: canonical for alias, canonical in enum_aliases.items() if alias.isidentifier() and alias not in enum_members})
+
+    cls = Enum(name, enum_members, type=str)
+
+    if enum_aliases:
         # Override _missing_ to support the alias map.
         def _missing_(value):  # type: ignore[no-untyped-def]
-            if isinstance(value, str) and value in aliases:
-                return cls[aliases[value]]
+            if isinstance(value, str) and value in enum_aliases:
+                return cls[enum_aliases[value]]
             return None
 
         cls._missing_ = classmethod(lambda c, v: _missing_(v))  # type: ignore[assignment]

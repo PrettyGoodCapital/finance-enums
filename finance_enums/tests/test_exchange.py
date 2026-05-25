@@ -3,8 +3,8 @@ from finance_enums import CountryCode, ExchangeCode, exchange_record, exchange_r
 
 class TestExchange:
     def test_exchange_basic(self):
-        assert len(ExchangeCode.__members__) == len(exchange_records())
-        assert len(ExchangeCode.__members__) > 2000
+        assert len(ExchangeCode) == len(exchange_records())
+        assert len(ExchangeCode) > 2000
 
     def test_exchange_includes_calendar_venues(self):
         expected = {

@@ -27,6 +27,7 @@ from finance_enums import (
     ContractStyle,
     Currency,
     ExchangeCode,
+    FundType,
     OptionExerciseType,
     OptionType,
     SecurityType,
@@ -70,6 +71,8 @@ transaction_intent("open_short").side.value                               # "Sel
 SettlementStatus.Settled.value                                             # "Settled"
 
 Sector.InformationTechnology.value   # "InformationTechnology"
+FundType.ETF is FundType.ExchangeTradedFund     # True
+FundType("ETF").value                           # "ExchangeTradedFund"
 
 to_frequency("monthly")             # Frequency.Month
 Frequency.Month.periods_per_year     # 12
