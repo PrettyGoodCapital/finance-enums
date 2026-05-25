@@ -91,6 +91,7 @@ variant_fn!(commodity_type_variants, CommodityType_VARIANTS);
 variant_fn!(energy_type_variants, EnergyType_VARIANTS);
 variant_fn!(metals_type_variants, MetalsType_VARIANTS);
 variant_fn!(agriculture_type_variants, AgricultureType_VARIANTS);
+variant_fn!(livestock_type_variants, LivestockType_VARIANTS);
 variant_fn!(fund_type_variants, FundType_VARIANTS);
 variant_fn!(fund_subtype_variants, FundSubType_VARIANTS);
 variant_fn!(venue_type_variants, VenueType_VARIANTS);
@@ -296,6 +297,7 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(energy_type_variants);
     reg!(metals_type_variants);
     reg!(agriculture_type_variants);
+    reg!(livestock_type_variants);
     reg!(fund_type_variants);
     reg!(fund_subtype_variants);
     reg!(venue_type_variants);

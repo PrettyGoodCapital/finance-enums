@@ -102,6 +102,7 @@ enum_family_specs!(
     "LiquidityFlag" => LiquidityFlag_VARIANTS,
     "LiquidityTerm" => LiquidityTerm_VARIANTS,
     "ListingStatus" => ListingStatus_VARIANTS,
+    "LivestockType" => LivestockType_VARIANTS,
     "MICMarketCategory" => MICMarketCategory_VARIANTS,
     "MarginType" => MarginType_VARIANTS,
     "MarketState" => MarketState_VARIANTS,

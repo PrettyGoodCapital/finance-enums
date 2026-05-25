@@ -25,7 +25,17 @@ pub static AgricultureType_VARIANTS: &[&str] = &[
     "Hogs",
 ];
 pub static BondType_VARIANTS: &[&str] = &["Corporate", "Government", "Municipal"];
-pub static CommodityType_VARIANTS: &[&str] = &["Energy", "Metals", "Agriculture"];
+pub static CommodityType_VARIANTS: &[&str] = &[
+    "Energy",
+    "Metals",
+    "Agriculture",
+    "Livestock",
+    "Softs",
+    "Lumber",
+    "Freight",
+    "Carbon",
+];
+pub static LivestockType_VARIANTS: &[&str] = &["Cattle", "Feeder", "Hogs"];
 pub static CountryCode_VARIANTS: &[&str] = &[
     "AD", "AE", "AF", "AG", "AI", "AL", "AM", "AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AX", "AZ",
     "BA", "BB", "BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BL", "BM", "BN", "BO", "BQ", "BR", "BS",
@@ -66,13 +76,25 @@ pub static CountryCode3_VARIANTS: &[&str] = &[
     "UZB", "VAT", "VCT", "VEN", "VGB", "VIR", "VNM", "VUT", "WLF", "WSM", "XXX", "YEM", "MYT",
     "ZAF", "ZMB", "ZWE", "UNK",
 ];
-pub static EnergyType_VARIANTS: &[&str] = &["Crude", "NaturalGas"];
+pub static EnergyType_VARIANTS: &[&str] = &[
+    "Crude",
+    "NaturalGas",
+    "HeatingOil",
+    "Gasoline",
+    "Electricity",
+    "LNG",
+    "Propane",
+    "Uranium",
+];
 pub static EquityType_VARIANTS: &[&str] = &[
     "Shares",
     "PreferredShares",
     "ConvertibleShares",
     "PreferredConvertibleShares",
     "DepositoryReceipt",
+    "Warrant",
+    "Right",
+    "Unit",
 ];
 pub static ExchangeCode_VARIANTS_LEGACY: &[&str] = &[
     "XNYS", "NYSD", "XCIS", "CISD", "XCHI", "ARCX", "ARCD", "ARCO", "XASE", "AMXO", "XNAS", "XNGS",
@@ -107,6 +129,8 @@ pub static MarketType_VARIANTS: &[&str] = &[
     "ForeignExchange",
     "Commodities",
     "Derivatives",
+    "Options",
+    "Futures",
     "Funds",
     "DigitalAssets",
     "OTC",
@@ -739,11 +763,26 @@ pub static InstrumentType_VARIANTS: &[&str] = &[
     "Swap",
     "Financing",
     "Right",
+    "Warrant",
     "Spread",
     "Pair",
     "Basket",
 ];
-pub static MetalsType_VARIANTS: &[&str] = &["Gold", "Silver", "Copper", "Platinum", "Palladium"];
+pub static MetalsType_VARIANTS: &[&str] = &[
+    "Gold",
+    "Silver",
+    "Copper",
+    "Platinum",
+    "Palladium",
+    "Aluminum",
+    "Zinc",
+    "Nickel",
+    "Lead",
+    "Tin",
+    "Steel",
+    "Cobalt",
+    "Iron",
+];
 pub static MutualFundEndedness_VARIANTS: &[&str] = &["Open", "Close"];
 pub static OptionExerciseType_VARIANTS: &[&str] = &["American", "European", "Bermudan"];
 pub static OptionType_VARIANTS: &[&str] = &["Call", "Put"];
@@ -862,6 +901,8 @@ pub static SecurityType_VARIANTS: &[&str] = &[
     "Currency",
     "Pair",
     "Index",
+    "Warrant",
+    "Right",
 ];
 pub static Side_VARIANTS: &[&str] = &["None", "Buy", "Sell"];
 pub static SwapType_VARIANTS: &[&str] = &[

@@ -24,13 +24,13 @@ from finance_enums import (
 
 class TestSecurityType:
     def test_security_type_basic(self):
-        assert len(SecurityType.__members__) == 14
+        assert len(SecurityType.__members__) == 16
 
     def test_instrument_type_basic(self):
-        assert len(InstrumentType.__members__) == 10
+        assert len(InstrumentType.__members__) == 11
 
     def test_equity_type_basic(self):
-        assert len(EquityType.__members__) == 5
+        assert len(EquityType.__members__) == 8
 
     def test_option_type_basic(self):
         assert len(OptionType.__members__) == 2
@@ -39,7 +39,7 @@ class TestSecurityType:
         assert len(BondType.__members__) == 3
 
     def test_commodity_type_basic(self):
-        assert len(CommodityType.__members__) == 3
+        assert len(CommodityType.__members__) == 8
 
     def test_fund_type_basic(self):
         assert len(FundType.__members__) == 3
