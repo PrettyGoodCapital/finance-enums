@@ -29,7 +29,15 @@ from finance_enums import (
 @pytest.mark.parametrize(
     ("enum_type", "expected_count", "expected_members"),
     [
-        (IdentifierType, 10, {"Ticker", "ISIN", "FIGI"}),
+        (
+            IdentifierType,
+            10,
+            {
+                "Ticker",
+                "InternationalSecuritiesIdentificationNumber",
+                "FinancialInstrumentGlobalIdentifier",
+            },
+        ),
         (TickerNamespace, 8, {"Exchange", "Composite", "Bloomberg"}),
         (PriceNotation, 8, {"Decimal", "Yield", "BasisPoints"}),
         (QuantityUnit, 8, {"Shares", "Contracts", "NotionalAmount"}),
@@ -40,7 +48,11 @@ from finance_enums import (
         (InventoryType, 6, {"Available", "Borrowed", "PendingSettlement"}),
         (StrategyType, 6, {"MarketMaking", "Arbitrage", "Execution"}),
         (NettingType, 5, {"None", "Bilateral", "Portfolio"}),
-        (VehicleWrapper, 6, {"ETF", "SICAV", "LimitedPartnership"}),
+        (
+            VehicleWrapper,
+            6,
+            {"ExchangeTradedFund", "SocieteInvestissementCapitalVariable", "LimitedPartnership"},
+        ),
         (DistributionPolicy, 5, {"Accumulating", "Distributing", "Mixed"}),
         (ShareClassHedging, 5, {"Unhedged", "CurrencyHedged", "PartialHedged"}),
         (LiquidityTerm, 6, {"Daily", "Monthly", "Annual"}),
