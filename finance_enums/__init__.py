@@ -743,8 +743,8 @@ _OPTION_ASSET_ATTR_TO_CLASS = {
 }
 _OPTION_CLASS_TO_ASSET_ATTR = {value: key for key, value in _OPTION_ASSET_ATTR_TO_CLASS.items()}
 _FUND_GROUP_TO_TYPE = {
-    "E": FundType.ETF,
-    "B": FundType.REIT,
+    "E": FundType.ExchangeTradedFund,
+    "B": FundType.RealEstateInvestmentTrust,
     "I": FundType.MutualFund,
 }
 _FUTURE_GROUP_TO_TYPE = {"F": FutureType.Financial, "C": FutureType.Commodity}
@@ -1144,9 +1144,9 @@ def build_cfi(
 
     if security_type == SecurityType.Fund:
         resolved_fund_type = fund_type or FundType.MutualFund
-        if resolved_fund_type == FundType.ETF:
+        if resolved_fund_type == FundType.ExchangeTradedFund:
             return "CEXXXX"
-        if resolved_fund_type == FundType.REIT:
+        if resolved_fund_type == FundType.RealEstateInvestmentTrust:
             return "CBXXXX"
         endedness_attr = "X"
         if mutual_fund_endedness == MutualFundEndedness.Open:

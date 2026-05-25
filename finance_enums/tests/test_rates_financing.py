@@ -34,7 +34,15 @@ from finance_enums import (
         (BorrowType, 5, {"StockLoan", "RepoBorrow", "UnsecuredBorrow"}),
         (RepoType, 6, {"Bilateral", "TriParty", "Evergreen"}),
         (SwapLegType, 8, {"Fixed", "Floating", "Basis"}),
-        (RateIndex, 8, {"SOFR", "SONIA", "EURIBOR"}),
+        (
+            RateIndex,
+            8,
+            {
+                "SecuredOvernightFinancingRate",
+                "SterlingOvernightIndexAverage",
+                "EuroInterbankOfferedRate",
+            },
+        ),
         (ResetFrequency, 6, {"Daily", "Quarterly", "Annual"}),
         (CompoundingMethod, 5, {"Simple", "Compounded", "Flat"}),
         (StubType, 5, {"None", "ShortFront", "LongBack"}),
