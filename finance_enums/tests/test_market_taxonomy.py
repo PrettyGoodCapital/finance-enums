@@ -36,7 +36,7 @@ from finance_enums import (
     ("enum_type", "expected_count", "expected_members"),
     [
         (VenueType, 8, {"Exchange", "AlternativeTradingSystem", "MultilateralTradingFacility"}),
-        (MarketType, 8, {"Equities", "FixedIncome", "ForeignExchange"}),
+        (MarketType, 10, {"Equities", "FixedIncome", "ForeignExchange", "Options", "Futures"}),
         (TradingSession, 8, {"PreOpen", "Continuous", "AfterHours"}),
         (MarketState, 6, {"PreOpen", "Open", "Halted"}),
         (AuctionType, 6, {"Opening", "Closing", "Volatility"}),

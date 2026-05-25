@@ -80,6 +80,7 @@ from .finance_enums import (
     liquidity_flag_variants,
     liquidity_term_variants,
     listing_status_variants,
+    livestock_type_variants,
     margin_type_variants,
     market_state_variants,
     market_status_reason_variants,
@@ -303,7 +304,7 @@ _MARKET_CATEGORY_TYPE_TO_FLAGS = {
 }
 
 
-# --- Country -----------------------------------------------------------------
+# Country
 
 _country_codes = country_code_variants()
 _country_codes3 = country_code3_variants()
@@ -326,7 +327,7 @@ CountryCode.code3 = _country_code_code3  # type: ignore[attr-defined]
 CountryCode3.country_name = lambda self: _country_names[_country_codes3.index(self.value)]  # type: ignore[attr-defined]
 
 
-# --- Currency ----------------------------------------------------------------
+# Currency
 
 _currency_record_data = [CurrencyRecord(code, display_name, is_iso4217) for code, display_name, is_iso4217 in _currency_records_raw()]
 _currency_alias_record_data = [CurrencyAliasRecord(alias, canonical_code) for alias, canonical_code in _currency_alias_records_raw()]
@@ -362,7 +363,7 @@ Currency.is_iso4217 = _currency_is_iso4217  # type: ignore[attr-defined]
 Currency.record = _currency_record  # type: ignore[attr-defined]
 
 
-# --- Exchange ----------------------------------------------------------------
+# Exchange
 
 if _exchange_records_typed is not None:
     _exchange_record_data = [_exchange_record_from_typed(record) for record in _exchange_records_typed()]
@@ -483,7 +484,7 @@ ExchangeCode.regulatory_flags = _exchange_regulatory_flags  # type: ignore[attr-
 ExchangeCode.has_regulatory_flag = _exchange_has_regulatory_flag  # type: ignore[attr-defined]
 
 
-# --- Sector taxonomy ---------------------------------------------------------
+#  Sector taxonomy
 
 Sector = _make_str_enum("Sector", sector_variants())
 IndustryGroup = _make_str_enum("IndustryGroup", industry_group_variants())
@@ -491,7 +492,7 @@ Industry = _make_str_enum("Industry", industry_variants())
 SubIndustry = _make_str_enum("SubIndustry", sub_industry_variants())
 
 
-# --- Security & instrument ---------------------------------------------------
+# Security & instrument
 
 SecurityType = _make_str_enum("SecurityType", security_type_variants())
 InstrumentType = _make_str_enum("InstrumentType", instrument_type_variants())
@@ -503,6 +504,7 @@ CommodityType = _make_str_enum("CommodityType", commodity_type_variants())
 EnergyType = _make_str_enum("EnergyType", energy_type_variants())
 MetalsType = _make_str_enum("MetalsType", metals_type_variants())
 AgricultureType = _make_str_enum("AgricultureType", agriculture_type_variants())
+LivestockType = _make_str_enum("LivestockType", livestock_type_variants())
 FundType = _make_str_enum("FundType", fund_type_variants())
 FundSubType = _make_str_enum("FundSubType", fund_subtype_variants())
 VenueType = _make_str_enum("VenueType", venue_type_variants())
@@ -577,7 +579,7 @@ AllocationMethod = _make_str_enum("AllocationMethod", allocation_method_variants
 GiveUpType = _make_str_enum("GiveUpType", give_up_type_variants())
 
 
-# --- Trading -----------------------------------------------------------------
+# Trading
 
 OrderType = _make_str_enum("OrderType", order_type_variants())
 OrderStatus = _make_str_enum("OrderStatus", order_status_variants())
@@ -636,7 +638,7 @@ def transaction_intent(intent: TransactionIntent | str) -> TransactionIntent:
         raise ValueError(f"unknown transaction intent: {intent!r}") from exc
 
 
-# --- CFI ---------------------------------------------------------------------
+# CFI
 
 
 @dataclass(frozen=True)
@@ -1429,6 +1431,7 @@ __all__ = [
     "LiquidityTerm",
     "LiquidityFlag",
     "ListingStatus",
+    "LivestockType",
     "MarginType",
     "MarketState",
     "MarketStatusReason",
