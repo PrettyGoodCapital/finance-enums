@@ -52,5 +52,5 @@ from finance_enums import (
     ],
 )
 def test_fixed_income_financing_and_structured_product_surfaces(enum_type, expected_count, expected_members):
-    assert len(enum_type.__members__) == expected_count
+    assert len(enum_type) == expected_count
     assert expected_members.issubset(enum_type.__members__)
