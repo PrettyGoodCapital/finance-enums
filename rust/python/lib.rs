@@ -255,6 +255,13 @@ fn currency_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
 }
 
 #[pyfunction]
+fn exchange_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
+    let pointer = NonNull::from(::finance_enums::exchange_data::exchange_export_v1()).cast::<c_void>();
+
+    unsafe { PyCapsule::new_with_pointer(py, pointer, c"finance_enums.exchange_export_v1") }
+}
+
+#[pyfunction]
 fn enum_export_capsule(py: Python<'_>) -> PyResult<Bound<'_, PyCapsule>> {
     let pointer = NonNull::from(::finance_enums::enum_data::enum_export_v1()).cast::<c_void>();
 
@@ -277,6 +284,7 @@ fn finance_enums(_py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     reg!(currency_records);
     reg!(currency_alias_records);
     reg!(currency_export_capsule);
+    reg!(exchange_export_capsule);
     reg!(enum_records_raw);
     reg!(enum_export_capsule);
     reg!(exchange_records_raw);

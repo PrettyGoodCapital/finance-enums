@@ -139,6 +139,15 @@ from .frequency import Frequency, to_frequency  # noqa: F401
 
 __version__ = "0.5.1"
 
+
+def exchange_export_capsule():
+    """Return the exchange C ABI export capsule when provided by the native extension."""
+    capsule_fn = getattr(_rust_enums, "exchange_export_capsule", None)
+    if capsule_fn is None:
+        raise ImportError("finance_enums native extension does not expose exchange_export_capsule")
+    return capsule_fn()
+
+
 _exchange_records_typed = getattr(_rust_enums, "exchange_records_typed", None)
 _exchange_record_typed = getattr(_rust_enums, "exchange_record_typed", None)
 
@@ -451,6 +460,148 @@ Currency.is_iso4217 = _currency_is_iso4217  # type: ignore[attr-defined]
 Currency.record = _currency_record  # type: ignore[attr-defined]
 
 
+_COUNTRY_CURRENCY_CODES: dict[str, str] = {
+    "AD": "EUR",
+    "AE": "AED",
+    "AF": "AFN",
+    "AG": "XCD",
+    "AI": "XCD",
+    "AL": "ALL",
+    "AM": "AMD",
+    "AO": "AOA",
+    "AR": "ARS",
+    "AT": "EUR",
+    "AU": "AUD",
+    "AW": "AWG",
+    "AX": "EUR",
+    "AZ": "AZN",
+    "BA": "BAM",
+    "BB": "BBD",
+    "BD": "BDT",
+    "BE": "EUR",
+    "BF": "XOF",
+    "BG": "BGN",
+    "BH": "BHD",
+    "BI": "BIF",
+    "BJ": "XOF",
+    "BM": "BMD",
+    "BN": "BND",
+    "BO": "BOB",
+    "BR": "BRL",
+    "BS": "BSD",
+    "BT": "BTN",
+    "BW": "BWP",
+    "BY": "BYN",
+    "BZ": "BZD",
+    "CA": "CAD",
+    "CD": "CDF",
+    "CF": "XAF",
+    "CG": "XAF",
+    "CH": "CHF",
+    "CI": "XOF",
+    "CL": "CLP",
+    "CM": "XAF",
+    "CN": "CNY",
+    "CO": "COP",
+    "CR": "CRC",
+    "CU": "CUP",
+    "CV": "CVE",
+    "CY": "EUR",
+    "CZ": "CZK",
+    "DE": "EUR",
+    "DK": "DKK",
+    "DO": "DOP",
+    "DZ": "DZD",
+    "EC": "USD",
+    "EE": "EUR",
+    "EG": "EGP",
+    "ES": "EUR",
+    "ET": "ETB",
+    "FI": "EUR",
+    "FJ": "FJD",
+    "FR": "EUR",
+    "GB": "GBP",
+    "GE": "GEL",
+    "GH": "GHS",
+    "GI": "GIP",
+    "GR": "EUR",
+    "GT": "GTQ",
+    "HK": "HKD",
+    "HR": "EUR",
+    "HU": "HUF",
+    "ID": "IDR",
+    "IE": "EUR",
+    "IL": "ILS",
+    "IN": "INR",
+    "IQ": "IQD",
+    "IR": "IRR",
+    "IS": "ISK",
+    "IT": "EUR",
+    "JM": "JMD",
+    "JO": "JOD",
+    "JP": "JPY",
+    "KE": "KES",
+    "KR": "KRW",
+    "KW": "KWD",
+    "KY": "KYD",
+    "KZ": "KZT",
+    "LB": "LBP",
+    "LI": "CHF",
+    "LK": "LKR",
+    "LT": "EUR",
+    "LU": "EUR",
+    "LV": "EUR",
+    "MA": "MAD",
+    "MC": "EUR",
+    "MT": "EUR",
+    "MU": "MUR",
+    "MX": "MXN",
+    "MY": "MYR",
+    "NG": "NGN",
+    "NL": "EUR",
+    "NO": "NOK",
+    "NZ": "NZD",
+    "OM": "OMR",
+    "PA": "PAB",
+    "PE": "PEN",
+    "PH": "PHP",
+    "PK": "PKR",
+    "PL": "PLN",
+    "PT": "EUR",
+    "QA": "QAR",
+    "RO": "RON",
+    "RS": "RSD",
+    "RU": "RUB",
+    "SA": "SAR",
+    "SE": "SEK",
+    "SG": "SGD",
+    "SI": "EUR",
+    "SK": "EUR",
+    "TH": "THB",
+    "TR": "TRY",
+    "TW": "TWD",
+    "UA": "UAH",
+    "US": "USD",
+    "VN": "VND",
+    "ZA": "ZAR",
+}
+
+
+def country_currency(country_code: CountryCode | str) -> Currency | None:
+    normalized = country_code.value if isinstance(country_code, CountryCode) else str(country_code).strip().upper()
+    currency_code = _COUNTRY_CURRENCY_CODES.get(normalized)
+    return Currency(currency_code) if currency_code is not None else None
+
+
+def currency_countries(currency: Currency | str) -> list[CountryCode]:
+    normalized = currency.value if isinstance(currency, Currency) else str(currency).strip().upper()
+    return [
+        CountryCode(country_code)
+        for country_code, currency_code in _COUNTRY_CURRENCY_CODES.items()
+        if currency_code == normalized and country_code in _country_codes
+    ]
+
+
 # Exchange
 
 if _exchange_records_typed is not None:
@@ -505,6 +656,21 @@ def exchange_record(code: ExchangeCode | str) -> ExchangeRecord | None:
 def exchange_records_by_country(country_code: CountryCode | str) -> list[ExchangeRecord]:
     normalized = country_code.value if isinstance(country_code, CountryCode) else str(country_code).strip().upper()
     return list(_exchange_by_country.get(normalized, []))
+
+
+def exchange_currency(exchange: ExchangeCode | str) -> Currency | None:
+    record = exchange_record(exchange)
+    if record is None:
+        return None
+    return country_currency(record.iso_country_code)
+
+
+def exchange_records_by_currency(currency: Currency | str) -> list[ExchangeRecord]:
+    countries = currency_countries(currency)
+    records: list[ExchangeRecord] = []
+    for country in countries:
+        records.extend(exchange_records_by_country(country))
+    return records
 
 
 def exchange_records_by_operating_mic(operating_mic: ExchangeCode | str) -> list[ExchangeRecord]:
@@ -1575,6 +1741,8 @@ __all__ = [
     "VehicleWrapper",
     "build_cfi_from_classification",
     "currency_alias_records",
+    "country_currency",
+    "currency_countries",
     "currency_export_capsule",
     "currency_records",
     "build_cfi",
@@ -1583,8 +1751,11 @@ __all__ = [
     "enum_schema",
     "enum_schema_json",
     "enum_variant_records",
+    "exchange_currency",
+    "exchange_export_capsule",
     "exchange_record",
     "exchange_records",
+    "exchange_records_by_currency",
     "exchange_records_by_country",
     "exchange_records_by_market_category",
     "exchange_records_by_market_category_type",
