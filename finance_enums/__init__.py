@@ -137,7 +137,7 @@ from .finance_enums import (
 )
 from .frequency import Frequency, to_frequency  # noqa: F401
 
-__version__ = "0.5.1"
+__version__ = "0.6.0"
 
 
 def exchange_export_capsule():
