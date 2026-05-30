@@ -65,7 +65,7 @@ Homepage = "https://github.com/prettygoodcapital/finance-enums"
 [tool.bumpversion]
 current_version = "0.5.1"
 commit = true
-tag = true
+tag = false 
 commit_args = "-s"
 
 [[tool.bumpversion.files]]
