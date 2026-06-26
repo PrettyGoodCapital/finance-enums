@@ -45,7 +45,7 @@ from finance_enums import (
    EnumFamilySchema,
    EnumVariantRecord,
    ExchangeCode,
-   ExecType,
+   ExecutionType,
    ExerciseEventType,
    ExoticOptionFeature,
    FailsReason,
@@ -53,8 +53,7 @@ from finance_enums import (
    Frequency,
    FundSubType,
    FundType,
-   FutureDeliveryType,
-   FutureType,
+   FutureAssetClass,
    GiveUpType,
    IdentifierType,
    IndexWeightingMethod,
@@ -73,7 +72,6 @@ from finance_enums import (
    MetalsType,
    MutualFundEndedness,
    NettingType,
-   OpenClose,
    OptionExerciseType,
    OptionType,
    OrderCapacity,
@@ -81,11 +79,10 @@ from finance_enums import (
    OrderStatus,
    OrderType,
    PayoffStyle,
-   PerpetualFutureType,
    PositionEffect,
    PositionType,
+   PriceKind,
    PriceNotation,
-   PriceType,
    QuantityUnit,
    QuoteCondition,
    RateIndex,
@@ -113,7 +110,6 @@ from finance_enums import (
    TimeInForce,
    TradeCondition,
    TradingSession,
-   TradingType,
    TransactionIntent,
    UnderlyingAssetClass,
    VenueRegulatoryFlag,
@@ -234,15 +230,15 @@ Generated enum classes:
 - Market structure: `VenueType`, `MarketType`, `TradingSession`, `MarketState`, `AuctionType`, `SegmentType`, `MarketStatusReason`
 - Identifier and notation: `IdentifierType`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
 - Sectors: `Sector`, `IndustryGroup`, `Industry`, `SubIndustry`
-- Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureType`, `FutureDeliveryType`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
+- Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureAssetClass`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
 - Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
 - Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
 - Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
 - Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 - Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
 - Corporate actions and lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
-- Trading: `OrderType`, `OrderStatus`, `ExecType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OpenClose`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`, `TradingType`
-- Market data: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceType`
+- Trading: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`
+- Market data: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
 
 Exchange helpers now also support typed MIC category access through `ExchangeRecord.market_category()` / `ExchangeCode.market_category()`, standards-backed flags through `.regulatory_flags()`, and indexed lookups through `exchange_records_by_market_category_type()` and `exchange_records_by_regulatory_flag()`.
 

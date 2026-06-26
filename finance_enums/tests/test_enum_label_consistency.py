@@ -3,7 +3,7 @@ from enum import Enum
 
 import finance_enums
 
-_CODE_ENUMS = {"CountryCode", "CountryCode3", "Currency", "ExchangeCode"}
+_CODE_ENUMS = {"CountryCode", "CountryCode3", "Currency", "ExchangeCode", "FXTenor", "Symbology"}
 _ACRONYM_RE = re.compile(r"[A-Z]{2,}")
 
 
@@ -16,7 +16,7 @@ def test_non_code_enum_values_use_expanded_pascal_case_labels():
             continue
 
         for member in enum_type:
-            value = member.value
+            value = member.name
             if isinstance(value, str) and (_ACRONYM_RE.search(value) or "PnL" in value):
                 offenders.append(f"{name}.{member.name}={value}")
 

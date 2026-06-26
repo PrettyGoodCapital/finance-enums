@@ -11,9 +11,14 @@ description = "Standard financial enumerations"
 [lib]
 name = "finance_enums"
 path = "src/lib.rs"
-crate-type = ["rlib"]
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[features]
+default = []
+polars = ["dep:polars-core"]
 
 [dependencies]
+polars-core = { version = "0.46", optional = true, default-features = false, features = ["dtype-categorical"] }
 
 [profile.test.junit]
 path = "junit.xml"

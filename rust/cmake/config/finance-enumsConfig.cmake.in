@@ -1,0 +1,51 @@
+set(FINANCE_ENUMS_VERSION "@PROJECT_VERSION@")
+
+@PACKAGE_INIT@
+
+set_and_check(FINANCE_ENUMS_INCLUDE_DIR "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
+set(FINANCE_ENUMS_INCLUDE_DIRS "${FINANCE_ENUMS_INCLUDE_DIR}")
+set_and_check(FINANCE_ENUMS_LIB_DIR "@PACKAGE_CMAKE_INSTALL_LIBDIR@")
+
+# The library is produced by cargo, not by CMake's own target machinery, so we
+# recreate the imported targets here rather than via install(EXPORT) (which
+# cannot export IMPORTED targets). Both the shared and static variants are
+# defined when their artifact is present, and `finance-enums::finance-enums`
+# resolves to whichever exists (shared preferred) so consumers work on both
+# dynamic and static vcpkg triplets.
+set(_finance_enums_shared "${FINANCE_ENUMS_LIB_DIR}/@FINANCE_ENUMS_SHARED_FILE@")
+set(_finance_enums_static "${FINANCE_ENUMS_LIB_DIR}/@FINANCE_ENUMS_STATIC_FILE@")
+set(_finance_enums_implib "${FINANCE_ENUMS_LIB_DIR}/@FINANCE_ENUMS_IMPLIB_FILE@")
+
+if(EXISTS "${_finance_enums_static}" AND NOT TARGET finance-enums::finance-enums-static)
+  add_library(finance-enums::finance-enums-static STATIC IMPORTED GLOBAL)
+  set_target_properties(finance-enums::finance-enums-static PROPERTIES
+    IMPORTED_LOCATION "${_finance_enums_static}"
+    INTERFACE_INCLUDE_DIRECTORIES "${FINANCE_ENUMS_INCLUDE_DIR}"
+    INTERFACE_COMPILE_FEATURES cxx_std_20)
+endif()
+
+if(EXISTS "${_finance_enums_shared}" AND NOT TARGET finance-enums::finance-enums-shared)
+  add_library(finance-enums::finance-enums-shared SHARED IMPORTED GLOBAL)
+  set_target_properties(finance-enums::finance-enums-shared PROPERTIES
+    IMPORTED_LOCATION "${_finance_enums_shared}"
+    INTERFACE_INCLUDE_DIRECTORIES "${FINANCE_ENUMS_INCLUDE_DIR}"
+    INTERFACE_COMPILE_FEATURES cxx_std_20)
+  if(EXISTS "${_finance_enums_implib}")
+    set_target_properties(finance-enums::finance-enums-shared PROPERTIES
+      IMPORTED_IMPLIB "${_finance_enums_implib}")
+  endif()
+endif()
+
+if(NOT TARGET finance-enums::finance-enums)
+  if(TARGET finance-enums::finance-enums-shared)
+    add_library(finance-enums::finance-enums ALIAS finance-enums::finance-enums-shared)
+  elseif(TARGET finance-enums::finance-enums-static)
+    add_library(finance-enums::finance-enums ALIAS finance-enums::finance-enums-static)
+  endif()
+endif()
+
+unset(_finance_enums_shared)
+unset(_finance_enums_static)
+unset(_finance_enums_implib)
+
+check_required_components(finance-enums)

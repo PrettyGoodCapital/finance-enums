@@ -10,6 +10,7 @@ from finance_enums import (
     IdentifierType,
     Industry,
     MarketType,
+    PriceKind,
     RateIndex,
     ShortSaleRestriction,
     SubIndustry,
@@ -22,6 +23,7 @@ ALIAS_CASES = [
     (FundType, "ETF", "ExchangeTradedFund"),
     (FundType, "REIT", "RealEstateInvestmentTrust"),
     (MarketType, "OTC", "OverTheCounter"),
+    (PriceKind, "VWAP", "Vwap"),
     (IdentifierType, "ISIN", "InternationalSecuritiesIdentificationNumber"),
     (IdentifierType, "CUSIP", "CommitteeOnUniformSecuritiesIdentificationProcedures"),
     (IdentifierType, "SEDOL", "StockExchangeDailyOfficialList"),
@@ -85,7 +87,7 @@ def test_acronym_aliases_resolve_to_full_spelled_members(enum_type, alias, canon
     assert getattr(enum_type, alias) is canonical_member
     assert enum_type[alias] is canonical_member
     assert enum_type(alias) is canonical_member
-    assert canonical_member.value == canonical
+    assert canonical_member.name == canonical
 
 
 @pytest.mark.parametrize("enum_type", sorted({case[0] for case in ALIAS_CASES}, key=lambda item: item.__name__))

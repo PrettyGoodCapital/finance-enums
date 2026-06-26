@@ -9,13 +9,11 @@ from finance_enums import (
     DeliveryType,
     FinancingType,
     FundType,
-    FutureDeliveryType,
-    FutureType,
+    FutureAssetClass,
     InstrumentType,
     MutualFundEndedness,
     OptionExerciseType,
     OptionType,
-    PerpetualFutureType,
     SecurityType,
     SettlementType,
     SwapType,
@@ -32,7 +30,7 @@ class TestCFI:
         classification = parse_cfi("ESVUFB")
 
         assert classification.security_type == SecurityType.Equity
-        assert classification.equity_type.value == "Shares"
+        assert classification.equity_type.name == "Shares"
         assert classification.attributes == ("V", "U", "F", "B")
 
     def test_parse_option_cfi(self):
@@ -61,15 +59,15 @@ class TestCFI:
             build_cfi(
                 security_type=SecurityType.Fund,
                 fund_type=FundType.MutualFund,
-                mutual_fund_endedness=MutualFundEndedness.Open,
+                mutual_fund_endedness=MutualFundEndedness.OpenEnded,
             )
             == "CIOXXX"
         )
         assert (
             build_cfi(
                 security_type=SecurityType.Future,
-                future_type=FutureType.Commodity,
-                future_delivery_type=FutureDeliveryType.Physical,
+                future_asset_class=FutureAssetClass.Commodity,
+                settlement_type=SettlementType.Physical,
             )
             == "FCXPXX"
         )
@@ -84,10 +82,10 @@ class TestCFI:
 
         assert fund.security_type == SecurityType.Fund
         assert fund.fund_type == FundType.MutualFund
-        assert fund.mutual_fund_endedness == MutualFundEndedness.Open
+        assert fund.mutual_fund_endedness == MutualFundEndedness.OpenEnded
         assert future.security_type == SecurityType.Future
-        assert future.future_type == FutureType.Financial
-        assert future.future_delivery_type == FutureDeliveryType.Cash
+        assert future.future_asset_class == FutureAssetClass.Financial
+        assert future.settlement_type == SettlementType.Cash
 
     def test_parse_spot_forward_spread_and_index_cfis(self):
         spot_fx = parse_cfi("IFXXXP")
@@ -128,13 +126,13 @@ class TestCFI:
         assert listed_option.settlement_type == SettlementType.Physical
         assert listed_option.contract_style == ContractStyle.Standardized
 
-        assert financial_future.future_type == FutureType.Financial
+        assert financial_future.future_asset_class == FutureAssetClass.Financial
         assert financial_future.underlying_asset_class == UnderlyingAssetClass.Index
         assert financial_future.delivery_type == DeliveryType.Cash
         assert financial_future.settlement_type == SettlementType.Cash
         assert financial_future.contract_style == ContractStyle.Standardized
 
-        assert commodity_future.future_type == FutureType.Commodity
+        assert commodity_future.future_asset_class == FutureAssetClass.Commodity
         assert commodity_future.commodity_type == CommodityType.Agriculture
         assert commodity_future.underlying_asset_class == UnderlyingAssetClass.Agriculture
 
@@ -160,7 +158,7 @@ class TestCFI:
         assert (
             build_cfi(
                 security_type=SecurityType.Future,
-                future_type=FutureType.Financial,
+                future_asset_class=FutureAssetClass.Financial,
                 underlying_asset_class=UnderlyingAssetClass.Index,
                 settlement_type=SettlementType.Cash,
                 contract_style=ContractStyle.Standardized,
@@ -170,7 +168,7 @@ class TestCFI:
         assert (
             build_cfi(
                 security_type=SecurityType.Future,
-                future_type=FutureType.Commodity,
+                future_asset_class=FutureAssetClass.Commodity,
                 commodity_type=CommodityType.Agriculture,
                 delivery_type=DeliveryType.Physical,
                 contract_style=ContractStyle.Standardized,
@@ -202,8 +200,8 @@ class TestCFI:
         assert (
             build_cfi(
                 security_type=SecurityType.PerpetualFuture,
-                perpetual_future_type=PerpetualFutureType.Commodity,
-                future_delivery_type=FutureDeliveryType.Cash,
+                future_asset_class=FutureAssetClass.Commodity,
+                settlement_type=SettlementType.Cash,
             )
             == "FCXCXX"
         )
@@ -212,14 +210,14 @@ class TestCFI:
         classification = parse_cfi(
             build_cfi(
                 security_type=SecurityType.PerpetualFuture,
-                perpetual_future_type=PerpetualFutureType.Financial,
-                future_delivery_type=FutureDeliveryType.Cash,
+                future_asset_class=FutureAssetClass.Financial,
+                settlement_type=SettlementType.Cash,
             )
         )
 
         assert classification.security_type == SecurityType.Future
         assert classification.instrument_type == InstrumentType.Future
-        assert classification.future_type == FutureType.Financial
+        assert classification.future_asset_class == FutureAssetClass.Financial
 
     def test_build_cfi_rejects_unsupported_security_types(self):
         with pytest.raises(NotImplementedError):
@@ -229,7 +227,7 @@ class TestCFI:
         assert build_cfi(category=" t ", group=" i ", attributes=("x", "x", "x", "x")) == "TIXXXX"
         assert parse_cfi(" dnxxxx ").bond_type == BondType.Municipal
         assert parse_cfi("DBXTXX").bond_type == BondType.Government
-        assert parse_cfi("CICXXX").mutual_fund_endedness == MutualFundEndedness.Close
+        assert parse_cfi("CICXXX").mutual_fund_endedness == MutualFundEndedness.ClosedEnded
         assert parse_cfi("TCXXXX").security_type == SecurityType.Currency
         assert parse_cfi("TTXXXX").security_type == SecurityType.Commodity
         assert parse_cfi("TBXXXX").instrument_type == InstrumentType.Basket
@@ -262,11 +260,10 @@ class TestCFI:
                 settlement_type=SettlementType.Cash,
                 delivery_type=DeliveryType.Physical,
             )
-        with pytest.raises(ValueError, match="future_delivery_type"):
+        with pytest.raises(ValueError, match="settlement_type"):
             build_cfi(
                 security_type=SecurityType.Future,
-                settlement_type=SettlementType.Cash,
-                future_delivery_type=FutureDeliveryType.Physical,
+                settlement_type=SettlementType.PaymentVersusPayment,
             )
         with pytest.raises(ValueError, match="swap_type"):
             build_cfi(security_type=SecurityType.Swap)
@@ -312,7 +309,7 @@ class TestCFI:
         {"security_type": SecurityType.Bond, "bond_type": BondType.Government},
         {"security_type": SecurityType.Currency},
         {"security_type": SecurityType.Commodity, "commodity_type": CommodityType.Agriculture},
-        {"security_type": SecurityType.Fund, "fund_type": FundType.MutualFund, "mutual_fund_endedness": MutualFundEndedness.Open},
+        {"security_type": SecurityType.Fund, "fund_type": FundType.MutualFund, "mutual_fund_endedness": MutualFundEndedness.OpenEnded},
         {
             "security_type": SecurityType.Option,
             "option_type": OptionType.Call,
@@ -323,7 +320,7 @@ class TestCFI:
         },
         {
             "security_type": SecurityType.Future,
-            "future_type": FutureType.Financial,
+            "future_asset_class": FutureAssetClass.Financial,
             "underlying_asset_class": UnderlyingAssetClass.Index,
             "settlement_type": SettlementType.Cash,
             "contract_style": ContractStyle.Standardized,

@@ -2,8 +2,9 @@
   "datasets": {
     "country_code": {
       "count": 251,
-      "sha256": "805ae206befd6a373bae919dd1499cc6a9c6f729e4de480da79090e54689d143",
+      "sha256": "ff4c8da17a3773cf14af6354c1240dc3ab844a617a259cfe28eb4d9d0bf8f6e3",
       "values": [
+        "XX",
         "AD",
         "AE",
         "AF",
@@ -248,7 +249,6 @@
         "VU",
         "WF",
         "WS",
-        "XX",
         "YE",
         "YT",
         "ZA",
@@ -259,8 +259,9 @@
     },
     "country_code3": {
       "count": 251,
-      "sha256": "ac80b52c85479c93e8f5e630d059d12a33d4b464d17328f5f09fd1d9fbb2b14b",
+      "sha256": "d6551faba27d5e8908f168ddbeb6df73063dbe23abcb1e02f4f0eaced2626e83",
       "values": [
+        "XXX",
         "AND",
         "ARE",
         "AFG",
@@ -505,7 +506,6 @@
         "VUT",
         "WLF",
         "WSM",
-        "XXX",
         "YEM",
         "MYT",
         "ZAF",
@@ -516,8 +516,9 @@
     },
     "currency": {
       "count": 188,
-      "sha256": "09a938363308377234540549b3b5b01a72fc33a6ec3dd842fede9a83cf2dfda9",
+      "sha256": "4d0d718767ec4698e199e2fe8ddfc90fb4383276bba63219fdce71ab174aa5a7",
       "values": [
+        "XXX",
         "AED",
         "AFN",
         "ALL",
@@ -698,7 +699,6 @@
         "XSU",
         "XTS",
         "XUA",
-        "XXX",
         "YER",
         "ZAR",
         "ZMW",
@@ -708,26 +708,20 @@
         "ECNY"
       ]
     },
-    "future_delivery_type": {
-      "count": 2,
-      "sha256": "f0cf615b7be905e2183523a88787c6a619c211535f7f061ce1950a2d7519ce34",
+    "future_asset_class": {
+      "count": 3,
+      "sha256": "742f5150c002a29bb2c30c36c4a861eb057e0a7b78d58e8096317d742ad991d8",
       "values": [
-        "Physical",
-        "Cash"
-      ]
-    },
-    "future_type": {
-      "count": 2,
-      "sha256": "479a1e05562424bab9c668d39e0436625455532eca267ce7bfa9e6e37687b37b",
-      "values": [
+        "Invalid",
         "Financial",
         "Commodity"
       ]
     },
     "mic": {
       "count": 2846,
-      "sha256": "4842ad719f354a3f0e1a8d8c7401a220951f19cf1dca8e406ead6a817fb40d7e",
+      "sha256": "f3f027a10114dd8f98caa99f5bcfff8f039cd99c7567115925be32026312db6c",
       "values": [
+        "XXXX",
         "21XX",
         "24DX",
         "24EQ",
@@ -3554,7 +3548,6 @@
         "XWCE",
         "XWEE",
         "XXSC",
-        "XXXX",
         "XYIE",
         "XYKT",
         "XZAG",

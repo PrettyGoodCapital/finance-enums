@@ -53,7 +53,7 @@ def test_post_trade_and_benchmark_enum_surfaces(enum_type, expected_members):
 
 
 def test_extended_settlement_type_keeps_cfi_compatible_members():
-    assert SettlementType.Physical.value == "Physical"
-    assert SettlementType.Cash.value == "Cash"
-    assert SettlementType.NonDeliverable.value == "NonDeliverable"
-    assert SettlementType.ElectAtExercise.value == "ElectAtExercise"
+    assert SettlementType.Physical.name == "Physical"
+    assert SettlementType.Cash.name == "Cash"
+    assert SettlementType.NonDeliverable.name == "NonDeliverable"
+    assert SettlementType.ElectAtExercise.name == "ElectAtExercise"

@@ -176,7 +176,7 @@ subtypes:
 - Bonds: `BondType`
 - Commodities: `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`
 - Funds: `FundType`, `FundSubType`, `MutualFundEndedness`
-- Futures: `FutureType`, `FutureDeliveryType`, `ContractUnit`, `LegRole`
+- Futures: `FutureAssetClass`, `SettlementType`, `ContractUnit`, `LegRole`
 - Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
 - Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
 - Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
@@ -217,17 +217,17 @@ ______________________________________________________________________
 
 Trading workflow identifiers include:
 
-- Order workflow: `OrderType`, `OrderStatus`, `ExecType`, `ExecutionInstruction`, `OrderCapacity`, `PositionEffect`, `OpenClose`, `ShortSaleRestriction`
-- Venue and execution flags: `LiquidityFlag`, `OrderFlag`, `TimeInForce`, `TradingType`
-- Market-data conditions: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceType`
+- Order workflow: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `OrderCapacity`, `PositionEffect`, `ShortSaleRestriction`
+- Venue and execution flags: `LiquidityFlag`, `OrderFlag`, `TimeInForce`
+- Market-data conditions: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
 - Side: `Side`
 
 These enums are intended for validation and shared API contracts rather than order routing logic.
 
 `Side` is direction only: `None`, `Buy`, and `Sell`. Short-sale and
 cover semantics are represented as `Side` plus `PositionEffect`, with
-`OpenClose` and `PositionType` available when a transaction schema needs
-those fields. `transaction_intent()` returns canonical bundles for
+`PositionType` available when a transaction schema needs that field.
+`transaction_intent()` returns canonical bundles for
 `open_long`, `close_long`, `open_short`, and `cover_short`.
 
 ______________________________________________________________________

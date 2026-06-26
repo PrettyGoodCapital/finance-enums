@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "hatchling",
-    "hatch-rs>=0.2.0",
+    "hatch-rs>=0.2.1",
 ]
 build-backend = "hatchling.build"
 
@@ -40,7 +40,7 @@ develop = [
     "check-dist",
     "cibuildwheel",
     "codespell",
-    "hatch-rs>=0.2.0",
+    "hatch-rs>=0.2.1",
     "hatchling",
     "mdformat",
     "mdformat-tables>=1",
@@ -65,7 +65,7 @@ Homepage = "https://github.com/prettygoodcapital/finance-enums"
 [tool.bumpversion]
 current_version = "0.6.0"
 commit = true
-tag = false 
+tag = false
 commit_args = "-s"
 
 [[tool.bumpversion.files]]
@@ -87,6 +87,55 @@ replace = 'version = "{new_version}"'
 filename = "rust/Cargo.toml"
 search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "vcpkg.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CMakeLists.txt"
+search = "VERSION {current_version}"
+replace = "VERSION {new_version}"
+
+[[tool.bumpversion.files]]
+filename = "conda/recipe.yaml"
+search = "version: {current_version}"
+replace = "version: {new_version}"
+
+# Keep the semantic enum-data ABI version (negotiated via abi_version() /
+# abi_compatible()) in lockstep with the package version. The struct-layout
+# discriminators (*_EXPORT_ABI_VERSION) are intentionally left out — they track
+# the binary export-struct shape, not the release version.
+[[tool.bumpversion.files]]
+filename = "rust/src/enum_data.rs"
+search = "ENUM_ABI_VERSION_MAJOR: u32 = {current_major}"
+replace = "ENUM_ABI_VERSION_MAJOR: u32 = {new_major}"
+
+[[tool.bumpversion.files]]
+filename = "rust/src/enum_data.rs"
+search = "ENUM_ABI_VERSION_MINOR: u32 = {current_minor}"
+replace = "ENUM_ABI_VERSION_MINOR: u32 = {new_minor}"
+
+[[tool.bumpversion.files]]
+filename = "rust/src/enum_data.rs"
+search = "ENUM_ABI_VERSION_PATCH: u32 = {current_patch}"
+replace = "ENUM_ABI_VERSION_PATCH: u32 = {new_patch}"
+
+[[tool.bumpversion.files]]
+filename = "finance_enums/include/finance_enums.h"
+search = "FINANCE_ENUMS_ABI_VERSION_MAJOR {current_major}u"
+replace = "FINANCE_ENUMS_ABI_VERSION_MAJOR {new_major}u"
+
+[[tool.bumpversion.files]]
+filename = "finance_enums/include/finance_enums.h"
+search = "FINANCE_ENUMS_ABI_VERSION_MINOR {current_minor}u"
+replace = "FINANCE_ENUMS_ABI_VERSION_MINOR {new_minor}u"
+
+[[tool.bumpversion.files]]
+filename = "finance_enums/include/finance_enums.h"
+search = "FINANCE_ENUMS_ABI_VERSION_PATCH {current_patch}u"
+replace = "FINANCE_ENUMS_ABI_VERSION_PATCH {new_patch}u"
 
 [tool.cibuildwheel]
 build = "cp310-*"
@@ -130,6 +179,7 @@ artifacts = [
     "finance_enums/*.pyd",
     "finance_enums/*.so",
     "finance_enums/include/*.h",
+    "finance_enums/include/*.hpp",
     "finance_enums/lib/*.dll",
     "finance_enums/lib/*.dylib",
     "finance_enums/lib/*.lib",
@@ -155,9 +205,14 @@ destination = "finance_enums/{python_extension_name}"
 name = "finance_enums"
 manifest = "rust/Cargo.toml"
 destination = "finance_enums/lib/{shared_library}"
-expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1", "finance_enums_enum_export_v1"]
+# Set FINANCE_ENUMS_SKIP_SHARED_LIBRARY=1 to build only the Python extension and
+# skip bundling the standalone shared library + header (used by the split conda
+# build, where the library and headers are provided by the libfinance-enums
+# package).
+skip-if-env = "FINANCE_ENUMS_SKIP_SHARED_LIBRARY"
+expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1", "finance_enums_enum_export_v1", "finance_enums_abi_version", "finance_enums_abi_compatible"]
 expected-headers = ["finance_enums/include/finance_enums.h"]
-expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION"]
+expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ABI_VERSION_MAJOR"]
 validate = true
 
 [[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]

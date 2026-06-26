@@ -75,6 +75,6 @@ class TestCurrency:
         assert export.abi_version == 1
         assert export.records_len == len(currency_records())
         assert export.aliases_len == len(currency_alias_records())
-        assert export.records[0].code == b"AED"
+        assert export.records[0].code == b"XXX"
         assert export.records[export.records_len - 1].code == b"ECNY"
         assert export.aliases[export.aliases_len - 1].alias == b"e-CNY"

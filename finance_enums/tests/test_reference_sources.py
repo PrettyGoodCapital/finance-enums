@@ -73,21 +73,21 @@ def test_reference_source_parsers_accept_canonical_fixture_shapes(monkeypatch) -
 
 @pytest.mark.live_source
 def test_exchange_codes_cover_all_active_iso10383_mics() -> None:  # pragma: no cover
-    missing = sorted(_active_mics() - {member.value for member in ExchangeCode})
+    missing = sorted(_active_mics() - {member.name for member in ExchangeCode})
     assert missing == []
 
 
 @pytest.mark.live_source
 def test_currency_codes_cover_live_iso4217_list() -> None:  # pragma: no cover
-    missing = sorted(_iso4217_codes() - {member.value for member in Currency})
+    missing = sorted(_iso4217_codes() - {member.name for member in Currency})
     assert missing == []
 
 
 @pytest.mark.live_source
 def test_country_codes_cover_live_country_feed() -> None:  # pragma: no cover
     alpha2, alpha3 = _country_feeds()
-    missing_alpha2 = sorted(alpha2 - {member.value for member in CountryCode})
-    missing_alpha3 = sorted(alpha3 - {member.value for member in CountryCode3})
+    missing_alpha2 = sorted(alpha2 - {member.name for member in CountryCode})
+    missing_alpha3 = sorted(alpha3 - {member.name for member in CountryCode3})
 
     assert missing_alpha2 == []
     assert missing_alpha3 == []

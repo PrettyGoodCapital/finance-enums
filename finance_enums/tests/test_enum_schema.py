@@ -15,9 +15,9 @@ from finance_enums import (
 def test_enum_variant_records_cover_rust_backed_enum_families():
     records = enum_variant_records()
 
-    assert EnumVariantRecord(enum_name="Side", variant="Buy", ordinal=1) in records
-    assert EnumVariantRecord(enum_name="SettlementStatus", variant="Settled", ordinal=4) in records
-    assert EnumVariantRecord(enum_name="BenchmarkType", variant="InterestRate", ordinal=0) in records
+    assert EnumVariantRecord(enum_name="Side", variant="Buy", ordinal=2) in records
+    assert EnumVariantRecord(enum_name="SettlementStatus", variant="Settled", ordinal=5) in records
+    assert EnumVariantRecord(enum_name="BenchmarkType", variant="InterestRate", ordinal=1) in records
 
 
 def test_enum_family_schemas_describe_python_rust_json_arrow_and_c_abi_exports():
@@ -29,7 +29,7 @@ def test_enum_family_schemas_describe_python_rust_json_arrow_and_c_abi_exports()
     assert schemas["Side"].json_type == "string"
     assert schemas["Side"].arrow_type == "dictionary<utf8>"
     assert schemas["Side"].c_abi_family == "Side"
-    assert schemas["Side"].variants == ("None", "Buy", "Sell")
+    assert schemas["Side"].variants == ("Invalid", "None", "Buy", "Sell")
 
     assert "BenchmarkType" in schemas
     assert "ClearingModel" in schemas

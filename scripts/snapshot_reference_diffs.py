@@ -19,6 +19,17 @@ def _sha256_values(values: list[str]) -> str:
 
 def _rust_variant_values(name: str) -> list[str]:
     text = (ROOT / "rust" / "src" / "data.rs").read_text(encoding="utf-8")
+    # ``finance_enum!`` injects an ``Invalid`` sentinel at ordinal 0; mirror that
+    # so snapshot ordinals match the runtime/ABI. ``finance_enum_raw!`` families
+    # supply their own ordinal-0 sentinel and are read verbatim.
+    match = re.search(rf"finance_enum(_raw)?!\({name}:\s*(.*?)\);", text, re.S)
+    if match is not None:
+        is_raw = match.group(1) is not None
+        variants = [v.strip() for v in match.group(2).split(",") if v.strip()]
+        if not is_raw:
+            variants = ["Invalid", *variants]
+        return variants
+    # Fall back to old static array format
     match = re.search(rf"pub static {name}_VARIANTS: &\[&str\] = &\[(.*?)\];", text, re.S)
     if match is None:
         raise ValueError(f"missing {name}_VARIANTS in rust/src/data.rs")
@@ -55,8 +66,7 @@ def current_snapshot() -> dict[str, Any]:
             "currency": _dataset(_currency_values()),
             "country_code": _dataset(_rust_variant_values("CountryCode")),
             "country_code3": _dataset(_rust_variant_values("CountryCode3")),
-            "future_type": _dataset(_rust_variant_values("FutureType")),
-            "future_delivery_type": _dataset(_rust_variant_values("FutureDeliveryType")),
+            "future_asset_class": _dataset(_rust_variant_values("FutureAssetClass")),
         },
     }
 

@@ -99,6 +99,7 @@ macro_rules! currency_table {
 }
 
 currency_table!(
+    { code: "XXX", display_name: "No currency", is_iso4217: true, aliases: [] },
     { code: "AED", display_name: "United Arab Emirates dirham", is_iso4217: true, aliases: [] },
     { code: "AFN", display_name: "Afghan afghani", is_iso4217: true, aliases: [] },
     { code: "ALL", display_name: "Albanian lek", is_iso4217: true, aliases: [] },
@@ -279,7 +280,6 @@ currency_table!(
     { code: "XSU", display_name: "SUCRE Unified System for Regional Compensation", is_iso4217: true, aliases: [] },
     { code: "XTS", display_name: "Code reserved for testing", is_iso4217: true, aliases: [] },
     { code: "XUA", display_name: "ADB Unit of Account", is_iso4217: true, aliases: [] },
-    { code: "XXX", display_name: "No currency", is_iso4217: true, aliases: [] },
     { code: "YER", display_name: "Yemeni rial", is_iso4217: true, aliases: [] },
     { code: "ZAR", display_name: "South African rand", is_iso4217: true, aliases: [] },
     { code: "ZMW", display_name: "Zambian kwacha", is_iso4217: true, aliases: [] },

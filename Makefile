@@ -10,10 +10,6 @@ develop-rs:
 
 develop: develop-rs develop-py  ## setup project for development
 
-.PHONY: rebuild-extension
-rebuild-extension:  ## rebuild the local Python extension in-place
-	uv pip install -e . --no-build-isolation
-
 .PHONY: requirements-py requirements-rs requirements
 requirements-py:  ## install prerequisite python build requirements
 	uv pip install --upgrade pip toml
@@ -33,6 +29,15 @@ build-rs:
 	make -C rust build
 
 build: build-rs build-py  ## build the project
+
+.PHONY: build-lib build-vcpkg
+build-lib:  ## build the standalone shared library (libfinance_enums cdylib)
+	cargo build --manifest-path rust/Cargo.toml --release
+
+build-vcpkg:  ## build and install the C ABI library + headers + cmake config into an install tree
+	cmake -B build -S . -DCMAKE_INSTALL_PREFIX=build/install
+	cmake --build build
+	cmake --install build
 
 .PHONY: install
 install:  ## install python library
@@ -168,6 +173,11 @@ dist-rs:  ## build rust dists
 dist-check:  ## run python dist checker with twine
 	python -m twine check dist/*
 
+dist-vcpkg:  ## package the C ABI library as a vcpkg source bundle
+	mkdir -p dist/vcpkg
+	tar --exclude='rust/target' --exclude='rust/tests' --exclude='__pycache__' --exclude='*.pyc' \
+		-czf dist/vcpkg/finance-enums.tar.gz \
+		CMakeLists.txt rust finance_enums/include vcpkg.json LICENSE README.md
 dist: clean build dist-rs dist-py-wheel dist-py-sdist dist-check  ## build all dists
 
 publish: dist  ## publish python assets

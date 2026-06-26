@@ -20,6 +20,9 @@ target-capi
 # Distribution / packaging
 .Python
 build/
+# vcpkg (clone + per-build install trees)
+vcpkg/
+vcpkg_installed/
 develop-eggs/
 dist/
 downloads/
