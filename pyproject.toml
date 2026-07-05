@@ -176,6 +176,7 @@ fail_under = 50
 artifacts = [
     "finance_enums/*.dll",
     "finance_enums/*.dylib",
+<<<<<<< before updating
     "finance_enums/*.pyd",
     "finance_enums/*.so",
     "finance_enums/include/*.h",
@@ -184,6 +185,9 @@ artifacts = [
     "finance_enums/lib/*.dylib",
     "finance_enums/lib/*.lib",
     "finance_enums/lib/*.so",
+=======
+    "finance_enums/*.so",
+>>>>>>> after updating
 ]
 
 [tool.hatch.build.sources]
