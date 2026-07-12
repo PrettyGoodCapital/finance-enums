@@ -138,6 +138,7 @@ replace = "FINANCE_ENUMS_ABI_VERSION_PATCH {new_patch}u"
 
 [tool.cibuildwheel]
 build = "cp311-*"
+skip = "*i686* *musllinux* *win32 *arm_64"
 test-command = "pytest -vvv {project}/finance_enums/tests"
 test-extras = "develop"
 
