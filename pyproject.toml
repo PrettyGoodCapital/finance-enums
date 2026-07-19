@@ -13,8 +13,13 @@ authors = [
 description = "Standard financial enumerations"
 readme = "README.md"
 license = { text = "Apache-2.0" }
+<<<<<<< before updating
 version = "0.6.0"
 requires-python = ">=3.10"
+=======
+version = "0.1.0"
+requires-python = ">=3.11"
+>>>>>>> after updating
 keywords = []
 
 classifiers = [
@@ -24,7 +29,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -138,7 +142,7 @@ search = "FINANCE_ENUMS_ABI_VERSION_PATCH {current_patch}u"
 replace = "FINANCE_ENUMS_ABI_VERSION_PATCH {new_patch}u"
 
 [tool.cibuildwheel]
-build = "cp310-*"
+build = "cp311-*"
 test-command = "pytest -vvv {project}/finance_enums/tests"
 test-extras = "develop"
 
@@ -176,6 +180,7 @@ fail_under = 50
 artifacts = [
     "finance_enums/*.dll",
     "finance_enums/*.dylib",
+<<<<<<< before updating
     "finance_enums/*.pyd",
     "finance_enums/*.so",
     "finance_enums/include/*.h",
@@ -184,6 +189,9 @@ artifacts = [
     "finance_enums/lib/*.dylib",
     "finance_enums/lib/*.lib",
     "finance_enums/lib/*.so",
+=======
+    "finance_enums/*.so",
+>>>>>>> after updating
 ]
 
 [tool.hatch.build.sources]
