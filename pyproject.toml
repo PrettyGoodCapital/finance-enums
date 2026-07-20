@@ -24,7 +24,6 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -138,7 +137,7 @@ search = "FINANCE_ENUMS_ABI_VERSION_PATCH {current_patch}u"
 replace = "FINANCE_ENUMS_ABI_VERSION_PATCH {new_patch}u"
 
 [tool.cibuildwheel]
-build = "cp310-*"
+build = "cp311-*"
 test-command = "pytest -vvv {project}/finance_enums/tests"
 test-extras = "develop"
 
