@@ -16,10 +16,10 @@ from .finance_enums import (
 )
 
 __all__ = [
-    "CurrencyRecord",
     "CurrencyAliasRecord",
-    "currency_records",
+    "CurrencyRecord",
     "currency_alias_records",
+    "currency_records",
 ]
 
 

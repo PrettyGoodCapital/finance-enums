@@ -47,6 +47,7 @@ def _build_library() -> Path:
         ["cargo", "rustc", "--release", "--crate-type=cdylib"],
         cwd=PROJECT_ROOT / "rust",
         capture_output=True,
+        check=False,
         text=True,
     )
     if result.returncode != 0:
@@ -63,7 +64,7 @@ def _compile(source: Path, compiler: str, std: str) -> Path:
     cmd = [compiler, std, "-O2", f"-I{INCLUDE_DIR}", "-o", str(output), str(source)]
     if platform.system() == "Linux":
         cmd.append("-ldl")
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    result = subprocess.run(cmd, capture_output=True, check=False, text=True)
     if result.returncode != 0:
         pytest.fail(f"{compiler} compilation failed:\n{result.stderr}")
     return output
@@ -73,6 +74,7 @@ def _run(binary: Path, lib_path: Path) -> None:
     result = subprocess.run(
         [str(binary), str(lib_path)],
         capture_output=True,
+        check=False,
         text=True,
         timeout=30,
     )

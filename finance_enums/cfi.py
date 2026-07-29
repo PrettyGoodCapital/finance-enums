@@ -12,9 +12,9 @@ from .finance_enums import int_enums as _int_enums
 
 __all__ = [
     "CFIClassification",
-    "parse_cfi",
     "build_cfi",
     "build_cfi_from_classification",
+    "parse_cfi",
     "validate_cfi_classification",
 ]
 
