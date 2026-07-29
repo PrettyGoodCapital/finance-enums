@@ -105,4 +105,4 @@ def test_generated_enum_header_is_up_to_date():
 
     header_path = ROOT / "finance_enums" / "include" / "finance_enums_generated.h"
     expected = generate_header(parse_families())
-    assert header_path.read_text() == expected, "run: python finance_enums/gen_enums_header.py"
+    assert header_path.read_text(encoding="utf-8") == expected, "run: python finance_enums/gen_enums_header.py"
