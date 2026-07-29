@@ -127,7 +127,7 @@ def main():
     families = parse_families()
     header = generate_header(families)
     out = include_dir / "finance_enums_generated.h"
-    out.write_text(header)
+    out.write_text(header, encoding="utf-8")
     total = sum(len(v) for _, v in families)
     print(f"Generated {out.name}: {len(families)} families, {total} variants")
 
