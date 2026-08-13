@@ -245,6 +245,8 @@ jobs:
           cmake --build "${{ runner.temp }}/vcpkg-consumer" --config Release
           ctest --test-dir "${{ runner.temp }}/vcpkg-consumer" -C Release --output-on-failure
         shell: bash
+        env:
+          VCPKG_KEEP_ENV_VARS: PATH;CARGO_HOME;RUSTUP_HOME
 
       - name: Upload distributions
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
