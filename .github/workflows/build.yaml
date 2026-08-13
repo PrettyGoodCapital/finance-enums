@@ -149,52 +149,105 @@ jobs:
           module: finance_enums
         if: matrix.os == 'ubuntu-latest'
 
+      - name: Install rattler-build
+        id: rattler-build
+        run: |
+          case "${{ runner.os }}-${{ runner.arch }}" in
+            Linux-X64)
+              asset="rattler-build-x86_64-unknown-linux-musl"
+              sha256="34f540732796dd4dea9d6273017b68ebec3a753e6ee71a9b6458e836cafdc1d0"
+              ;;
+            Linux-ARM64)
+              asset="rattler-build-aarch64-unknown-linux-musl"
+              sha256="a8223b8b5437bdd807fad15ca62fa067ecf9087faf34262ee4fcaf2ddb210c85"
+              ;;
+            macOS-X64)
+              asset="rattler-build-x86_64-apple-darwin"
+              sha256="2ec076cceb8a532b601af1801eae964e5551a76e8d579410f157c1c1c1ca1697"
+              ;;
+            macOS-ARM64)
+              asset="rattler-build-aarch64-apple-darwin"
+              sha256="a65eb0975e30c712d4b1c5512cf9e9fffce81ec8ae8fe293991f50a1d1b95936"
+              ;;
+            Windows-X64)
+              asset="rattler-build-x86_64-pc-windows-msvc.exe"
+              sha256="fa27f04ccdba28d42fc8478ede2a299cd334a73384080cdef653fa5568382d1f"
+              ;;
+            Windows-ARM64)
+              asset="rattler-build-aarch64-pc-windows-msvc.exe"
+              sha256="469d7fbab0db12138bd8604f798acb9a96e110ee0fd1ba295e71f2959805bb9c"
+              ;;
+            *)
+              echo "Unsupported runner: ${{ runner.os }}-${{ runner.arch }}" >&2
+              exit 1
+              ;;
+          esac
+          destination="${{ runner.temp }}/${asset}"
+          python - "$asset" "$sha256" "$destination" <<'PY'
+          import hashlib
+          import sys
+          import urllib.request
+          from pathlib import Path
+
+          asset, expected, destination = sys.argv[1:]
+          url = f"https://github.com/prefix-dev/rattler-build/releases/download/v0.73.0/{asset}"
+          urllib.request.urlretrieve(url, destination)
+          actual = hashlib.sha256(Path(destination).read_bytes()).hexdigest()
+          if actual != expected:
+              raise SystemExit(f"SHA256 mismatch for {asset}: {actual}")
+          PY
+          chmod +x "$destination"
+          echo "executable=$destination" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Build and test split conda packages
+        run: |
+          "${{ steps.rattler-build.outputs.executable }}" build --recipe conda/recipe.yaml --channel conda-forge --output-dir "${{ runner.temp }}/conda-output"
+        shell: bash
+
+      - name: Clone vcpkg
+        run: |
+          git clone --filter=blob:none https://github.com/microsoft/vcpkg.git "${{ runner.temp }}/vcpkg"
+          git -C "${{ runner.temp }}/vcpkg" checkout da411b1cfb549469ae350136f954deed7ad8c650
+        shell: bash
+
+      - name: Bootstrap vcpkg (Unix)
+        run: |
+          "${{ runner.temp }}/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+        shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Bootstrap vcpkg (Windows)
+        run: '& "$env:RUNNER_TEMP\vcpkg\bootstrap-vcpkg.bat" -disableMetrics'
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Build and test vcpkg overlay port
+        run: |
+          case "${{ runner.os }}-${{ runner.arch }}" in
+            Linux-X64) triplet="x64-linux-dynamic" ;;
+            Linux-ARM64) triplet="arm64-linux-dynamic" ;;
+            macOS-X64) triplet="x64-osx" ;;
+            macOS-ARM64) triplet="arm64-osx" ;;
+            Windows-X64) triplet="x64-windows" ;;
+            Windows-ARM64) triplet="arm64-windows" ;;
+            *)
+              echo "Unsupported runner: ${{ runner.os }}-${{ runner.arch }}" >&2
+              exit 1
+              ;;
+          esac
+          vcpkg="${{ runner.temp }}/vcpkg/vcpkg"
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            vcpkg="${vcpkg}.exe"
+          fi
+          "$vcpkg" install finance-enums --classic --overlay-ports="${{ github.workspace }}/ports" --triplet "$triplet"
+          cmake -S tests/native_consumer -B "${{ runner.temp }}/vcpkg-consumer" -DCMAKE_TOOLCHAIN_FILE="${{ runner.temp }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET="$triplet"
+          cmake --build "${{ runner.temp }}/vcpkg-consumer" --config Release
+          ctest --test-dir "${{ runner.temp }}/vcpkg-consumer" -C Release --output-on-failure
+        shell: bash
+
       - name: Upload distributions
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
         with:
           name: dist-${{ matrix.os }}
           path: dist
-
-  conda:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Install rattler-build
-        run: |
-          curl -fsSL https://github.com/prefix-dev/rattler-build/releases/download/v0.73.0/rattler-build-x86_64-unknown-linux-musl -o "${{ runner.temp }}/rattler-build"
-          echo "34f540732796dd4dea9d6273017b68ebec3a753e6ee71a9b6458e836cafdc1d0  ${{ runner.temp }}/rattler-build" | sha256sum --check
-          chmod +x "${{ runner.temp }}/rattler-build"
-
-      - name: Build and test split conda packages
-        run: |
-          "${{ runner.temp }}/rattler-build" build --recipe conda/recipe.yaml --channel conda-forge --output-dir "${{ runner.temp }}/conda-output"
-
-  vcpkg:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
-        with:
-          persist-credentials: false
-
-      - name: Setup Rust
-        uses: actions-ext/rust/setup@3de300f3071e758a1dd8545b884288a35e5d7f81
-
-      - name: Bootstrap vcpkg
-        run: |
-          git clone --filter=blob:none https://github.com/microsoft/vcpkg.git "${{ runner.temp }}/vcpkg"
-          git -C "${{ runner.temp }}/vcpkg" checkout da411b1cfb549469ae350136f954deed7ad8c650
-          "${{ runner.temp }}/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
-
-      - name: Build and test overlay port
-        run: |
-          "${{ runner.temp }}/vcpkg/vcpkg" install finance-enums --classic --overlay-ports="${{ github.workspace }}/ports" --triplet x64-linux-dynamic
-          cmake -S tests/native_consumer -B "${{ runner.temp }}/vcpkg-consumer" -DCMAKE_TOOLCHAIN_FILE="${{ runner.temp }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=x64-linux-dynamic
-          cmake --build "${{ runner.temp }}/vcpkg-consumer" --config Release
-          ctest --test-dir "${{ runner.temp }}/vcpkg-consumer" -C Release --output-on-failure
