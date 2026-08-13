@@ -1,6 +1,6 @@
 {
   "name": "finance-enums",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Standard financial enumerations (C ABI)",
   "homepage": "https://github.com/prettygoodcapital/finance-enums",
   "license": "Apache-2.0",

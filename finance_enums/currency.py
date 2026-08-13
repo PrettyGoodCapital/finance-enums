@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .finance_enums import (
+from ._finance_enums import (
     currency_alias_records as _currency_alias_records_raw,
     currency_records as _currency_records_raw,
     int_enums as _int_enums,

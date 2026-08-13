@@ -33,9 +33,15 @@ def load_exchange_code_variants() -> list[str]:
 
 def render_exchange_codes(codes: list[str]) -> str:
     lines = ["#![allow(non_upper_case_globals)]", "", "pub static ExchangeCode_VARIANTS: &[&str] = &["]
-    for offset in range(0, len(codes), 10):
-        chunk = codes[offset : offset + 10]
-        lines.append("    " + ", ".join(f'"{code}"' for code in chunk) + ",")
+    line = "    "
+    for code in codes:
+        item = f'"{code}",'
+        if len(line) + len(item) + 1 > 100:
+            lines.append(line.rstrip())
+            line = "    "
+        line += item + " "
+    if line.strip():
+        lines.append(line.rstrip())
     lines.append("];")
     return "\n".join(lines) + "\n"
 

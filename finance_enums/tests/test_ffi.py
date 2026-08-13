@@ -33,6 +33,7 @@ class TestPyO3Helpers:
         major, minor, _patch = fe.abi_version()
         assert fe.abi_compatible(major, minor) is True
         assert fe.abi_compatible(major, minor + 1) is False
+        assert fe.abi_compatible(0, 6) is False
         assert fe.abi_compatible(major + 1, minor) is False
 
     def test_assert_abi_compatible(self, fe):
@@ -132,6 +133,7 @@ class TestCAbiViaCtypes:
         cdylib.finance_enums_abi_version(ctypes.byref(major), ctypes.byref(minor), None)
         assert cdylib.finance_enums_abi_compatible(major.value, minor.value) == 1
         assert cdylib.finance_enums_abi_compatible(major.value, minor.value + 1) == 0
+        assert cdylib.finance_enums_abi_compatible(0, 6) == 0
         assert cdylib.finance_enums_abi_compatible(major.value + 1, minor.value) == 0
 
     def test_validate_ordinal(self, cdylib):

@@ -10,13 +10,13 @@
 ###############################################################################
 cmake_minimum_required(VERSION 3.16)
 project(finance-enums
-  VERSION 0.6.0
+  VERSION 0.7.0
   DESCRIPTION "Standard financial enumerations"
   LANGUAGES NONE)
 
 # Prefer `lib` over `lib64`, and set this before GNUInstallDirs so it does not
 # warn about being unable to infer the libdir without an enabled language.
-set(CMAKE_INSTALL_LIBDIR lib)
+set(CMAKE_INSTALL_LIBDIR "lib" CACHE STRING "Object code libraries")
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -45,13 +45,22 @@ set(_fe_include_dir "${CMAKE_CURRENT_SOURCE_DIR}/finance_enums/include")
 ###############################################################################
 # Platform-specific artifact filenames (as produced by cargo)                 #
 ###############################################################################
-set(FINANCE_ENUMS_SHARED_FILE "${CMAKE_SHARED_LIBRARY_PREFIX}finance_enums${CMAKE_SHARED_LIBRARY_SUFFIX}")
-set(FINANCE_ENUMS_STATIC_FILE "${CMAKE_STATIC_LIBRARY_PREFIX}finance_enums${CMAKE_STATIC_LIBRARY_SUFFIX}")
 if(WIN32)
+  set(FINANCE_ENUMS_SHARED_FILE "finance_enums.dll")
+  set(FINANCE_ENUMS_STATIC_FILE "finance_enums.lib")
   # cargo names the MSVC import library for a cdylib `<name>.dll.lib`.
-  set(FINANCE_ENUMS_IMPLIB_FILE "finance_enums.dll${CMAKE_IMPORT_LIBRARY_SUFFIX}")
-else()
+  set(FINANCE_ENUMS_IMPLIB_FILE "finance_enums.dll.lib")
+  set(FINANCE_ENUMS_SHARED_INSTALL_DIR "${CMAKE_INSTALL_BINDIR}")
+elseif(APPLE)
+  set(FINANCE_ENUMS_SHARED_FILE "libfinance_enums.dylib")
+  set(FINANCE_ENUMS_STATIC_FILE "libfinance_enums.a")
   set(FINANCE_ENUMS_IMPLIB_FILE "")
+  set(FINANCE_ENUMS_SHARED_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
+else()
+  set(FINANCE_ENUMS_SHARED_FILE "libfinance_enums.so")
+  set(FINANCE_ENUMS_STATIC_FILE "libfinance_enums.a")
+  set(FINANCE_ENUMS_IMPLIB_FILE "")
+  set(FINANCE_ENUMS_SHARED_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}")
 endif()
 
 ###############################################################################
@@ -75,7 +84,7 @@ install(DIRECTORY "${_fe_include_dir}/"
 # Libraries. cargo writes to <target>/release/, or <target>/<triple>/release/
 # when CARGO_BUILD_TARGET is set (e.g. under the conda rust compiler), so each
 # artifact is located with a glob over both layouts at install time.
-function(_fe_install_artifact filename)
+function(_fe_install_artifact filename destination)
   if(filename STREQUAL "")
     return()
   endif()
@@ -95,18 +104,18 @@ function(_fe_install_artifact filename)
     endif()
     message(STATUS \"Installing \${_artifact}\")
     file(INSTALL \"\${_artifact}\"
-      DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}\")
+      DESTINATION \"\${CMAKE_INSTALL_PREFIX}/${destination}\")
   ")
 endfunction()
 
 if(FINANCE_ENUMS_BUILD_SHARED)
-  _fe_install_artifact("${FINANCE_ENUMS_SHARED_FILE}")
+  _fe_install_artifact("${FINANCE_ENUMS_SHARED_FILE}" "${FINANCE_ENUMS_SHARED_INSTALL_DIR}")
   if(WIN32)
-    _fe_install_artifact("${FINANCE_ENUMS_IMPLIB_FILE}")
+    _fe_install_artifact("${FINANCE_ENUMS_IMPLIB_FILE}" "${CMAKE_INSTALL_LIBDIR}")
   endif()
 endif()
 if(FINANCE_ENUMS_BUILD_STATIC)
-  _fe_install_artifact("${FINANCE_ENUMS_STATIC_FILE}")
+  _fe_install_artifact("${FINANCE_ENUMS_STATIC_FILE}" "${CMAKE_INSTALL_LIBDIR}")
 endif()
 
 ###############################################################################
@@ -126,7 +135,7 @@ configure_package_config_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/rust/cmake/config/finance-enumsConfig.cmake.in"
   "${CMAKE_CURRENT_BINARY_DIR}/finance-enumsConfig.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/finance-enums"
-  PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR)
+  PATH_VARS CMAKE_INSTALL_INCLUDEDIR CMAKE_INSTALL_LIBDIR FINANCE_ENUMS_SHARED_INSTALL_DIR)
 
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/finance-enumsConfigVersion.cmake"

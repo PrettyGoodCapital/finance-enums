@@ -42,12 +42,14 @@ inline constexpr AbiVersion kHeaderAbiVersion{
 };
 
 /// True if a consumer built against `(consumer_major, consumer_minor)` can
-/// safely use a library reporting `library`: same major, library minor >=
-/// consumer minor.
+/// safely use a library reporting `library`. Beta 0.x ABIs require an exact
+/// minor match; stable ABIs allow a newer library minor within the same major.
 constexpr bool abi_compatible(std::uint32_t consumer_major,
                               std::uint32_t consumer_minor,
                               const AbiVersion &library) noexcept {
-    return consumer_major == library.major && consumer_minor <= library.minor;
+    return consumer_major == library.major &&
+           (library.major == 0 ? consumer_minor == library.minor
+                               : consumer_minor <= library.minor);
 }
 
 /// Indexed, read-only view over the enum data export. Groups the flat variant

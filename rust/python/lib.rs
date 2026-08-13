@@ -216,7 +216,7 @@ fn variant_name(family: &str, ordinal: usize) -> Option<String> {
 }
 
 #[pymodule]
-fn finance_enums(py: Python, m: &Bound<PyModule>) -> PyResult<()> {
+fn _finance_enums(py: Python, m: &Bound<PyModule>) -> PyResult<()> {
     macro_rules! reg {
         ($f:ident) => {
             m.add_function(wrap_pyfunction!($f, m)?)?;

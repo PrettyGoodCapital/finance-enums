@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
 
     assert(abi_compatible(major, minor) == 1);
     assert(abi_compatible(major, minor + 1) == 0);
+    assert(abi_compatible(0, 6) == 0);
     assert(abi_compatible(major + 1, minor) == 0);
 
     /* Runtime helpers for a dynamically chosen family. */

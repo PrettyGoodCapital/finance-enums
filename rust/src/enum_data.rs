@@ -66,7 +66,9 @@ pub const ENUM_EXPORT_ABI_VERSION: u32 = 1;
 ///
 /// These constants **mirror the package version** in `pyproject.toml` and are
 /// kept in sync by `bump-my-version` — do not edit them by hand. The release
-/// process follows these ABI-compatibility rules when choosing the bump:
+/// While the major version is zero, each minor version is an independent beta
+/// ABI and consumers must match it exactly. After 1.0, the release process
+/// follows these ABI-compatibility rules when choosing the bump:
 ///
 /// * **MAJOR** — a backwards-*incompatible* change: reordering, removing, or
 ///   renaming any existing variant or family, or any change to an export struct
@@ -78,22 +80,23 @@ pub const ENUM_EXPORT_ABI_VERSION: u32 = 1;
 ///   metadata, display names, internal refactors).
 pub const ENUM_ABI_VERSION_MAJOR: u32 = 0;
 /// Minor component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
-pub const ENUM_ABI_VERSION_MINOR: u32 = 6;
+pub const ENUM_ABI_VERSION_MINOR: u32 = 7;
 /// Patch component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
 pub const ENUM_ABI_VERSION_PATCH: u32 = 0;
 
 /// Returns `true` if a consumer built against `(consumer_major, consumer_minor)`
 /// can safely use a library exporting this data.
 ///
-/// Compatible iff the major versions match and the library's minor is at least
-/// the consumer's: the library may have *appended* variants the consumer does
-/// not know about (safe), but must not have *removed or reordered* any the
-/// consumer relies on (that would have bumped the major).
-// Guards the case where ENUM_ABI_VERSION_MINOR is 0 (e.g. right after a major
-// bump), where `consumer_minor <= 0` would otherwise trip the lint.
-#[allow(clippy::absurd_extreme_comparisons)]
+/// During the 0.x beta, major and minor must both match. Starting with 1.0,
+/// compatible libraries have the same major and a minor at least as new as the
+/// consumer's.
 pub const fn abi_compatible(consumer_major: u32, consumer_minor: u32) -> bool {
-    consumer_major == ENUM_ABI_VERSION_MAJOR && consumer_minor <= ENUM_ABI_VERSION_MINOR
+    consumer_major == ENUM_ABI_VERSION_MAJOR
+        && if ENUM_ABI_VERSION_MAJOR == 0 {
+            consumer_minor == ENUM_ABI_VERSION_MINOR
+        } else {
+            consumer_minor <= ENUM_ABI_VERSION_MINOR
+        }
 }
 
 /// Like [`abi_compatible`], but panics with a descriptive message when the

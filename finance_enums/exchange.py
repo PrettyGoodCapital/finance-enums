@@ -12,9 +12,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from . import finance_enums as _rust_enums
+from . import _finance_enums as _rust_enums
+from ._finance_enums import exchange_records_raw as _exchange_records_raw, int_enums as _int_enums
 from .country import country_currency, currency_countries
-from .finance_enums import exchange_records_raw as _exchange_records_raw, int_enums as _int_enums
 
 __all__ = [
     "ExchangeRecord",

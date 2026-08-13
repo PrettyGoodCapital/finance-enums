@@ -1,11 +1,11 @@
 [package]
 name = "finance_enums_py"
-version = "0.6.0"
+version = "0.7.0"
 edition = "2021"
 publish = false
 
 [lib]
-name = "finance_enums"
+name = "_finance_enums"
 path = "rust/python/lib.rs"
 crate-type = ["cdylib"]
 

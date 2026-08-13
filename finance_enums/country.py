@@ -7,7 +7,7 @@ bridge to :class:`Currency`.
 
 from __future__ import annotations
 
-from .finance_enums import country_names as _country_names_fn, int_enums as _int_enums
+from ._finance_enums import country_names as _country_names_fn, int_enums as _int_enums
 
 __all__ = [
     "country_currency",

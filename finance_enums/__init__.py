@@ -10,8 +10,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from . import finance_enums as _rust_enums
-from .finance_enums import (
+from . import _finance_enums as _rust_enums
+from ._finance_enums import (
     __all_families__,
     abi_compatible,
     abi_version,
@@ -25,7 +25,7 @@ from .finance_enums import (
 )
 from .frequency import Frequency, to_frequency
 
-__version__ = "0.6.0"
+__version__ = "0.7.0"
 
 #: Semantic enum-data ABI version of the loaded native extension, as
 #: ``(major, minor, patch)``. See the "ABI compatibility" section of the README.

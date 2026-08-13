@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "release": "0.7.0",
+  "semantic_abi": [0, 7, 0],
+  "family_count": 122,
+  "variant_count": 4777,
+  "enum_schema_sha256": "48c6828bba9d7bdafe7a3bc144dba48eb6165e588bf7d734d0a675eb0e6eaaed",
+  "c_abi": {
+    "stability": "beta",
+    "export_versions": {
+      "currency": 1,
+      "exchange": 1,
+      "enum": 1
+    },
+    "struct_declarations_sha256": "2d6c0ad5012e061391210b03bdfd1b80bd7e3cd07b10177d886c34d3188d32b5",
+    "struct_fields": {
+      "CurrencyRecordRaw": ["code", "display_name", "is_iso4217"],
+      "CurrencyAliasRecordRaw": ["alias", "canonical_code"],
+      "CurrencyDataExportV1": ["abi_version", "export_struct_size", "currency_record_size", "currency_alias_record_size", "records", "records_len", "aliases", "aliases_len"],
+      "ExchangeRecordRaw": ["mic", "market_name", "legal_entity_name", "operating_mic", "parent_mic", "market_category_code", "acronym", "iso_country_code", "city", "website", "status", "region", "subregion", "is_segment", "is_official"],
+      "ExchangeDataExportV1": ["abi_version", "export_struct_size", "exchange_record_size", "records", "records_len"],
+      "EnumVariantRecordRaw": ["enum_name", "variant", "ordinal"],
+      "EnumDataExportV1": ["abi_version", "export_struct_size", "enum_variant_record_size", "records", "records_len", "family_count", "max_ordinal"]
+    }
+  },
+  "family_prefix": {
+    "sha256": "b7a6d91a15bf6b68ece865623af097aa9c384563b17fcad863b202dcb47195c7",
+    "counts": {"AccountType": 7, "AggressorSide": 4, "AgricultureType": 12, "AllocationMethod": 9, "AmortizationType": 7, "AuctionType": 7, "AveragingMethod": 6, "BarrierType": 7, "BenchmarkType": 9, "BondType": 4, "BookType": 7, "BorrowType": 6, "CalculationAgentType": 8, "ClearingHouse": 12, "ClearingModel": 6, "CollateralType": 7, "CommodityType": 9, "CompoundingMethod": 6, "ContractStyle": 3, "ContractUnit": 7, "CorporateActionAdjustmentType": 8, "CorporateActionType": 10, "CountryCode": 251, "CountryCode3": 251, "CouponFrequency": 7, "CouponType": 7, "CrossType": 6, "Currency": 188, "CurrencyRole": 7, "DayCountConvention": 7, "DelistingReason": 7, "DeliveryType": 9, "DistributionPolicy": 6, "EnergyType": 9, "EquityType": 9, "ExchangeCode": 2881, "ExecutionDisposition": 4, "ExecutionInstruction": 9, "ExecutionType": 9, "ExerciseEventType": 6, "ExoticOptionFeature": 9, "FXSubType": 4, "FXTenor": 53, "FactorGroup": 6, "FailsReason": 10, "FamaFrench3Factor": 4, "FamaFrench5Factor": 6, "FinancingType": 4, "FundSubType": 5, "FundType": 4, "FutureAssetClass": 3, "FutureMonthCode": 13, "FutureSpreadLegType": 5, "FutureSpreadSubType": 3, "FutureUnderlyingType": 19, "GiveUpType": 6, "IdentifierType": 11, "IndexWeightingMethod": 9, "Industry": 75, "IndustryGroup": 26, "InstrumentType": 12, "InventoryType": 7, "LegRole": 5, "LiquidityFlag": 7, "LiquidityTerm": 7, "ListingStatus": 7, "LivestockType": 4, "MICMarketCategory": 15, "MarginType": 7, "MarketState": 7, "MarketStatusReason": 9, "MarketType": 11, "MetalsType": 14, "MsciFactorModel": 7, "MutualFundEndedness": 3, "NettingType": 6, "OptionExerciseType": 4, "OptionType": 3, "OrderCapacity": 6, "OrderFlag": 5, "OrderSide": 5, "OrderStatus": 10, "OrderType": 8, "PayoffStyle": 4, "PositionEffect": 6, "PositionType": 6, "PriceKind": 7, "PriceNotation": 13, "QuantityUnit": 9, "QuoteCondition": 7, "RateIndex": 9, "RebalanceFrequency": 8, "RedemptionFrequency": 7, "RepoType": 7, "ResetFrequency": 7, "Sector": 12, "SecurityStatus": 8, "SecurityType": 17, "SegmentType": 8, "Seniority": 7, "SettlementStatus": 9, "SettlementType": 8, "ShareClassHedging": 6, "ShortSaleRestriction": 6, "Side": 4, "StrategyType": 7, "StubType": 6, "SubIndustry": 164, "SwapLegType": 9, "SwapType": 7, "Symbology": 19, "TenderOfferType": 6, "TickDirection": 3, "TickerNamespace": 9, "TimeInForce": 9, "TradeCondition": 9, "TradingSession": 9, "TradingSessionStatus": 13, "UnderlyingAssetClass": 25, "VehicleWrapper": 7, "VenueRegulatoryFlag": 13, "VenueType": 9}
+  },
+  "exchange_prefix": {
+    "count": 2846,
+    "sha256": "f3f027a10114dd8f98caa99f5bcfff8f039cd99c7567115925be32026312db6c"
+  },
+  "previous_release": {
+    "release": "0.6.0",
+    "semantic_abi": [0, 6, 0],
+    "family_count": 111,
+    "variant_count": 4475,
+    "enum_schema_sha256": "5e6d70fac9536ae82ac81b1ca525747815769020969f02f4fe0ff563f8746598",
+    "representative_ordinals": {
+      "Side.Buy": 1,
+      "Currency.USD": 150
+    }
+  }
+}

@@ -20,8 +20,9 @@ extern "C" {
  * above, which only track the binary layout of each export struct.
  *
  * These constants mirror the package version in pyproject.toml and are kept in
- * sync by bump-my-version — do not edit them by hand. The release process picks
- * the bump using this ABI-compatibility policy:
+ * sync by bump-my-version — do not edit them by hand. While major is zero,
+ * every minor is an independent beta ABI. Starting with 1.0, releases use this
+ * ABI-compatibility policy:
  *   MAJOR - backwards-incompatible change: a variant or family was reordered,
  *           removed, or renamed, or an export struct layout changed. Consumers
  *           built against a different major MUST NOT use the library.
@@ -34,7 +35,7 @@ extern "C" {
  * against the loaded library to verify compatibility.
  */
 #define FINANCE_ENUMS_ABI_VERSION_MAJOR 0u
-#define FINANCE_ENUMS_ABI_VERSION_MINOR 6u
+#define FINANCE_ENUMS_ABI_VERSION_MINOR 7u
 #define FINANCE_ENUMS_ABI_VERSION_PATCH 0u
 
 typedef struct CurrencyRecordRaw {
@@ -116,8 +117,9 @@ const EnumDataExportV1 *finance_enums_enum_export_v1(void);
 void finance_enums_abi_version(uint32_t *major, uint32_t *minor, uint32_t *patch);
 
 /* Returns 1 if a consumer built against (consumer_major, consumer_minor) is
- * compatible with the loaded library, 0 otherwise. Compatible iff the majors
- * match and the library's minor is >= the consumer's. */
+ * compatible with the loaded library, 0 otherwise. While major is zero, minor
+ * must also match because the ABI is beta. Starting with 1.0, the library's
+ * minor may be newer than the consumer's. */
 int32_t finance_enums_abi_compatible(uint32_t consumer_major, uint32_t consumer_minor);
 
 /* Convenience: checks the compile-time header version this translation unit was

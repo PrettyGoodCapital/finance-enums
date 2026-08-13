@@ -238,5 +238,8 @@ pub static ExchangeCode_VARIANTS: &[&str] = &[
     "XUBS", "XUGA", "XUKR", "XULA", "XUMP", "XUNI", "XUSE", "XVAL", "XVAR", "XVES", "XVIA", "XVIE",
     "XVLA", "XVPA", "XVPB", "XVSE", "XVTX", "XWAP", "XWAR", "XWBO", "XWCE", "XWEE", "XXSC", "XYIE",
     "XYKT", "XZAG", "XZAM", "XZAP", "XZCE", "XZIM", "YKNA", "YLDX", "ZAPA", "ZARX", "ZBUL", "ZBXE",
-    "ZERO", "ZFXM", "ZHEU", "ZKBX", "ZOBX", "ZODM",
+    "ZERO", "ZFXM", "ZHEU", "ZKBX", "ZOBX", "ZODM", "ASPC", "ASPV", "BTRE", "BTRG", "BUGI", "CODX",
+    "CPRM", "CXAL", "DBAO", "GATE", "GXIL", "HAMX", "HAMY", "HAMZ", "ICOD", "IEXO", "INCC", "JPPM",
+    "MSCC", "OBGP", "OKXE", "OMET", "OPTM", "PAYM", "PFSI", "PFTO", "RMEX", "SIG2", "SIGB", "UBSV",
+    "UTST", "WBDP", "XGPS", "XGRW", "XLOX",
 ];

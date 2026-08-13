@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 
-from .finance_enums import int_enums as _int_enums
+from ._finance_enums import int_enums as _int_enums
 
 __all__ = [
     "CFIClassification",

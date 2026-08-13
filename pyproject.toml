@@ -13,7 +13,7 @@ authors = [
 description = "Standard financial enumerations"
 readme = "README.md"
 license = { text = "Apache-2.0" }
-version = "0.6.0"
+version = "0.7.0"
 requires-python = ">=3.10"
 keywords = []
 
@@ -62,7 +62,7 @@ Repository = "https://github.com/prettygoodcapital/finance-enums"
 Homepage = "https://github.com/prettygoodcapital/finance-enums"
 
 [tool.bumpversion]
-current_version = "0.6.0"
+current_version = "0.7.0"
 commit = true
 tag = false
 commit_args = "-s"
@@ -89,6 +89,11 @@ replace = 'version = "{new_version}"'
 
 [[tool.bumpversion.files]]
 filename = "vcpkg.json"
+search = '"version": "{current_version}"'
+replace = '"version": "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "ports/finance-enums/vcpkg.json"
 search = '"version": "{current_version}"'
 replace = '"version": "{new_version}"'
 
@@ -171,20 +176,6 @@ exclude_also = [
 ignore_errors = true
 fail_under = 50
 
-[tool.hatch.build]
-artifacts = [
-    "finance_enums/*.dll",
-    "finance_enums/*.dylib",
-    "finance_enums/*.pyd",
-    "finance_enums/*.so",
-    "finance_enums/include/*.h",
-    "finance_enums/include/*.hpp",
-    "finance_enums/lib/*.dll",
-    "finance_enums/lib/*.dylib",
-    "finance_enums/lib/*.lib",
-    "finance_enums/lib/*.so",
-]
-
 [tool.hatch.build.sources]
 src = "/"
 
@@ -196,7 +187,7 @@ path = "."
 target-dir = "isolated"
 
 [[tool.hatch.build.hooks.hatch-rs.artifacts]]
-name = "finance_enums"
+name = "_finance_enums"
 manifest = "Cargo.toml"
 destination = "finance_enums/{python_extension_name}"
 
@@ -210,13 +201,33 @@ destination = "finance_enums/lib/{shared_library}"
 # package).
 skip-if-env = "FINANCE_ENUMS_SKIP_SHARED_LIBRARY"
 expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1", "finance_enums_enum_export_v1", "finance_enums_abi_version", "finance_enums_abi_compatible"]
-expected-headers = ["finance_enums/include/finance_enums.h"]
+expected-headers = [
+    "finance_enums/include/finance_enums.h",
+    "finance_enums/include/finance_enums.hpp",
+    "finance_enums/include/finance_enums_convert.hpp",
+    "finance_enums/include/finance_enums_generated.h",
+]
 expected-abi-strings = ["FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION", "FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION", "FINANCE_ENUMS_ABI_VERSION_MAJOR"]
 validate = true
 
 [[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]
 source = "finance_enums/include/finance_enums.h"
 destination = "include/finance_enums/finance_enums.h"
+install-scheme = "shared-data"
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]
+source = "finance_enums/include/finance_enums.hpp"
+destination = "include/finance_enums/finance_enums.hpp"
+install-scheme = "shared-data"
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]
+source = "finance_enums/include/finance_enums_convert.hpp"
+destination = "include/finance_enums/finance_enums_convert.hpp"
+install-scheme = "shared-data"
+
+[[tool.hatch.build.hooks.hatch-rs.artifacts.outputs]]
+source = "finance_enums/include/finance_enums_generated.h"
+destination = "include/finance_enums/finance_enums_generated.h"
 install-scheme = "shared-data"
 
 [tool.hatch.build.targets.sdist]
@@ -237,10 +248,9 @@ packages = [
 ]
 exclude = [
     "rust",
+    "finance_enums/include",
+    "finance_enums/lib",
 ]
-
-[tool.hatch.build.targets.wheel.shared-data]
-"finance_enums/include/finance_enums.h" = "include/finance_enums/finance_enums.h"
 
 [tool.pytest.ini_options]
 addopts = [
@@ -285,4 +295,3 @@ pages = [
     "docs/src/API.md",
 ]
 use-autoapi = false
-

@@ -3884,7 +3884,42 @@ typedef enum {
     FE_ExchangeCode_ZHEU = 2842,
     FE_ExchangeCode_ZKBX = 2843,
     FE_ExchangeCode_ZOBX = 2844,
-    FE_ExchangeCode_ZODM = 2845
+    FE_ExchangeCode_ZODM = 2845,
+    FE_ExchangeCode_ASPC = 2846,
+    FE_ExchangeCode_ASPV = 2847,
+    FE_ExchangeCode_BTRE = 2848,
+    FE_ExchangeCode_BTRG = 2849,
+    FE_ExchangeCode_BUGI = 2850,
+    FE_ExchangeCode_CODX = 2851,
+    FE_ExchangeCode_CPRM = 2852,
+    FE_ExchangeCode_CXAL = 2853,
+    FE_ExchangeCode_DBAO = 2854,
+    FE_ExchangeCode_GATE = 2855,
+    FE_ExchangeCode_GXIL = 2856,
+    FE_ExchangeCode_HAMX = 2857,
+    FE_ExchangeCode_HAMY = 2858,
+    FE_ExchangeCode_HAMZ = 2859,
+    FE_ExchangeCode_ICOD = 2860,
+    FE_ExchangeCode_IEXO = 2861,
+    FE_ExchangeCode_INCC = 2862,
+    FE_ExchangeCode_JPPM = 2863,
+    FE_ExchangeCode_MSCC = 2864,
+    FE_ExchangeCode_OBGP = 2865,
+    FE_ExchangeCode_OKXE = 2866,
+    FE_ExchangeCode_OMET = 2867,
+    FE_ExchangeCode_OPTM = 2868,
+    FE_ExchangeCode_PAYM = 2869,
+    FE_ExchangeCode_PFSI = 2870,
+    FE_ExchangeCode_PFTO = 2871,
+    FE_ExchangeCode_RMEX = 2872,
+    FE_ExchangeCode_SIG2 = 2873,
+    FE_ExchangeCode_SIGB = 2874,
+    FE_ExchangeCode_UBSV = 2875,
+    FE_ExchangeCode_UTST = 2876,
+    FE_ExchangeCode_WBDP = 2877,
+    FE_ExchangeCode_XGPS = 2878,
+    FE_ExchangeCode_XGRW = 2879,
+    FE_ExchangeCode_XLOX = 2880
 } FE_ExchangeCode;
 
 typedef enum {
@@ -5151,7 +5186,7 @@ typedef enum {
 #define FE_DistributionPolicy_COUNT 6u
 #define FE_EnergyType_COUNT 9u
 #define FE_EquityType_COUNT 9u
-#define FE_ExchangeCode_COUNT 2846u
+#define FE_ExchangeCode_COUNT 2881u
 #define FE_ExecutionType_COUNT 9u
 #define FE_ExecutionInstruction_COUNT 9u
 #define FE_ExerciseEventType_COUNT 6u
@@ -9129,7 +9164,42 @@ enum class ExchangeCode : size_t {
     ZHEU = 2842,
     ZKBX = 2843,
     ZOBX = 2844,
-    ZODM = 2845
+    ZODM = 2845,
+    ASPC = 2846,
+    ASPV = 2847,
+    BTRE = 2848,
+    BTRG = 2849,
+    BUGI = 2850,
+    CODX = 2851,
+    CPRM = 2852,
+    CXAL = 2853,
+    DBAO = 2854,
+    GATE = 2855,
+    GXIL = 2856,
+    HAMX = 2857,
+    HAMY = 2858,
+    HAMZ = 2859,
+    ICOD = 2860,
+    IEXO = 2861,
+    INCC = 2862,
+    JPPM = 2863,
+    MSCC = 2864,
+    OBGP = 2865,
+    OKXE = 2866,
+    OMET = 2867,
+    OPTM = 2868,
+    PAYM = 2869,
+    PFSI = 2870,
+    PFTO = 2871,
+    RMEX = 2872,
+    SIG2 = 2873,
+    SIGB = 2874,
+    UBSV = 2875,
+    UTST = 2876,
+    WBDP = 2877,
+    XGPS = 2878,
+    XGRW = 2879,
+    XLOX = 2880
 };
 
 enum class ExecutionType : size_t {

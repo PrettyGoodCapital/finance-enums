@@ -1,0 +1,6 @@
+finance-enums provides C and C++ headers plus the standalone shared C ABI library.
+
+find_package(finance-enums CONFIG REQUIRED)
+target_link_libraries(main PRIVATE finance-enums::finance-enums)
+
+Consumers should call finance_enums_abi_header_compatible() before using ABI data.

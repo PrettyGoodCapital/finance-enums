@@ -163,6 +163,7 @@ mod ffi_tests {
             finance_enums_abi_compatible(ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR + 1),
             0
         );
+        assert_eq!(finance_enums_abi_compatible(0, 6), 0);
         assert_eq!(
             finance_enums_abi_compatible(ENUM_ABI_VERSION_MAJOR + 1, ENUM_ABI_VERSION_MINOR),
             0

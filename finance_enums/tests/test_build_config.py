@@ -25,21 +25,44 @@ def test_c_api_build_uses_declarative_hatch_rs_artifacts():
     assert "build-plan-class" not in hatch_rs
     assert hatch_rs["target-dir"] == "isolated"
     assert python_artifact == {
-        "name": "finance_enums",
+        "name": "_finance_enums",
         "manifest": "Cargo.toml",
         "destination": "finance_enums/{python_extension_name}",
     }
 
     assert c_abi_artifact["name"] == "finance_enums"
     assert c_abi_artifact["destination"] == "finance_enums/lib/{shared_library}"
+    assert c_abi_artifact["skip-if-env"] == "FINANCE_ENUMS_SKIP_SHARED_LIBRARY"
     assert c_abi_artifact["validate"] is True
-    assert c_abi_artifact["outputs"] == [
-        {
-            "source": "finance_enums/include/finance_enums.h",
-            "destination": "include/finance_enums/finance_enums.h",
-            "install-scheme": "shared-data",
-        }
-    ]
+    expected_headers = {
+        "finance_enums.h",
+        "finance_enums.hpp",
+        "finance_enums_convert.hpp",
+        "finance_enums_generated.h",
+    }
+    assert {Path(header).name for header in c_abi_artifact["expected-headers"]} == expected_headers
+    assert {Path(output["source"]).name for output in c_abi_artifact["outputs"]} == expected_headers
+    assert {Path(output["destination"]).name for output in c_abi_artifact["outputs"]} == expected_headers
+    assert all(output["install-scheme"] == "shared-data" for output in c_abi_artifact["outputs"])
     assert all("kind" not in artifact for artifact in artifacts)
     assert all("library" not in artifact for artifact in artifacts)
     assert "hatch_build.py" not in sdist_packages
+
+    wheel = pyproject["tool"]["hatch"]["build"]["targets"]["wheel"]
+    assert "finance_enums/include" in wheel["exclude"]
+    assert "finance_enums/lib" in wheel["exclude"]
+    assert "shared-data" not in wheel
+
+    cargo = tomllib.loads((pyproject_path.parent / "Cargo.toml").read_text(encoding="utf-8"))
+    rust_cargo = tomllib.loads((pyproject_path.parent / "rust" / "Cargo.toml").read_text(encoding="utf-8"))
+    assert cargo["lib"]["name"] == "_finance_enums"
+    assert rust_cargo["lib"]["name"] == "finance_enums"
+
+
+def test_native_package_include_paths_match_documented_header_names():
+    root = Path(__file__).resolve().parents[2]
+    cmake_config = (root / "rust/cmake/config/finance-enumsConfig.cmake.in").read_text(encoding="utf-8")
+    pkg_config = (root / "rust/cmake/config/finance-enums.pc.in").read_text(encoding="utf-8")
+
+    assert '@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@/finance_enums"' in cmake_config
+    assert '@CMAKE_INSTALL_FULL_INCLUDEDIR@/finance_enums"' in pkg_config

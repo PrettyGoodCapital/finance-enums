@@ -12,7 +12,7 @@ import json
 from dataclasses import dataclass
 from typing import Any
 
-from .finance_enums import enum_records_raw as _enum_records_raw
+from ._finance_enums import enum_records_raw as _enum_records_raw
 
 __all__ = [
     "EnumFamilySchema",

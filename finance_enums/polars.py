@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import polars as pl
 
-from .finance_enums import __all_families__, enums
+from ._finance_enums import __all_families__, enums
 
 # Build a pl.Enum dtype for every family
 # e.g. CurrencyDtype = pl.Enum(["AED", "AFN", ..., "ZWL"])

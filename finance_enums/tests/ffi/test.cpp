@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
     static_assert(!fe::abi_compatible(FINANCE_ENUMS_ABI_VERSION_MAJOR + 1,
                                       FINANCE_ENUMS_ABI_VERSION_MINOR,
                                       fe::kHeaderAbiVersion));
+    static_assert(!fe::abi_compatible(0, 6, fe::kHeaderAbiVersion));
 
     if (argc < 2) {
         return 0; // header-only checks
@@ -39,6 +40,7 @@ int main(int argc, char *argv[]) {
     assert(lib.abi_compatible());                    // defaults to header version
     assert(lib.abi_compatible(v.major, v.minor));
     assert(!lib.abi_compatible(v.major, v.minor + 1));
+    assert(!lib.abi_compatible(0, 6));
     assert(!lib.abi_compatible(v.major + 1, v.minor));
     lib.assert_abi_compatible();                     // must not throw
 
