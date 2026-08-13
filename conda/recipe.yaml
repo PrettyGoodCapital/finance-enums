@@ -37,8 +37,14 @@ outputs:
         - ${{ pin_subpackage('libfinance-enums', lower_bound='x.x.x', upper_bound='x.x') }}
     tests:
       - package_contents:
+          files:
+            - if: win
+              then:
+                - Library/bin/finance_enums.dll
+                - Library/lib/finance_enums.dll.lib
           lib:
-            - finance_enums
+            - if: unix
+              then: finance_enums
           include:
             - finance_enums/finance_enums.h
             - finance_enums/finance_enums.hpp
