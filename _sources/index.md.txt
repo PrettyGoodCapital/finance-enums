@@ -149,7 +149,7 @@ as `finance_enums` in Rust code:
 
 ```toml
 [dependencies]
-finance_enums = "0.4.0"
+finance_enums = "0.7.0"
 ```
 
 ```rust
@@ -226,26 +226,25 @@ The enum data exposes a **semantic** ABI version — `(major, minor, patch)` —
 so any consumer (Rust, C, C++, or Python) can check at runtime whether the
 library it loaded is compatible with the version it was built against.
 
-| Component | Meaning                                                                                                                                                                                          | Example change                                |
+| Component | Meaning after 1.0                                                                                                                                                                                | Example change                                |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------- |
 | **MAJOR** | Backwards-*incompatible* change. A variant or family was reordered, removed, or renamed, or an export struct layout changed. Consumers built against a different major MUST NOT use the library. | Reordering `Side` variants; removing a family |
 | **MINOR** | Backwards-*compatible* append. New variants added to the **end** of a family, or entirely new families. Existing ordinals never move.                                                            | Adding a new `Currency` at the end            |
 | **PATCH** | No effect on the ordinal layout. Docs, display names, metadata, internal refactors.                                                                                                              | Fixing a label typo                           |
 
-A consumer built against `(consumer_major, consumer_minor)` is compatible with a
-library iff `consumer_major == lib_major` **and** `consumer_minor <= lib_minor`:
-the library may have *appended* variants the consumer doesn't know about (safe),
-but must not have *removed or reordered* any it relies on (that would bump the
-major).
+The C ABI remains beta while the package major version is zero. During this
+period, consumers require an exact major/minor match. Starting with 1.0, a
+consumer is compatible when the major matches and the library minor is at least
+the consumer minor.
 
 ```python
 # Python — straight from the installed wheel
 from finance_enums import abi_version, abi_compatible, assert_abi_compatible
 
-abi_version()                 # (0, 6, 0)
-abi_compatible(0, 6)          # True
-abi_compatible(1, 0)          # False — major mismatch
-assert_abi_compatible(0, 6)   # raises RuntimeError if incompatible
+abi_version()                 # (0, 7, 0)
+abi_compatible(0, 7)          # True
+abi_compatible(0, 6)          # False — beta minor mismatch
+assert_abi_compatible(0, 7)   # raises RuntimeError if incompatible
 ```
 
 ```rust
@@ -277,6 +276,43 @@ auto v = lib.abi_version();       // fe::AbiVersion{major, minor, patch}
 
 The C / C++ paths need the shared library built once via `cargo build --release`
 in `rust/` (wheels bundle it under `finance_enums/lib/`).
+
+### Package-manager builds
+
+The conda recipe produces two packages from one source tree:
+`libfinance-enums` contains the shared C ABI library, headers, CMake config, and
+pkg-config metadata; `finance-enums` contains the Python extension and depends
+on the exact native package build. Build both locally with
+`rattler-build build --recipe conda/recipe.yaml`.
+
+The repository also contains a native-only vcpkg overlay port. It intentionally
+requires a dynamic triplet because the supported ABI boundary is the standalone
+shared library:
+
+```console
+vcpkg install finance-enums --classic --overlay-ports=ports --triplet x64-linux-dynamic
+```
+
+The overlay uses the local checkout while under development. Before registry
+submission, its portfile must use a tagged release archive and pinned SHA512.
+
+### 0.7 beta ABI baseline
+
+Version 0.7 establishes ordinal-zero invalid/unknown sentinels across every enum
+family. Published 0.6 consumers must treat 0.7 as ABI-incompatible: the sentinel
+insertion changed existing ordinals and several families were renamed or
+replaced. Runtime compatibility checks therefore reject consumers built against
+semantic ABI 0.6.
+
+Because the ABI is still beta, 0.7 finalizes the existing V1 export structures
+in place instead of adding parallel V2 exports. Consumers must pair 0.7 headers
+with a 0.7 library. At 1.0, existing layouts and ordinals become stable; later
+layout changes will require a new versioned export.
+
+The checked-in `reference_snapshots/abi.json` records the complete 0.7 schema
+digest, family-prefix counts, semantic ABI, C layout, and published 0.6
+baseline. Tests require a deliberate version and snapshot update whenever the
+public ABI changes.
 
 ## Trading Intent Helpers
 

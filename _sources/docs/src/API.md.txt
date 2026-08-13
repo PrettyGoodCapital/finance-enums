@@ -333,5 +333,5 @@ ______________________________________________________________________
 The current Python package version is exposed at
 `finance_enums.__version__`. The public Python API is the symbols listed
 at the top of this page. Native functions in
-`finance_enums.finance_enums` are implementation details except for the
+`finance_enums._finance_enums` are implementation details except for the
 documented currency export capsule.
