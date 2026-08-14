@@ -140,7 +140,9 @@ configure_package_config_file(
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/finance-enumsConfigVersion.cmake"
   VERSION "${PROJECT_VERSION}"
-  COMPATIBILITY SameMajorVersion)
+  # The C ABI remains beta while major is zero, so different minor versions
+  # are intentionally incompatible. Change this to SameMajorVersion at 1.0.
+  COMPATIBILITY SameMinorVersion)
 
 configure_file(
   "${CMAKE_CURRENT_SOURCE_DIR}/rust/cmake/config/finance-enums.pc.in"

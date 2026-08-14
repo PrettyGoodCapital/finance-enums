@@ -118,6 +118,14 @@ def test_release_version_is_synchronized_across_artifacts() -> None:
     assert re.search(rf"project\(finance-enums\s+VERSION {re.escape(version)}", cmake)
 
 
+def test_beta_cmake_package_requires_same_minor_version() -> None:
+    snapshot = _snapshot()
+    cmake = (ROOT / "CMakeLists.txt").read_text(encoding="utf-8")
+
+    assert snapshot["semantic_abi"][0] == 0
+    assert "COMPATIBILITY SameMinorVersion" in cmake
+
+
 def test_beta_minor_declares_published_v0_6_ordinal_break() -> None:
     previous = _snapshot()["previous_release"]
 

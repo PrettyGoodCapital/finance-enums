@@ -60,6 +60,10 @@ jobs:
           cmake -S . -B "${{ runner.temp }}/finance-enums-native" -DFINANCE_ENUMS_BUILD_SHARED=ON -DFINANCE_ENUMS_BUILD_STATIC=OFF -DCMAKE_INSTALL_PREFIX="${{ runner.temp }}/finance-enums-prefix"
           cmake --build "${{ runner.temp }}/finance-enums-native" --config Release
           cmake --install "${{ runner.temp }}/finance-enums-native" --config Release
+          if cmake -S tests/native_consumer -B "${{ runner.temp }}/finance-enums-incompatible-consumer" -DCMAKE_PREFIX_PATH="${{ runner.temp }}/finance-enums-prefix" -DFINANCE_ENUMS_REQUIRED_VERSION=0.6; then
+            echo "CMake accepted an incompatible beta ABI minor" >&2
+            exit 1
+          fi
           cmake -S tests/native_consumer -B "${{ runner.temp }}/finance-enums-consumer" -DCMAKE_PREFIX_PATH="${{ runner.temp }}/finance-enums-prefix"
           cmake --build "${{ runner.temp }}/finance-enums-consumer" --config Release
           ctest --test-dir "${{ runner.temp }}/finance-enums-consumer" -C Release --output-on-failure
