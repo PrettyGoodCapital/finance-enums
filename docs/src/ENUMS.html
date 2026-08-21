@@ -246,8 +246,8 @@ gets static data arrays under <code class="docutils literal notranslate"><span c
 member name:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">Currency</span>
 
-<span class="nb">str</span><span class="p">(</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>  <span class="c1"># &quot;USD&quot;</span>
-<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">value</span> <span class="c1"># &quot;USD&quot;</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>  <span class="c1"># "USD"</span>
+<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">value</span> <span class="c1"># "USD"</span>
 </pre></div>
 </div>
 <hr class="docutils" />
@@ -259,7 +259,7 @@ member name:</p>
 </div>
 <p>Rust package:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
-<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.3.0&quot;</span>
+<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.3.0"</span>
 </pre></div>
 </div>
 <p>The Rust package name intentionally uses an underscore. The crate was
@@ -277,7 +277,7 @@ use underscores:</p>
 represents ISO 3166-1 alpha-3 codes.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">CountryCode</span><span class="p">,</span> <span class="n">CountryCode3</span>
 
-<span class="n">CountryCode</span><span class="o">.</span><span class="n">US</span><span class="o">.</span><span class="n">country_name</span><span class="p">()</span>  <span class="c1"># &quot;United States of America&quot;</span>
+<span class="n">CountryCode</span><span class="o">.</span><span class="n">US</span><span class="o">.</span><span class="n">country_name</span><span class="p">()</span>  <span class="c1"># "United States of America"</span>
 <span class="n">CountryCode</span><span class="o">.</span><span class="n">US</span><span class="o">.</span><span class="n">code3</span><span class="p">()</span>         <span class="c1"># CountryCode3.USA</span>
 <span class="n">CountryCode3</span><span class="o">.</span><span class="n">USA</span><span class="o">.</span><span class="n">country_name</span><span class="p">()</span>
 </pre></div>
@@ -292,16 +292,16 @@ extensions such as offshore or subunit aliases. Each currency has a
 structured record:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">Currency</span><span class="p">,</span> <span class="n">currency_records</span><span class="p">,</span> <span class="n">currency_alias_records</span>
 
-<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>  <span class="c1"># &quot;United States dollar&quot;</span>
+<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>  <span class="c1"># "United States dollar"</span>
 <span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">is_iso4217</span><span class="p">()</span>     <span class="c1"># True</span>
 <span class="n">Currency</span><span class="o">.</span><span class="n">CNH</span><span class="o">.</span><span class="n">is_iso4217</span><span class="p">()</span>     <span class="c1"># False</span>
 <span class="n">Currency</span><span class="o">.</span><span class="n">ECNY</span><span class="o">.</span><span class="n">record</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Aliases normalize common market spellings into canonical members:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;GBp&quot;</span><span class="p">)</span>   <span class="c1"># Currency.GBX</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;USd&quot;</span><span class="p">)</span>   <span class="c1"># Currency.USX</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;e-CNY&quot;</span><span class="p">)</span> <span class="c1"># Currency.ECNY</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Currency</span><span class="p">(</span><span class="s2">"GBp"</span><span class="p">)</span>   <span class="c1"># Currency.GBX</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"USd"</span><span class="p">)</span>   <span class="c1"># Currency.USX</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"e-CNY"</span><span class="p">)</span> <span class="c1"># Currency.ECNY</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">currency_records()</span></code> returns immutable dataclass values with:</p>
@@ -490,12 +490,12 @@ review the resulting diff.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Frequency</span></code> is a small hand-written enum for calendar-aware periods:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frequency</span><span class="p">,</span> <span class="n">to_frequency</span>
 
-<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>       <span class="c1"># Frequency.Day</span>
-<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;weekly&quot;</span><span class="p">)</span>  <span class="c1"># Frequency.Week</span>
-<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;1mo&quot;</span><span class="p">)</span>     <span class="c1"># Frequency.Month</span>
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">"D"</span><span class="p">)</span>       <span class="c1"># Frequency.Day</span>
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">"weekly"</span><span class="p">)</span>  <span class="c1"># Frequency.Week</span>
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">"1mo"</span><span class="p">)</span>     <span class="c1"># Frequency.Month</span>
 
 <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="o">.</span><span class="n">periods_per_year</span>      <span class="c1"># 252</span>
-<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">polars_truncate</span>     <span class="c1"># &quot;1mo&quot;</span>
+<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">polars_truncate</span>     <span class="c1"># "1mo"</span>
 </pre></div>
 </div>
 <p>Use <code class="docutils literal notranslate"><span class="pre">to_frequency()</span></code> at package boundaries when user input may be a

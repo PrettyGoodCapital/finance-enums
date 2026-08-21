@@ -231,11 +231,11 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for finance_enums.trading</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Trading-intent helpers built from the order/position enum families.</span>
+<span></span><span class="sd">"""Trading-intent helpers built from the order/position enum families.</span>
 
 <span class="sd">A :class:`TransactionIntent` bundles the canonical (side, position effect,</span>
 <span class="sd">position type) tuple for the four basic equity transactions.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -244,9 +244,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">._finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">int_enums</span> <span class="k">as</span> <span class="n">_int_enums</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;TransactionIntent&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;transaction_intent&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;transaction_intent_records&quot;</span><span class="p">,</span>
+    <span class="s2">"TransactionIntent"</span><span class="p">,</span>
+    <span class="s2">"transaction_intent"</span><span class="p">,</span>
+    <span class="s2">"transaction_intent_records"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">Side</span> <span class="o">=</span> <span class="n">_int_enums</span><span class="o">.</span><span class="n">Side</span>
@@ -266,16 +266,16 @@
 
 
 <span class="n">_TRANSACTION_INTENT_RECORDS</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">&quot;open_long&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Buy</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Long</span><span class="p">),</span>
-    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">&quot;close_long&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Sell</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Long</span><span class="p">),</span>
-    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">&quot;open_short&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Sell</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Short</span><span class="p">),</span>
-    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">&quot;cover_short&quot;</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Buy</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Short</span><span class="p">),</span>
+    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">"open_long"</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Buy</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Long</span><span class="p">),</span>
+    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">"close_long"</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Sell</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Long</span><span class="p">),</span>
+    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">"open_short"</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Sell</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Open</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Short</span><span class="p">),</span>
+    <span class="n">TransactionIntent</span><span class="p">(</span><span class="s2">"cover_short"</span><span class="p">,</span> <span class="n">Side</span><span class="o">.</span><span class="n">Buy</span><span class="p">,</span> <span class="n">PositionEffect</span><span class="o">.</span><span class="n">Close</span><span class="p">,</span> <span class="n">PositionType</span><span class="o">.</span><span class="n">Short</span><span class="p">),</span>
 <span class="p">)</span>
 <span class="n">_TRANSACTION_INTENT_BY_NAME</span> <span class="o">=</span> <span class="p">{</span><span class="n">record</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">record</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">_TRANSACTION_INTENT_RECORDS</span><span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_normalize_transaction_intent_name</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"-"</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">" "</span><span class="p">,</span> <span class="s2">"_"</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="transaction_intent_records">
@@ -295,7 +295,7 @@
     <span class="k">try</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_TRANSACTION_INTENT_BY_NAME</span><span class="p">[</span><span class="n">normalized</span><span class="p">]</span>
     <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown transaction intent: </span><span class="si">{</span><span class="n">intent</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown transaction intent: </span><span class="si">{</span><span class="n">intent</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">exc</span></div>
 
 </pre></div>
         </article>

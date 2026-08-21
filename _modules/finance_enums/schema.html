@@ -231,13 +231,13 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for finance_enums.schema</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Schema / reference-data introspection for the enum families.</span>
+<span></span><span class="sd">"""Schema / reference-data introspection for the enum families.</span>
 
 <span class="sd">These helpers expose the canonical enum families (name, variants, and the</span>
 <span class="sd">Rust/Python/JSON/Arrow/C-ABI binding metadata) as data. The variant records come</span>
 <span class="sd">from the native extension, so the schema always matches the compiled enum</span>
 <span class="sd">families exactly.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -248,12 +248,12 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">._finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">enum_records_raw</span> <span class="k">as</span> <span class="n">_enum_records_raw</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;EnumFamilySchema&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;EnumVariantRecord&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;enum_family_schemas&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;enum_schema&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;enum_schema_json&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;enum_variant_records&quot;</span><span class="p">,</span>
+    <span class="s2">"EnumFamilySchema"</span><span class="p">,</span>
+    <span class="s2">"EnumVariantRecord"</span><span class="p">,</span>
+    <span class="s2">"enum_family_schemas"</span><span class="p">,</span>
+    <span class="s2">"enum_schema"</span><span class="p">,</span>
+    <span class="s2">"enum_schema_json"</span><span class="p">,</span>
+    <span class="s2">"enum_variant_records"</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="n">_ENUM_SCHEMA_VERSION</span> <span class="o">=</span> <span class="mi">1</span>
@@ -303,11 +303,11 @@
     <span class="k">return</span> <span class="p">[</span>
         <span class="n">EnumFamilySchema</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">rust_static</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_VARIANTS&quot;</span><span class="p">,</span>
+            <span class="n">rust_static</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_VARIANTS"</span><span class="p">,</span>
             <span class="n">python_symbol</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">c_abi_family</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">json_type</span><span class="o">=</span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
-            <span class="n">arrow_type</span><span class="o">=</span><span class="s2">&quot;dictionary&lt;utf8&gt;&quot;</span><span class="p">,</span>
+            <span class="n">json_type</span><span class="o">=</span><span class="s2">"string"</span><span class="p">,</span>
+            <span class="n">arrow_type</span><span class="o">=</span><span class="s2">"dictionary&lt;utf8&gt;"</span><span class="p">,</span>
             <span class="n">variants</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">variants</span><span class="p">),</span>
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">variants</span> <span class="ow">in</span> <span class="n">families</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
@@ -317,13 +317,13 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_enum_family_schema_to_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">EnumFamilySchema</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-        <span class="s2">&quot;rust_static&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">rust_static</span><span class="p">,</span>
-        <span class="s2">&quot;python_symbol&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">python_symbol</span><span class="p">,</span>
-        <span class="s2">&quot;c_abi_family&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">c_abi_family</span><span class="p">,</span>
-        <span class="s2">&quot;json_type&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">json_type</span><span class="p">,</span>
-        <span class="s2">&quot;arrow_type&quot;</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">arrow_type</span><span class="p">,</span>
-        <span class="s2">&quot;variants&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">variants</span><span class="p">),</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="s2">"rust_static"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">rust_static</span><span class="p">,</span>
+        <span class="s2">"python_symbol"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">python_symbol</span><span class="p">,</span>
+        <span class="s2">"c_abi_family"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">c_abi_family</span><span class="p">,</span>
+        <span class="s2">"json_type"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">json_type</span><span class="p">,</span>
+        <span class="s2">"arrow_type"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">arrow_type</span><span class="p">,</span>
+        <span class="s2">"variants"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">variants</span><span class="p">),</span>
     <span class="p">}</span>
 
 
@@ -331,15 +331,15 @@
 <a class="viewcode-back" href="../../docs/src/API.html#finance_enums.enum_schema">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">enum_schema</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;schema_version&quot;</span><span class="p">:</span> <span class="n">_ENUM_SCHEMA_VERSION</span><span class="p">,</span>
-        <span class="s2">&quot;exports&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;rust&quot;</span><span class="p">:</span> <span class="s2">&quot;finance_enums::enum_data::enum_family_specs&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;python&quot;</span><span class="p">:</span> <span class="s2">&quot;finance_enums.enum_family_schemas&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;json&quot;</span><span class="p">:</span> <span class="s2">&quot;finance_enums.enum_schema_json&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;arrow&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionary&lt;utf8&gt;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;c_abi&quot;</span><span class="p">:</span> <span class="s2">&quot;finance_enums_enum_export_v1&quot;</span><span class="p">,</span>
+        <span class="s2">"schema_version"</span><span class="p">:</span> <span class="n">_ENUM_SCHEMA_VERSION</span><span class="p">,</span>
+        <span class="s2">"exports"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"rust"</span><span class="p">:</span> <span class="s2">"finance_enums::enum_data::enum_family_specs"</span><span class="p">,</span>
+            <span class="s2">"python"</span><span class="p">:</span> <span class="s2">"finance_enums.enum_family_schemas"</span><span class="p">,</span>
+            <span class="s2">"json"</span><span class="p">:</span> <span class="s2">"finance_enums.enum_schema_json"</span><span class="p">,</span>
+            <span class="s2">"arrow"</span><span class="p">:</span> <span class="s2">"dictionary&lt;utf8&gt;"</span><span class="p">,</span>
+            <span class="s2">"c_abi"</span><span class="p">:</span> <span class="s2">"finance_enums_enum_export_v1"</span><span class="p">,</span>
         <span class="p">},</span>
-        <span class="s2">&quot;families&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">_enum_family_schema_to_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="n">enum_family_schemas</span><span class="p">()],</span>
+        <span class="s2">"families"</span><span class="p">:</span> <span class="p">[</span><span class="n">_enum_family_schema_to_dict</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span> <span class="k">for</span> <span class="n">schema</span> <span class="ow">in</span> <span class="n">enum_family_schemas</span><span class="p">()],</span>
     <span class="p">}</span></div>
 
 
@@ -347,7 +347,7 @@
 <div class="viewcode-block" id="enum_schema_json">
 <a class="viewcode-back" href="../../docs/src/API.html#finance_enums.enum_schema_json">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">enum_schema_json</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">enum_schema</span><span class="p">(),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;:&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">enum_schema</span><span class="p">(),</span> <span class="n">sort_keys</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="s2">":"</span><span class="p">))</span></div>
 
 </pre></div>
         </article>

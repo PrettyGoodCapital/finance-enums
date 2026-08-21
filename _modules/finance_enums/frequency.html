@@ -231,41 +231,41 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for finance_enums.frequency</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Calendar-frequency enum shared by all finance-* libraries.</span>
+<span></span><span class="sd">"""Calendar-frequency enum shared by all finance-* libraries.</span>
 
 <span class="sd">This is the canonical location for the ``period`` / ``window`` argument</span>
 <span class="sd">values used across ``finance-calcs``, ``finance-plots``, ``finance-etl``,</span>
 <span class="sd">and ``finance-dates``. Any function that takes a calendar-aware</span>
 <span class="sd">``period=`` or ``window=`` argument should accept either a</span>
 <span class="sd">:class:`Frequency` member or one of the string aliases below.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Frequency&quot;</span><span class="p">,</span> <span class="s2">&quot;to_frequency&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Frequency"</span><span class="p">,</span> <span class="s2">"to_frequency"</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Frequency">
 <a class="viewcode-back" href="../../docs/src/API.html#finance_enums.Frequency">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Frequency</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Canonical calendar frequency.</span>
+<span class="w">    </span><span class="sd">"""Canonical calendar frequency.</span>
 
 <span class="sd">    The string value is the lower-case canonical alias; additional</span>
-<span class="sd">    aliases are accepted by :func:`to_frequency` (e.g. ``&quot;D&quot;``,</span>
-<span class="sd">    ``&quot;daily&quot;``, ``&quot;M&quot;``, ``&quot;monthly&quot;``, ``&quot;yearly&quot;``).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    aliases are accepted by :func:`to_frequency` (e.g. ``"D"``,</span>
+<span class="sd">    ``"daily"``, ``"M"``, ``"monthly"``, ``"yearly"``).</span>
+<span class="sd">    """</span>
 
-    <span class="n">Day</span> <span class="o">=</span> <span class="s2">&quot;day&quot;</span>
-    <span class="n">Week</span> <span class="o">=</span> <span class="s2">&quot;week&quot;</span>
-    <span class="n">Month</span> <span class="o">=</span> <span class="s2">&quot;month&quot;</span>
-    <span class="n">Quarter</span> <span class="o">=</span> <span class="s2">&quot;quarter&quot;</span>
-    <span class="n">Year</span> <span class="o">=</span> <span class="s2">&quot;year&quot;</span>
+    <span class="n">Day</span> <span class="o">=</span> <span class="s2">"day"</span>
+    <span class="n">Week</span> <span class="o">=</span> <span class="s2">"week"</span>
+    <span class="n">Month</span> <span class="o">=</span> <span class="s2">"month"</span>
+    <span class="n">Quarter</span> <span class="o">=</span> <span class="s2">"quarter"</span>
+    <span class="n">Year</span> <span class="o">=</span> <span class="s2">"year"</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">periods_per_year</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Approximate number of periods per year for annualisation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Approximate number of periods per year for annualisation."""</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">:</span> <span class="mi">252</span><span class="p">,</span>
             <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span>
@@ -276,67 +276,67 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">polars_truncate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Polars ``dt.truncate`` rule string for bucketing dates.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Polars ``dt.truncate`` rule string for bucketing dates."""</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">:</span> <span class="s2">&quot;1d&quot;</span><span class="p">,</span>
-            <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">:</span> <span class="s2">&quot;1w&quot;</span><span class="p">,</span>
-            <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">:</span> <span class="s2">&quot;1mo&quot;</span><span class="p">,</span>
-            <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">:</span> <span class="s2">&quot;1q&quot;</span><span class="p">,</span>
-            <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">:</span> <span class="s2">&quot;1y&quot;</span><span class="p">,</span>
+            <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">:</span> <span class="s2">"1d"</span><span class="p">,</span>
+            <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">:</span> <span class="s2">"1w"</span><span class="p">,</span>
+            <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">:</span> <span class="s2">"1mo"</span><span class="p">,</span>
+            <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">:</span> <span class="s2">"1q"</span><span class="p">,</span>
+            <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">:</span> <span class="s2">"1y"</span><span class="p">,</span>
         <span class="p">}[</span><span class="bp">self</span><span class="p">]</span></div>
 
 
 
 <span class="n">_ALIASES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Frequency</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Day</span>
-    <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
-    <span class="s2">&quot;day&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
-    <span class="s2">&quot;daily&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
-    <span class="s2">&quot;1d&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
+    <span class="s2">"d"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
+    <span class="s2">"day"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
+    <span class="s2">"daily"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
+    <span class="s2">"1d"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Day</span><span class="p">,</span>
     <span class="c1"># Week</span>
-    <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
-    <span class="s2">&quot;week&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
-    <span class="s2">&quot;weekly&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
-    <span class="s2">&quot;1w&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
+    <span class="s2">"w"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
+    <span class="s2">"week"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
+    <span class="s2">"weekly"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
+    <span class="s2">"1w"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Week</span><span class="p">,</span>
     <span class="c1"># Month</span>
-    <span class="s2">&quot;m&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
-    <span class="s2">&quot;mo&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
-    <span class="s2">&quot;month&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
-    <span class="s2">&quot;monthly&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
-    <span class="s2">&quot;1mo&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
+    <span class="s2">"m"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
+    <span class="s2">"mo"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
+    <span class="s2">"month"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
+    <span class="s2">"monthly"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
+    <span class="s2">"1mo"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="p">,</span>
     <span class="c1"># Quarter</span>
-    <span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
-    <span class="s2">&quot;quarter&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
-    <span class="s2">&quot;quarterly&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
-    <span class="s2">&quot;1q&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
+    <span class="s2">"q"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
+    <span class="s2">"quarter"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
+    <span class="s2">"quarterly"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
+    <span class="s2">"1q"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span><span class="p">,</span>
     <span class="c1"># Year</span>
-    <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
-    <span class="s2">&quot;year&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
-    <span class="s2">&quot;yearly&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
-    <span class="s2">&quot;annual&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
-    <span class="s2">&quot;annually&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
-    <span class="s2">&quot;1y&quot;</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"y"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"year"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"yearly"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"annual"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"annually"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
+    <span class="s2">"1y"</span><span class="p">:</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Year</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="to_frequency">
 <a class="viewcode-back" href="../../docs/src/API.html#finance_enums.to_frequency">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">to_frequency</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Frequency</span> <span class="o">|</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Frequency</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce ``value`` to a :class:`Frequency` member.</span>
+<span class="w">    </span><span class="sd">"""Coerce ``value`` to a :class:`Frequency` member.</span>
 
 <span class="sd">    Accepts a :class:`Frequency` instance directly, the canonical</span>
 <span class="sd">    lower-case name, or any of the common aliases listed above.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: If ``value`` is not a recognised frequency.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Frequency</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">value</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">_ALIASES</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_ALIASES</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown frequency: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown frequency: </span><span class="si">{</span><span class="n">value</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span></div>
 
 </pre></div>
         </article>

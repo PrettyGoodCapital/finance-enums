@@ -280,18 +280,18 @@ trade sides, and time-in-force values all come from one package.</p>
     <span class="n">to_frequency</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">str</span><span class="p">(</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>                    <span class="c1"># &quot;USD&quot;</span>
-<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>         <span class="c1"># &quot;United States dollar&quot;</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="p">)</span>                    <span class="c1"># "USD"</span>
+<span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>         <span class="c1"># "United States dollar"</span>
 <span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">is_iso4217</span><span class="p">()</span>            <span class="c1"># True</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;e-CNY&quot;</span><span class="p">)</span>                    <span class="c1"># Currency.ECNY</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"e-CNY"</span><span class="p">)</span>                    <span class="c1"># Currency.ECNY</span>
 
-<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">value</span>              <span class="c1"># &quot;XNYS&quot;</span>
-<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">region</span>    <span class="c1"># &quot;Americas&quot;</span>
-<span class="n">exchange_record</span><span class="p">(</span><span class="s2">&quot;XNYS&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">market_name</span>  <span class="c1"># &quot;NEW YORK STOCK EXCHANGE, INC.&quot;</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">exchange_records_by_country</span><span class="p">(</span><span class="s2">&quot;US&quot;</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">value</span>              <span class="c1"># "XNYS"</span>
+<span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">record</span><span class="p">()</span><span class="o">.</span><span class="n">region</span>    <span class="c1"># "Americas"</span>
+<span class="n">exchange_record</span><span class="p">(</span><span class="s2">"XNYS"</span><span class="p">)</span><span class="o">.</span><span class="n">market_name</span>  <span class="c1"># "NEW YORK STOCK EXCHANGE, INC."</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">exchange_records_by_country</span><span class="p">(</span><span class="s2">"US"</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
 
-<span class="n">parse_cfi</span><span class="p">(</span><span class="s2">&quot;ESVUFB&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">equity_type</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># &quot;Shares&quot;</span>
-<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="n">OptionType</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span>  <span class="c1"># &quot;OCXXXX&quot;</span>
+<span class="n">parse_cfi</span><span class="p">(</span><span class="s2">"ESVUFB"</span><span class="p">)</span><span class="o">.</span><span class="n">equity_type</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># "Shares"</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span> <span class="n">option_type</span><span class="o">=</span><span class="n">OptionType</span><span class="o">.</span><span class="n">Call</span><span class="p">)</span>  <span class="c1"># "OCXXXX"</span>
 <span class="n">build_cfi</span><span class="p">(</span>
     <span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Option</span><span class="p">,</span>
     <span class="n">option_type</span><span class="o">=</span><span class="n">OptionType</span><span class="o">.</span><span class="n">Call</span><span class="p">,</span>
@@ -299,20 +299,20 @@ trade sides, and time-in-force values all come from one package.</p>
     <span class="n">underlying_asset_class</span><span class="o">=</span><span class="n">UnderlyingAssetClass</span><span class="o">.</span><span class="n">Equity</span><span class="p">,</span>
     <span class="n">settlement_type</span><span class="o">=</span><span class="n">SettlementType</span><span class="o">.</span><span class="n">Physical</span><span class="p">,</span>
     <span class="n">contract_style</span><span class="o">=</span><span class="n">ContractStyle</span><span class="o">.</span><span class="n">Standardized</span><span class="p">,</span>
-<span class="p">)</span>  <span class="c1"># &quot;OCASPS&quot;</span>
-<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Currency</span><span class="p">)</span>                              <span class="c1"># &quot;IFXXXP&quot;</span>
-<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Commodity</span><span class="p">,</span> <span class="n">commodity_type</span><span class="o">=</span><span class="n">CommodityType</span><span class="o">.</span><span class="n">Agriculture</span><span class="p">)</span>  <span class="c1"># &quot;ITAXXX&quot;</span>
-<span class="n">build_cfi</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">&quot;F&quot;</span><span class="p">)</span>                                        <span class="c1"># &quot;SFXXXX&quot;</span>
-<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">&quot;open_short&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">side</span><span class="o">.</span><span class="n">value</span>                               <span class="c1"># &quot;Sell&quot;</span>
-<span class="n">SettlementStatus</span><span class="o">.</span><span class="n">Settled</span><span class="o">.</span><span class="n">value</span>                                             <span class="c1"># &quot;Settled&quot;</span>
+<span class="p">)</span>  <span class="c1"># "OCASPS"</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Currency</span><span class="p">)</span>                              <span class="c1"># "IFXXXP"</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">security_type</span><span class="o">=</span><span class="n">SecurityType</span><span class="o">.</span><span class="n">Commodity</span><span class="p">,</span> <span class="n">commodity_type</span><span class="o">=</span><span class="n">CommodityType</span><span class="o">.</span><span class="n">Agriculture</span><span class="p">)</span>  <span class="c1"># "ITAXXX"</span>
+<span class="n">build_cfi</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s2">"S"</span><span class="p">,</span> <span class="n">group</span><span class="o">=</span><span class="s2">"F"</span><span class="p">)</span>                                        <span class="c1"># "SFXXXX"</span>
+<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">"open_short"</span><span class="p">)</span><span class="o">.</span><span class="n">side</span><span class="o">.</span><span class="n">value</span>                               <span class="c1"># "Sell"</span>
+<span class="n">SettlementStatus</span><span class="o">.</span><span class="n">Settled</span><span class="o">.</span><span class="n">value</span>                                             <span class="c1"># "Settled"</span>
 
-<span class="n">Sector</span><span class="o">.</span><span class="n">InformationTechnology</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># &quot;InformationTechnology&quot;</span>
+<span class="n">Sector</span><span class="o">.</span><span class="n">InformationTechnology</span><span class="o">.</span><span class="n">value</span>   <span class="c1"># "InformationTechnology"</span>
 <span class="n">FundType</span><span class="o">.</span><span class="n">ETF</span> <span class="ow">is</span> <span class="n">FundType</span><span class="o">.</span><span class="n">ExchangeTradedFund</span>     <span class="c1"># True</span>
-<span class="n">FundType</span><span class="p">(</span><span class="s2">&quot;ETF&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>                           <span class="c1"># &quot;ExchangeTradedFund&quot;</span>
+<span class="n">FundType</span><span class="p">(</span><span class="s2">"ETF"</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>                           <span class="c1"># "ExchangeTradedFund"</span>
 
-<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;monthly&quot;</span><span class="p">)</span>             <span class="c1"># Frequency.Month</span>
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">"monthly"</span><span class="p">)</span>             <span class="c1"># Frequency.Month</span>
 <span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">periods_per_year</span>     <span class="c1"># 12</span>
-<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">polars_truncate</span>      <span class="c1"># &quot;1mo&quot;</span>
+<span class="n">Frequency</span><span class="o">.</span><span class="n">Month</span><span class="o">.</span><span class="n">polars_truncate</span>      <span class="c1"># "1mo"</span>
 </pre></div>
 </div>
 </section>
@@ -370,7 +370,7 @@ reference and recipes.</p>
 <p>The Rust crate is published as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> on crates.io and imported
 as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> in Rust code:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
-<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.7.0&quot;</span>
+<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.7.0"</span>
 </pre></div>
 </div>
 <div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
@@ -433,8 +433,8 @@ constants (<code class="docutils literal notranslate"><span class="pre">FE_&lt;F
 <p>These cover the <code class="docutils literal notranslate"><span class="pre">finance_enum!</span></code> families declared in <code class="docutils literal notranslate"><span class="pre">rust/src/data.rs</span></code>. The
 name-indexed <code class="docutils literal notranslate"><span class="pre">Currency</span></code> and <code class="docutils literal notranslate"><span class="pre">ExchangeCode</span></code> families remain runtime-only via the
 C ABI export, since they are generated from their own data tables.</p>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;finance_enums_generated.h&gt;</span><span class="c1">   // compile-time enum class</span>
-<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;finance_enums_convert.hpp&gt;</span><span class="c1">   // ordinal &lt;-&gt; enum helpers</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;finance_enums_generated.h&gt;</span><span class="w">   </span><span class="c1">// compile-time enum class</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;finance_enums_convert.hpp&gt;</span><span class="w">   </span><span class="c1">// ordinal &lt;-&gt; enum helpers</span>
 
 <span class="k">auto</span><span class="w"> </span><span class="n">sec</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fe</span><span class="o">::</span><span class="n">SecurityType</span><span class="o">::</span><span class="n">Equity</span><span class="p">;</span><span class="w">                 </span><span class="c1">// enum class, size_t underlying</span>
 <span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="w"> </span><span class="n">ord</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fe</span><span class="o">::</span><span class="n">convert</span><span class="o">::</span><span class="n">to_ordinal</span><span class="p">(</span><span class="n">sec</span><span class="p">);</span><span class="w">      </span><span class="c1">// round-trips to Python int()</span>
@@ -504,7 +504,7 @@ the consumer minor.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="c1">// C++ — RAII loader resolves and checks the version for you</span>
 <span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;finance_enums.hpp&gt;</span>
 
-<span class="n">fe</span><span class="o">::</span><span class="n">EnumLibrary</span><span class="w"> </span><span class="n">lib</span><span class="p">(</span><span class="s">&quot;./libfinance_enums.dylib&quot;</span><span class="p">);</span>
+<span class="n">fe</span><span class="o">::</span><span class="n">EnumLibrary</span><span class="w"> </span><span class="n">lib</span><span class="p">(</span><span class="s">"./libfinance_enums.dylib"</span><span class="p">);</span>
 <span class="n">lib</span><span class="p">.</span><span class="n">assert_abi_compatible</span><span class="p">();</span><span class="w">      </span><span class="c1">// throws std::runtime_error on mismatch</span>
 <span class="k">auto</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lib</span><span class="p">.</span><span class="n">abi_version</span><span class="p">();</span><span class="w">       </span><span class="c1">// fe::AbiVersion{major, minor, patch}</span>
 </pre></div>
@@ -550,10 +550,10 @@ public ABI changes.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Side</span></code> intentionally remains trade direction only: <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">Buy</span></code>, and <code class="docutils literal notranslate"><span class="pre">Sell</span></code>. Short-sale and cover semantics are represented by combining <code class="docutils literal notranslate"><span class="pre">Side</span></code> with <code class="docutils literal notranslate"><span class="pre">PositionEffect</span></code> and <code class="docutils literal notranslate"><span class="pre">PositionType</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">transaction_intent</span>
 
-<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">&quot;open_long&quot;</span><span class="p">)</span>   <span class="c1"># Buy + Open + Long</span>
-<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">&quot;close_long&quot;</span><span class="p">)</span>  <span class="c1"># Sell + Close + Long</span>
-<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">&quot;open_short&quot;</span><span class="p">)</span>  <span class="c1"># Sell + Open + Short</span>
-<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">&quot;cover_short&quot;</span><span class="p">)</span> <span class="c1"># Buy + Close + Short</span>
+<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">"open_long"</span><span class="p">)</span>   <span class="c1"># Buy + Open + Long</span>
+<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">"close_long"</span><span class="p">)</span>  <span class="c1"># Sell + Close + Long</span>
+<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">"open_short"</span><span class="p">)</span>  <span class="c1"># Sell + Open + Short</span>
+<span class="n">transaction_intent</span><span class="p">(</span><span class="s2">"cover_short"</span><span class="p">)</span> <span class="c1"># Buy + Close + Short</span>
 </pre></div>
 </div>
 <p>This follows the FIX-style separation between side/direction and position effect while giving downstream transaction schemas one canonical helper for common intents.</p>

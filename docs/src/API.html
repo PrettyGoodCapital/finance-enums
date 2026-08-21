@@ -388,9 +388,9 @@
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">Currency</span><span class="p">,</span> <span class="n">ExchangeCode</span><span class="p">,</span> <span class="n">Frequency</span><span class="p">,</span> <span class="n">to_frequency</span>
 
 <span class="n">Currency</span><span class="o">.</span><span class="n">USD</span><span class="o">.</span><span class="n">currency_name</span><span class="p">()</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;GBp&quot;</span><span class="p">)</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"GBp"</span><span class="p">)</span>
 <span class="n">ExchangeCode</span><span class="o">.</span><span class="n">XNYS</span><span class="o">.</span><span class="n">value</span>
-<span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;quarterly&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span>
+<span class="n">to_frequency</span><span class="p">(</span><span class="s2">"quarterly"</span><span class="p">)</span> <span class="o">==</span> <span class="n">Frequency</span><span class="o">.</span><span class="n">Quarter</span>
 </pre></div>
 </div>
 </section>
@@ -551,7 +551,7 @@ values when needed:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExchangeCode</span>
 
 <span class="nb">list</span><span class="p">(</span><span class="n">ExchangeCode</span><span class="o">.</span><span class="n">__members__</span><span class="p">)[:</span><span class="mi">10</span><span class="p">]</span>
-<span class="s2">&quot;FOREX&quot;</span> <span class="ow">in</span> <span class="n">ExchangeCode</span><span class="o">.</span><span class="n">__members__</span>
+<span class="s2">"FOREX"</span> <span class="ow">in</span> <span class="n">ExchangeCode</span><span class="o">.</span><span class="n">__members__</span>
 </pre></div>
 </div>
 </section>
@@ -580,9 +580,9 @@ values when needed:</p>
 </pre></div>
 </div>
 <p>Aliases are accepted by the enum constructor:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;USd&quot;</span><span class="p">)</span>   <span class="c1"># Currency.USX</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;EUr&quot;</span><span class="p">)</span>   <span class="c1"># Currency.EUX</span>
-<span class="n">Currency</span><span class="p">(</span><span class="s2">&quot;e-CNY&quot;</span><span class="p">)</span> <span class="c1"># Currency.ECNY</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Currency</span><span class="p">(</span><span class="s2">"USd"</span><span class="p">)</span>   <span class="c1"># Currency.USX</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"EUr"</span><span class="p">)</span>   <span class="c1"># Currency.EUX</span>
+<span class="n">Currency</span><span class="p">(</span><span class="s2">"e-CNY"</span><span class="p">)</span> <span class="c1"># Currency.ECNY</span>
 </pre></div>
 </div>
 </section>
@@ -591,7 +591,7 @@ values when needed:</p>
 <h2>Frequency helpers<a class="headerlink" href="#frequency-helpers" title="Link to this heading">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">Frequency</span><span class="p">,</span> <span class="n">to_frequency</span>
 
-<span class="n">freq</span> <span class="o">=</span> <span class="n">to_frequency</span><span class="p">(</span><span class="s2">&quot;monthly&quot;</span><span class="p">)</span>
+<span class="n">freq</span> <span class="o">=</span> <span class="n">to_frequency</span><span class="p">(</span><span class="s2">"monthly"</span><span class="p">)</span>
 <span class="n">freq</span><span class="o">.</span><span class="n">periods_per_year</span>
 <span class="n">freq</span><span class="o">.</span><span class="n">polars_truncate</span>
 </pre></div>
@@ -607,8 +607,8 @@ Polars-style bucket strings (<code class="docutils literal notranslate"><span cl
 <code class="docutils literal notranslate"><span class="pre">finance_enums::data</span></code>:</p>
 <div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::{</span><span class="n">Currency_VARIANTS</span><span class="p">,</span><span class="w"> </span><span class="n">ExchangeCode_VARIANTS</span><span class="p">};</span>
 
-<span class="fm">assert!</span><span class="p">(</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">&quot;XNYS&quot;</span><span class="p">));</span>
-<span class="fm">assert!</span><span class="p">(</span><span class="n">Currency_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">&quot;USD&quot;</span><span class="p">));</span>
+<span class="fm">assert!</span><span class="p">(</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">"XNYS"</span><span class="p">));</span>
+<span class="fm">assert!</span><span class="p">(</span><span class="n">Currency_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">"USD"</span><span class="p">));</span>
 </pre></div>
 </div>
 <p>The Rust crate is intentionally data-only for enum variants. Python enum
