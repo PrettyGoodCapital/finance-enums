@@ -60,12 +60,16 @@ jobs:
           persist-credentials: false
 
       - name: Setup Python
-        uses: actions-ext/python/setup@6e1b91a408ea89f49bc8aff8724f83826f7b5446
+        uses: actions-ext/python/setup@ec67f82b3bd863948308a41ecb9e70547cbb19c7
         with:
           version: ${{ matrix.python }}
 
       - name: Setup Rust
+<<<<<<< before updating
         uses: actions-ext/rust/setup@3de300f3071e758a1dd8545b884288a35e5d7f81
+=======
+        uses: actions-ext/rust/setup@0f0b7c9ab3cdb6e9a1f79e2147974d6762ddafea
+>>>>>>> after updating
 
       - name: Install dependencies
         run: make develop
@@ -169,7 +173,7 @@ jobs:
         if: matrix.target == 'native' && runner.os != 'Linux'
 
       - name: Test wheel
-        uses: actions-ext/python/test-wheel@6e1b91a408ea89f49bc8aff8724f83826f7b5446
+        uses: actions-ext/python/test-wheel@ec67f82b3bd863948308a41ecb9e70547cbb19c7
         with:
           module: finance_enums
         if: matrix.target == 'native' && runner.os == 'Linux'
@@ -185,7 +189,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
 
       - name: Test source distribution
-        uses: actions-ext/python/test-sdist@6e1b91a408ea89f49bc8aff8724f83826f7b5446
+        uses: actions-ext/python/test-sdist@ec67f82b3bd863948308a41ecb9e70547cbb19c7
         with:
           module: finance_enums
         if: matrix.name == 'ubuntu-latest'
