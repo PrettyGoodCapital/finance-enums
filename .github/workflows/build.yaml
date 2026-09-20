@@ -96,7 +96,7 @@ jobs:
       - name: Test pkg-config metadata
         run: PKG_CONFIG_PATH="${{ runner.temp }}/finance-enums-prefix/lib/pkgconfig" pkg-config --exists finance-enums
         shell: bash
-        if: matrix.os != 'windows-latest'
+        if: runner.os != 'Windows'
 
       - name: Build
         run: make build
@@ -182,7 +182,7 @@ jobs:
           FINANCE_ENUMS_SKIP_SHARED_LIBRARY=1 python -m build --wheel --no-isolation --outdir dist/split
           python scripts/smoke_test_wheel.py dist/split --split
         shell: bash
-        if: matrix.os == 'ubuntu-latest'
+        if: runner.os == 'Linux' && runner.arch == 'X64'
 
       - name: Test source distribution
         uses: actions-ext/python/test-sdist@ec67f82b3bd863948308a41ecb9e70547cbb19c7
