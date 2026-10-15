@@ -8,7 +8,7 @@ country / currency / exchange / schema / trading submodules.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from . import _finance_enums as _rust_enums
 from ._finance_enums import (
@@ -24,6 +24,10 @@ from ._finance_enums import (
     variant_name,
 )
 from .frequency import Frequency, to_frequency
+
+if TYPE_CHECKING:
+    # The families are built in Rust and installed below; the stub declares them for type checkers.
+    from ._enum_types import *
 
 __version__ = "0.7.0"
 

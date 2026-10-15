@@ -27,3 +27,10 @@ def test_reference_snapshot_diff_is_clean_for_checked_in_data():
     )
 
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def test_generated_enum_stub_is_up_to_date():
+    """The committed type stub must match a fresh regeneration from the native families."""
+    from finance_enums.gen_enum_stubs import generate_stub, stub_path
+
+    assert stub_path.read_text(encoding="utf-8") == generate_stub(), "run: python finance_enums/gen_enum_stubs.py"

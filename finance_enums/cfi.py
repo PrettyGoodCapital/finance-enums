@@ -60,6 +60,12 @@ class CFIClassification:
     commodity_type: CommodityType | None = None
     underlying_security_type: SecurityType | None = None
 
+    def to_code(self) -> str:
+        return build_cfi_from_classification(self)
+
+    def validate(self) -> CFIClassification:
+        return validate_cfi_classification(self)
+
 
 _EQUITY_GROUP_TO_TYPE = {
     "S": EquityType.Shares,
@@ -242,10 +248,11 @@ def _normalize_cfi_attributes(attributes: str | tuple[str, str, str, str] | None
         normalized = attributes.strip().upper()
         if len(normalized) != 4:
             raise ValueError("CFI attributes must be exactly 4 characters")
-        return tuple(normalized)  # type: ignore[return-value]
+        return (normalized[0], normalized[1], normalized[2], normalized[3])
     if len(attributes) != 4:
         raise ValueError("CFI attributes must contain exactly 4 characters")
-    return tuple(str(value).strip().upper() for value in attributes)
+    values = [str(value).strip().upper() for value in attributes]
+    return (values[0], values[1], values[2], values[3])
 
 
 def _resolve_underlying_asset_class(
@@ -642,15 +649,3 @@ def validate_cfi_classification(classification: CFIClassification) -> CFIClassif
         group=raw_code[1],
         attributes=tuple(raw_code[2:]),
     )
-
-
-def _cfi_classification_to_code(self):
-    return build_cfi_from_classification(self)
-
-
-def _cfi_classification_validate(self):
-    return validate_cfi_classification(self)
-
-
-CFIClassification.to_code = _cfi_classification_to_code  # type: ignore[attr-defined]
-CFIClassification.validate = _cfi_classification_validate  # type: ignore[attr-defined]

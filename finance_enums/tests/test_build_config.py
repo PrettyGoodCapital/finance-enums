@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
 
-try:
+if sys.version_info >= (3, 11):
     import tomllib
-except ModuleNotFoundError:  # pragma: no cover - Python < 3.11 fallback
+else:  # pragma: no cover - Python < 3.11 fallback
     import tomli as tomllib
 
 

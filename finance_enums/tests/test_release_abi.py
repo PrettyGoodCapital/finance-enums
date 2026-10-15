@@ -141,4 +141,6 @@ def test_new_mics_are_an_append_only_extension() -> None:
     assert _sha256_lines(variants[: snapshot["count"]]) == snapshot["sha256"]
     assert tuple(variants[snapshot["count"] :]) == NEW_ACTIVE_MICS
     for mic in NEW_ACTIVE_MICS:
-        assert fe.exchange_record(mic).is_official is True
+        record = fe.exchange_record(mic)
+        assert record is not None
+        assert record.is_official is True

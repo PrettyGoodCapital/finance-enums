@@ -33,7 +33,7 @@ def _active_mics() -> set[str]:
 def _iso4217_codes() -> set[str]:
     xml_text = _fetch_text("https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml")
     root = ET.fromstring(xml_text)
-    return {entry.findtext("Ccy") for entry in root.findall(".//CcyNtry") if entry.findtext("Ccy")}
+    return {code for entry in root.findall(".//CcyNtry") if (code := entry.findtext("Ccy"))}
 
 
 def _country_feeds() -> tuple[set[str], set[str]]:

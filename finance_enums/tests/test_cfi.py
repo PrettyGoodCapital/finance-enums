@@ -30,6 +30,7 @@ class TestCFI:
         classification = parse_cfi("ESVUFB")
 
         assert classification.security_type == SecurityType.Equity
+        assert classification.equity_type is not None
         assert classification.equity_type.name == "Shares"
         assert classification.attributes == ("V", "U", "F", "B")
 
@@ -241,7 +242,7 @@ class TestCFI:
         with pytest.raises(ValueError, match="exactly 4"):
             build_cfi(category="E", group="S", attributes="XXX")
         with pytest.raises(ValueError, match="contain exactly 4"):
-            build_cfi(category="E", group="S", attributes=("X", "X"))
+            build_cfi(category="E", group="S", attributes=("X", "X"))  # ty: ignore[invalid-argument-type]
 
     def test_cfi_typed_inputs_are_validated(self):
         with pytest.raises(ValueError, match="invalid security_type"):
@@ -295,9 +296,9 @@ class TestCFI:
 
         option = parse_cfi("OCASPS")
         with pytest.raises(TypeError, match="classification"):
-            build_cfi_from_classification("OCASPS")
+            build_cfi_from_classification("OCASPS")  # ty: ignore[invalid-argument-type]
         with pytest.raises(TypeError, match="classification"):
-            validate_cfi_classification("OCASPS")
+            validate_cfi_classification("OCASPS")  # ty: ignore[invalid-argument-type]
         with pytest.raises(ValueError, match="typed fields"):
             validate_cfi_classification(replace(option, option_type=OptionType.Put))
 
