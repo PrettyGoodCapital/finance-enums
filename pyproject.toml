@@ -174,12 +174,9 @@ skip = "*win32 *arm64"
 
 [tool.coverage.run]
 branch = true
-<<<<<<< before updating
-=======
 omit = [
     "finance_enums/tests/integration/*",
 ]
->>>>>>> after updating
 
 [tool.coverage.report]
 exclude_also = [
