@@ -10,7 +10,7 @@
 ###############################################################################
 cmake_minimum_required(VERSION 3.16)
 project(finance-enums
-  VERSION 0.7.0
+  VERSION 0.7.1
   DESCRIPTION "Standard financial enumerations"
   LANGUAGES NONE)
 

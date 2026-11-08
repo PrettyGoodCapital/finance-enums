@@ -82,7 +82,7 @@ pub const ENUM_ABI_VERSION_MAJOR: u32 = 0;
 /// Minor component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
 pub const ENUM_ABI_VERSION_MINOR: u32 = 7;
 /// Patch component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
-pub const ENUM_ABI_VERSION_PATCH: u32 = 0;
+pub const ENUM_ABI_VERSION_PATCH: u32 = 1;
 
 /// Returns `true` if a consumer built against `(consumer_major, consumer_minor)`
 /// can safely use a library exporting this data.

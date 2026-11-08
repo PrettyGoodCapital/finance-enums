@@ -36,7 +36,7 @@ extern "C" {
  */
 #define FINANCE_ENUMS_ABI_VERSION_MAJOR 0u
 #define FINANCE_ENUMS_ABI_VERSION_MINOR 7u
-#define FINANCE_ENUMS_ABI_VERSION_PATCH 0u
+#define FINANCE_ENUMS_ABI_VERSION_PATCH 1u
 
 typedef struct CurrencyRecordRaw {
     const char *code;

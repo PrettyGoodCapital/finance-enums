@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     # The families are built in Rust and installed below; the stub declares them for type checkers.
     from ._enum_types import *
 
-__version__ = "0.7.0"
+__version__ = "0.7.1"
 
 #: Semantic enum-data ABI version of the loaded native extension, as
 #: ``(major, minor, patch)``. See the "ABI compatibility" section of the README.
