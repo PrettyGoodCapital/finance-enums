@@ -18,4 +18,4 @@ default = []
 polars = ["dep:polars-core"]
 
 [dependencies]
-polars-core = { version = "0.46", optional = true, default-features = false, features = ["dtype-categorical"] }
+polars-core = { version = "0.55", optional = true, default-features = false, features = ["dtype-categorical"] }

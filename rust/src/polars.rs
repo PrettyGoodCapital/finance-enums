@@ -39,15 +39,9 @@ pub fn all_enum_dtypes() -> Vec<(&'static str, DataType)> {
 
 /// Build a `DataType::Enum` from a slice of variant strings.
 fn create_enum_dtype(variants: &[&str]) -> DataType {
-    let categories: Vec<Option<&str>> = variants.iter().map(|v| Some(*v)).collect();
-    let ca = StringChunked::from_iter_options(
-        PlSmallStr::from_static("category"),
-        categories.into_iter(),
-    );
-    // RevMapping::build_local expects the underlying Utf8ViewArray (Arrow)
-    let arr = ca.downcast_iter().next().unwrap().clone();
-    let rev_map = RevMapping::build_local(arr);
-    DataType::Enum(Some(Arc::new(rev_map)), CategoricalOrdering::Physical)
+    let categories =
+        FrozenCategories::new(variants.iter().copied()).expect("enum variants are unique");
+    DataType::from_frozen_categories(categories)
 }
 
 #[cfg(test)]
