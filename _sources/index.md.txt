@@ -144,21 +144,20 @@ reference and recipes.
 
 ### Rust crate
 
-The Rust crate is published as `finance_enums` on crates.io and imported
-as `finance_enums` in Rust code:
+The Rust data lives in the `finance_enums_core` crate (`rust/`). Releases
+through 0.7 published it as `finance_enums`.
 
 ```toml
 [dependencies]
-finance_enums = "0.7.0"
+finance_enums_core = "0.8"
 ```
 
 ```rust
-use finance_enums::data::ExchangeCode_VARIANTS;
+use finance_enums_core::data::ExchangeCode_VARIANTS;
 ```
 
-The Python package name is `finance-enums`; the Rust package uses an
-underscore because the original crates.io name cannot be renamed to the
-hyphenated spelling.
+The C ABI is a separate crate, `finance_enums_capi` (`rust/capi/`), which
+builds `libfinance_enums`.
 
 > [!NOTE]
 > This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
@@ -185,10 +184,11 @@ Exchange coverage is now backed by bundled ISO 10383 MIC records plus a small se
 
 `finance-enums` ships a versioned C ABI for immutable metadata and enum-family discovery.
 
-- The core Rust crate exports `finance_enums_currency_export_v1` and `finance_enums_exchange_export_v1`.
-- The core Rust crate also exports `finance_enums_enum_export_v1`, a flat enum-family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.
-- The public header lives at `finance_enums/include/finance_enums.h`; hatch-rs validates it as an expected artifact and wheel builds install it to `include/finance_enums/finance_enums.h`.
-- Wheels also bundle a standalone shared library inside `finance_enums/lib/` so downstream C or C++ code can link against the same versioned export surface.
+- `rust/capi` builds `libfinance_enums`, which exports `finance_enums_currency_export_v1`, `finance_enums_exchange_export_v1`, and `finance_enums_enum_export_v1`. The enum export is a flat family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.
+- cbindgen generates the public header `rust/capi/include/finance_enums.h` from the crate; the C++ wrappers (`finance_enums.hpp`, `finance_enums_convert.hpp`) and `finance_enums_generated.h` sit beside it.
+- The Python extension links against `libfinance_enums` and reads all of its data through the C ABI, so a process that loads both shares one copy of the tables.
+- Wheels ship the library under `finance_enums/lib/` and the headers under `finance_enums/include/finance_enums/`. Native code built against an installed wheel can use `finance_enums.get_include()`, `get_library_dirs()`, and `get_libraries()`.
+- Set `HATCH_RS_LIBRARY_SOURCE=external` to link the extension against an installed `libfinance-enums` (the conda split build), or `direct` to link the C ABI crate statically into the extension.
 - Python exposes the same schema as dataclasses through `enum_variant_records()` and `enum_family_schemas()`, and as deterministic JSON through `enum_schema_json()` for Arrow/JSON schema bridges.
 
 ### Compile-time enum headers
@@ -197,12 +197,12 @@ In addition to the runtime ABI, two header-only artifacts give C and C++
 consumers zero-overhead access to families known at compile time (no library
 load required):
 
-- `finance_enums/include/finance_enums_generated.h` — generated `typedef enum`
+- `finance_enums_generated.h` — generated `typedef enum`
   constants (`FE_<Family>_<Variant>`) plus `FE_<Family>_COUNT` and the
   `FE_ENUMS_ORDINAL_VALID(family, ordinal)` macro, and matching C++
   `enum class` definitions in `namespace fe`. Regenerate with
   `python finance_enums/gen_enums_header.py`.
-- `finance_enums/include/finance_enums_convert.hpp` — `constexpr` helpers in
+- `finance_enums_convert.hpp` — `constexpr` helpers in
   `fe::convert` (`to_ordinal`, `from_ordinal_unchecked`, `try_from_ordinal`,
   `checked_from_ordinal`) to move between an ordinal and a typed `fe::<Family>`.
 
@@ -249,8 +249,8 @@ assert_abi_compatible(0, 7)   # raises RuntimeError if incompatible
 
 ```rust
 // Rust
-use finance_enums::{abi_compatible, assert_abi_compatible};
-use finance_enums::{ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR};
+use finance_enums_core::{abi_compatible, assert_abi_compatible};
+use finance_enums_core::{ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR};
 
 assert!(abi_compatible(ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR));
 assert_abi_compatible(ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR); // panics if not
@@ -274,8 +274,8 @@ lib.assert_abi_compatible();      // throws std::runtime_error on mismatch
 auto v = lib.abi_version();       // fe::AbiVersion{major, minor, patch}
 ```
 
-The C / C++ paths need the shared library built once via `cargo build --release`
-in `rust/` (wheels bundle it under `finance_enums/lib/`).
+The C / C++ paths need the shared library, built with `make build-lib`
+(wheels bundle it under `finance_enums/lib/`).
 
 ### Package-manager builds
 

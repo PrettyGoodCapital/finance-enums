@@ -129,6 +129,10 @@ from finance_enums import (
    exchange_records_by_region,
    exchange_records_by_regulatory_flag,
    exchange_records_by_status,
+   get_include,
+   get_libraries,
+   get_library_dirs,
+   get_prefix,
    parse_cfi,
    to_frequency,
    transaction_intent,
@@ -307,11 +311,11 @@ ______________________________________________________________________
 
 ## Rust data access
 
-Rust consumers use the `finance_enums` crate and read static arrays from
-`finance_enums::data`:
+Rust consumers use the `finance_enums_core` crate and read static arrays from
+`finance_enums_core::data`:
 
 ```rust
-use finance_enums::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
+use finance_enums_core::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
 
 assert!(ExchangeCode_VARIANTS.contains(&"XNYS"));
 assert!(Currency_VARIANTS.contains(&"USD"));

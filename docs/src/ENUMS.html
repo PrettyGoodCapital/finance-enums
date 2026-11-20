@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Enums &#8212; finance enums v0.7.1</title>
+    <title>Enums &#8212; finance enums v0.8.0</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma.css?v=ca04d621" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma-code.css?v=a950e949" />
@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/fuma-fonts.css?v=c2892c73" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=88c24c6a" />
-    <script src="../../_static/documentation_options.js?v=5a057da9"></script>
+    <script src="../../_static/documentation_options.js?v=486e5634"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -49,7 +49,7 @@
   <div class="fd-subnav-inner">
     <button type="button" class="fd-icon-button fd-sidebar-toggle" aria-controls="fd-sidebar" aria-expanded="false" aria-label="Toggle navigation" title="Toggle navigation">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
-    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.7.1</span>
+    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
 </a>
 
     <div class="fd-nav-actions">
@@ -64,7 +64,7 @@
 
 <aside id="fd-sidebar" aria-label="Documentation">
   <div class="fd-sidebar-header">
-    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.7.1</span>
+    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
 </a>
       <button type="button" class="fd-icon-button fd-sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></button>
     </div>
@@ -173,14 +173,12 @@ member name:</p>
 </div>
 <p>Rust package:</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
-<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.3.0"</span>
+<span class="n">finance_enums_core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.8"</span>
 </pre></div>
 </div>
-<p>The Rust package name intentionally uses an underscore. The crate was
-first published as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code>, and crates.io does not allow that
-package identity to be renamed to <code class="docutils literal notranslate"><span class="pre">finance-enums</span></code>. Rust import paths also
-use underscores:</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
+<p>Releases through 0.7 published this crate as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code>. The C ABI
+library is built by the separate <code class="docutils literal notranslate"><span class="pre">finance_enums_capi</span></code> crate.</p>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums_core</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
 </pre></div>
 </div>
 </section>
@@ -252,10 +250,11 @@ importing Python enum objects can read the same data through either:</p>
 export without changing the meaning of version 1. The enum export is a
 flat family / variant table, which lets C and C++ consumers discover all
 Rust-backed enum values from the shared library.</p>
-<p>The public header lives at <code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums.h</span></code>.
-hatch-rs validates it as an expected artifact, and wheel builds install
-the header to <code class="docutils literal notranslate"><span class="pre">include/finance_enums/finance_enums.h</span></code> while bundling
-the standalone shared library under <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code>.</p>
+<p>cbindgen generates the public header <code class="docutils literal notranslate"><span class="pre">rust/capi/include/finance_enums.h</span></code>
+from the C ABI crate. Wheels ship it under
+<code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums/</span></code> (see <code class="docutils literal notranslate"><span class="pre">finance_enums.get_include()</span></code>)
+and bundle the shared library under <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code>. The Python
+extension itself links against that library.</p>
 <p>Python exposes the same vocabulary as <code class="docutils literal notranslate"><span class="pre">EnumVariantRecord</span></code> and
 <code class="docutils literal notranslate"><span class="pre">EnumFamilySchema</span></code> dataclasses through <code class="docutils literal notranslate"><span class="pre">enum_variant_records()</span></code> and
 <code class="docutils literal notranslate"><span class="pre">enum_family_schemas()</span></code>. <code class="docutils literal notranslate"><span class="pre">enum_schema_json()</span></code> emits deterministic JSON

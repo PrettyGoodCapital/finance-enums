@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>finance enums &#8212; finance enums v0.7.1</title>
+    <title>finance enums &#8212; finance enums v0.8.0</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/fuma.css?v=ca04d621" />
     <link rel="stylesheet" type="text/css" href="_static/fuma-code.css?v=a950e949" />
@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/fonts/fuma-fonts.css?v=c2892c73" />
     <link rel="stylesheet" type="text/css" href="_static/styles/custom.css?v=88c24c6a" />
-    <script src="_static/documentation_options.js?v=5a057da9"></script>
+    <script src="_static/documentation_options.js?v=486e5634"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
   <div class="fd-subnav-inner">
     <button type="button" class="fd-icon-button fd-sidebar-toggle" aria-controls="fd-sidebar" aria-expanded="false" aria-label="Toggle navigation" title="Toggle navigation">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
-    </button><a class="fd-brand" href="#"><span class="fd-brand-name">finance enums v0.7.1</span>
+    </button><a class="fd-brand" href="#"><span class="fd-brand-name">finance enums v0.8.0</span>
 </a>
 
     <div class="fd-nav-actions">
@@ -63,7 +63,7 @@
 
 <aside id="fd-sidebar" aria-label="Documentation">
   <div class="fd-sidebar-header">
-    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="#"><span class="fd-brand-name">finance enums v0.7.1</span>
+    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="#"><span class="fd-brand-name">finance enums v0.8.0</span>
 </a>
       <button type="button" class="fd-icon-button fd-sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></button>
     </div>
@@ -298,18 +298,17 @@ reference and recipes.</p>
 </section>
 <section id="rust-crate">
 <h3>Rust crate<a class="headerlink" href="#rust-crate" title="Link to this heading">¶</a></h3>
-<p>The Rust crate is published as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> on crates.io and imported
-as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> in Rust code:</p>
+<p>The Rust data lives in the <code class="docutils literal notranslate"><span class="pre">finance_enums_core</span></code> crate (<code class="docutils literal notranslate"><span class="pre">rust/</span></code>). Releases
+through 0.7 published it as <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code>.</p>
 <div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[dependencies]</span>
-<span class="n">finance_enums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.7.0"</span>
+<span class="n">finance_enums_core</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"0.8"</span>
 </pre></div>
 </div>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums_core</span><span class="p">::</span><span class="n">data</span><span class="p">::</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>The Python package name is <code class="docutils literal notranslate"><span class="pre">finance-enums</span></code>; the Rust package uses an
-underscore because the original crates.io name cannot be renamed to the
-hyphenated spelling.</p>
+<p>The C ABI is a separate crate, <code class="docutils literal notranslate"><span class="pre">finance_enums_capi</span></code> (<code class="docutils literal notranslate"><span class="pre">rust/capi/</span></code>), which
+builds <code class="docutils literal notranslate"><span class="pre">libfinance_enums</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This library was generated using <a class="reference external" href="https://copier.readthedocs.io/en/stable/">copier</a> from the <a class="reference external" href="https://github.com/python-project-templates/base">Base Python Project Template repository</a>.</p>
@@ -340,10 +339,11 @@ hyphenated spelling.</p>
 <h2>Native C ABI<a class="headerlink" href="#native-c-abi" title="Link to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">finance-enums</span></code> ships a versioned C ABI for immutable metadata and enum-family discovery.</p>
 <ul class="simple">
-<li><p>The core Rust crate exports <code class="docutils literal notranslate"><span class="pre">finance_enums_currency_export_v1</span></code> and <code class="docutils literal notranslate"><span class="pre">finance_enums_exchange_export_v1</span></code>.</p></li>
-<li><p>The core Rust crate also exports <code class="docutils literal notranslate"><span class="pre">finance_enums_enum_export_v1</span></code>, a flat enum-family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.</p></li>
-<li><p>The public header lives at <code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums.h</span></code>; hatch-rs validates it as an expected artifact and wheel builds install it to <code class="docutils literal notranslate"><span class="pre">include/finance_enums/finance_enums.h</span></code>.</p></li>
-<li><p>Wheels also bundle a standalone shared library inside <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code> so downstream C or C++ code can link against the same versioned export surface.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rust/capi</span></code> builds <code class="docutils literal notranslate"><span class="pre">libfinance_enums</span></code>, which exports <code class="docutils literal notranslate"><span class="pre">finance_enums_currency_export_v1</span></code>, <code class="docutils literal notranslate"><span class="pre">finance_enums_exchange_export_v1</span></code>, and <code class="docutils literal notranslate"><span class="pre">finance_enums_enum_export_v1</span></code>. The enum export is a flat family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.</p></li>
+<li><p>cbindgen generates the public header <code class="docutils literal notranslate"><span class="pre">rust/capi/include/finance_enums.h</span></code> from the crate; the C++ wrappers (<code class="docutils literal notranslate"><span class="pre">finance_enums.hpp</span></code>, <code class="docutils literal notranslate"><span class="pre">finance_enums_convert.hpp</span></code>) and <code class="docutils literal notranslate"><span class="pre">finance_enums_generated.h</span></code> sit beside it.</p></li>
+<li><p>The Python extension links against <code class="docutils literal notranslate"><span class="pre">libfinance_enums</span></code> and reads all of its data through the C ABI, so a process that loads both shares one copy of the tables.</p></li>
+<li><p>Wheels ship the library under <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code> and the headers under <code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums/</span></code>. Native code built against an installed wheel can use <code class="docutils literal notranslate"><span class="pre">finance_enums.get_include()</span></code>, <code class="docutils literal notranslate"><span class="pre">get_library_dirs()</span></code>, and <code class="docutils literal notranslate"><span class="pre">get_libraries()</span></code>.</p></li>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">HATCH_RS_LIBRARY_SOURCE=external</span></code> to link the extension against an installed <code class="docutils literal notranslate"><span class="pre">libfinance-enums</span></code> (the conda split build), or <code class="docutils literal notranslate"><span class="pre">direct</span></code> to link the C ABI crate statically into the extension.</p></li>
 <li><p>Python exposes the same schema as dataclasses through <code class="docutils literal notranslate"><span class="pre">enum_variant_records()</span></code> and <code class="docutils literal notranslate"><span class="pre">enum_family_schemas()</span></code>, and as deterministic JSON through <code class="docutils literal notranslate"><span class="pre">enum_schema_json()</span></code> for Arrow/JSON schema bridges.</p></li>
 </ul>
 <section id="compile-time-enum-headers">
@@ -352,12 +352,12 @@ hyphenated spelling.</p>
 consumers zero-overhead access to families known at compile time (no library
 load required):</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums_generated.h</span></code> — generated <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">enum</span></code>
+<li><p><code class="docutils literal notranslate"><span class="pre">finance_enums_generated.h</span></code> — generated <code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">enum</span></code>
 constants (<code class="docutils literal notranslate"><span class="pre">FE_&lt;Family&gt;_&lt;Variant&gt;</span></code>) plus <code class="docutils literal notranslate"><span class="pre">FE_&lt;Family&gt;_COUNT</span></code> and the
 <code class="docutils literal notranslate"><span class="pre">FE_ENUMS_ORDINAL_VALID(family,</span> <span class="pre">ordinal)</span></code> macro, and matching C++
 <code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">class</span></code> definitions in <code class="docutils literal notranslate"><span class="pre">namespace</span> <span class="pre">fe</span></code>. Regenerate with
 <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">finance_enums/gen_enums_header.py</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">finance_enums/include/finance_enums_convert.hpp</span></code> — <code class="docutils literal notranslate"><span class="pre">constexpr</span></code> helpers in
+<li><p><code class="docutils literal notranslate"><span class="pre">finance_enums_convert.hpp</span></code> — <code class="docutils literal notranslate"><span class="pre">constexpr</span></code> helpers in
 <code class="docutils literal notranslate"><span class="pre">fe::convert</span></code> (<code class="docutils literal notranslate"><span class="pre">to_ordinal</span></code>, <code class="docutils literal notranslate"><span class="pre">from_ordinal_unchecked</span></code>, <code class="docutils literal notranslate"><span class="pre">try_from_ordinal</span></code>,
 <code class="docutils literal notranslate"><span class="pre">checked_from_ordinal</span></code>) to move between an ordinal and a typed <code class="docutils literal notranslate"><span class="pre">fe::&lt;Family&gt;</span></code>.</p></li>
 </ul>
@@ -415,8 +415,8 @@ the consumer minor.</p>
 </pre></div>
 </div>
 <div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="c1">// Rust</span>
-<span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::{</span><span class="n">abi_compatible</span><span class="p">,</span><span class="w"> </span><span class="n">assert_abi_compatible</span><span class="p">};</span>
-<span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::{</span><span class="n">ENUM_ABI_VERSION_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">ENUM_ABI_VERSION_MINOR</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">finance_enums_core</span><span class="p">::{</span><span class="n">abi_compatible</span><span class="p">,</span><span class="w"> </span><span class="n">assert_abi_compatible</span><span class="p">};</span>
+<span class="k">use</span><span class="w"> </span><span class="n">finance_enums_core</span><span class="p">::{</span><span class="n">ENUM_ABI_VERSION_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">ENUM_ABI_VERSION_MINOR</span><span class="p">};</span>
 
 <span class="fm">assert!</span><span class="p">(</span><span class="n">abi_compatible</span><span class="p">(</span><span class="n">ENUM_ABI_VERSION_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">ENUM_ABI_VERSION_MINOR</span><span class="p">));</span>
 <span class="n">assert_abi_compatible</span><span class="p">(</span><span class="n">ENUM_ABI_VERSION_MAJOR</span><span class="p">,</span><span class="w"> </span><span class="n">ENUM_ABI_VERSION_MINOR</span><span class="p">);</span><span class="w"> </span><span class="c1">// panics if not</span>
@@ -438,8 +438,8 @@ the consumer minor.</p>
 <span class="k">auto</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lib</span><span class="p">.</span><span class="n">abi_version</span><span class="p">();</span><span class="w">       </span><span class="c1">// fe::AbiVersion{major, minor, patch}</span>
 </pre></div>
 </div>
-<p>The C / C++ paths need the shared library built once via <code class="docutils literal notranslate"><span class="pre">cargo</span> <span class="pre">build</span> <span class="pre">--release</span></code>
-in <code class="docutils literal notranslate"><span class="pre">rust/</span></code> (wheels bundle it under <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code>).</p>
+<p>The C / C++ paths need the shared library, built with <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">build-lib</span></code>
+(wheels bundle it under <code class="docutils literal notranslate"><span class="pre">finance_enums/lib/</span></code>).</p>
 </section>
 <section id="package-manager-builds">
 <h3>Package-manager builds<a class="headerlink" href="#package-manager-builds" title="Link to this heading">¶</a></h3>

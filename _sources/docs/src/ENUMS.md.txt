@@ -28,16 +28,14 @@ Rust package:
 
 ```toml
 [dependencies]
-finance_enums = "0.3.0"
+finance_enums_core = "0.8"
 ```
 
-The Rust package name intentionally uses an underscore. The crate was
-first published as `finance_enums`, and crates.io does not allow that
-package identity to be renamed to `finance-enums`. Rust import paths also
-use underscores:
+Releases through 0.7 published this crate as `finance_enums`. The C ABI
+library is built by the separate `finance_enums_capi` crate.
 
 ```rust
-use finance_enums::data::ExchangeCode_VARIANTS;
+use finance_enums_core::data::ExchangeCode_VARIANTS;
 ```
 
 ______________________________________________________________________
@@ -107,10 +105,11 @@ export without changing the meaning of version 1. The enum export is a
 flat family / variant table, which lets C and C++ consumers discover all
 Rust-backed enum values from the shared library.
 
-The public header lives at `finance_enums/include/finance_enums.h`.
-hatch-rs validates it as an expected artifact, and wheel builds install
-the header to `include/finance_enums/finance_enums.h` while bundling
-the standalone shared library under `finance_enums/lib/`.
+cbindgen generates the public header `rust/capi/include/finance_enums.h`
+from the C ABI crate. Wheels ship it under
+`finance_enums/include/finance_enums/` (see `finance_enums.get_include()`)
+and bundle the shared library under `finance_enums/lib/`. The Python
+extension itself links against that library.
 
 Python exposes the same vocabulary as `EnumVariantRecord` and
 `EnumFamilySchema` dataclasses through `enum_variant_records()` and
