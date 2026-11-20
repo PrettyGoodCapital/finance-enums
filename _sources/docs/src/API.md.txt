@@ -5,7 +5,6 @@
 ```python
 from finance_enums import (
    AccountType,
-   AggressorSide,
    AgricultureType,
    AllocationMethod,
    AmortizationType,
@@ -26,19 +25,16 @@ from finance_enums import (
    ContractUnit,
    CorporateActionAdjustmentType,
    CorporateActionType,
-   CountryCode,
-   CountryCode3,
-   CouponFrequency,
+   CountryCodeAlpha2,
+   CountryCodeAlpha3,
    CouponType,
    CrossType,
    Currency,
    CurrencyAliasRecord,
    CurrencyRecord,
    CurrencyRole,
-   MICMarketCategory,
    DayCountConvention,
    DelistingReason,
-   DeliveryType,
    DistributionPolicy,
    EnergyType,
    EquityType,
@@ -48,7 +44,6 @@ from finance_enums import (
    ExecutionType,
    ExerciseEventType,
    ExoticOptionFeature,
-   FailsReason,
    FinancingType,
    Frequency,
    FundSubType,
@@ -63,13 +58,13 @@ from finance_enums import (
    InventoryType,
    LegRole,
    LiquidityFlag,
-   LiquidityTerm,
    ListingStatus,
    MarginType,
+   MarketCategory,
    MarketState,
    MarketStatusReason,
    MarketType,
-   MetalsType,
+   MetalType,
    MutualFundEndedness,
    NettingType,
    OptionExerciseType,
@@ -86,15 +81,14 @@ from finance_enums import (
    QuantityUnit,
    QuoteCondition,
    RateIndex,
-   RebalanceFrequency,
-   RedemptionFrequency,
    RepoType,
-   ResetFrequency,
+   ScheduleFrequency,
    Sector,
    SegmentType,
    Seniority,
    SecurityStatus,
    SecurityType,
+   SettlementFailReason,
    SettlementStatus,
    SettlementType,
    ShareClassHedging,
@@ -109,11 +103,11 @@ from finance_enums import (
    TickerNamespace,
    TimeInForce,
    TradeCondition,
+   TradingPhase,
    TradingSession,
    TransactionIntent,
    UnderlyingAssetClass,
    VenueRegulatoryFlag,
-   VehicleWrapper,
    VenueType,
    build_cfi,
    build_cfi_from_classification,
@@ -224,21 +218,21 @@ str(Side.Buy)
 
 Generated enum classes:
 
-- Countries: `CountryCode`, `CountryCode3`
+- Countries: `CountryCodeAlpha2`, `CountryCodeAlpha3`
 - Currencies: `Currency`
-- Venues: `ExchangeCode`, `MICMarketCategory`, `VenueRegulatoryFlag`
-- Market structure: `VenueType`, `MarketType`, `TradingSession`, `MarketState`, `AuctionType`, `SegmentType`, `MarketStatusReason`
-- Identifier and notation: `IdentifierType`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
+- Venues: `ExchangeCode`, `MarketCategory`, `VenueRegulatoryFlag`
+- Market structure: `VenueType`, `MarketType`, `TradingSession`, `TradingPhase`, `MarketState`, `AuctionType`, `SegmentType`, `MarketStatusReason`
+- Identifier and notation: `IdentifierType`, `Symbology`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
 - Sectors: `Sector`, `IndustryGroup`, `Industry`, `SubIndustry`
-- Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureAssetClass`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
-- Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
-- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
-- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
-- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
-- Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
+- Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureAssetClass`, `SettlementType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
+- Fixed income and financing: `CouponType`, `ScheduleFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
+- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
+- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `CorporateActionAdjustmentType`, `CalculationAgentType`
+- Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `DistributionPolicy`, `ShareClassHedging`
 - Corporate actions and lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
 - Trading: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`
-- Market data: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
+- Market data: `QuoteCondition`, `TradeCondition`, `CrossType`, `PriceKind`, `PriceNotation`
 
 Exchange helpers now also support typed MIC category access through `ExchangeRecord.market_category()` / `ExchangeCode.market_category()`, standards-backed flags through `.regulatory_flags()`, and indexed lookups through `exchange_records_by_market_category_type()` and `exchange_records_by_regulatory_flag()`.
 
@@ -262,13 +256,13 @@ ______________________________________________________________________
 ## Country helpers
 
 ```python
-from finance_enums import CountryCode
+from finance_enums import CountryCodeAlpha2
 
-CountryCode.US.country_name()
-CountryCode.US.code3()
+CountryCodeAlpha2.US.country_name()
+CountryCodeAlpha2.US.alpha3()
 ```
 
-`CountryCode3` also exposes `.country_name()`.
+`CountryCodeAlpha3` also exposes `.country_name()`.
 
 ______________________________________________________________________
 

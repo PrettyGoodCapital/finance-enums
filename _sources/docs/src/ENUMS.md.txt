@@ -44,15 +44,15 @@ ______________________________________________________________________
 
 ## Country codes
 
-`CountryCode` represents ISO 3166-1 alpha-2 codes and `CountryCode3`
+`CountryCodeAlpha2` represents ISO 3166-1 alpha-2 codes and `CountryCodeAlpha3`
 represents ISO 3166-1 alpha-3 codes.
 
 ```python
-from finance_enums import CountryCode, CountryCode3
+from finance_enums import CountryCodeAlpha2, CountryCodeAlpha3
 
-CountryCode.US.country_name()  # "United States of America"
-CountryCode.US.code3()         # CountryCode3.USA
-CountryCode3.USA.country_name()
+CountryCodeAlpha2.US.country_name()  # "United States of America"
+CountryCodeAlpha2.US.alpha3()        # CountryCodeAlpha3.USA
+CountryCodeAlpha3.USA.country_name()
 ```
 
 The two country-code tables are kept aligned by Rust tests.
@@ -140,7 +140,7 @@ That keeps exchange discovery consistent between enum and calendar code.
 Typed MIC category helpers are also exposed for standards-backed venue
 classification:
 
-- `MICMarketCategory` captures the bundled MIC market-category codes as typed enums.
+- `MarketCategory` captures the bundled MIC market-category codes as typed enums.
 - `VenueRegulatoryFlag` exposes cross-cutting distinctions such as MTF, OTF, TRF, SEF, APA, and systematic internaliser.
 - `ExchangeRecord.market_category()` and `ExchangeCode.market_category()` resolve raw MIC codes into typed categories.
 - `exchange_records_by_market_category_type()` and `exchange_records_by_regulatory_flag()` provide indexed lookups on the same bundled metadata.
@@ -169,17 +169,17 @@ Security and instrument identifiers cover broad asset classes and nested
 subtypes:
 
 - Broad types: `SecurityType`, `InstrumentType`
-- Market structure: `VenueType`, `MarketType`, `TradingSession`, `MarketState`, `AuctionType`, `SegmentType`, `MarketStatusReason`
-- Identifier and notation: `IdentifierType`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
+- Market structure: `VenueType`, `MarketType`, `TradingSession`, `TradingPhase`, `MarketState`, `AuctionType`, `SegmentType`, `MarketStatusReason`
+- Identifier and notation: `IdentifierType`, `Symbology`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
 - Equity: `EquityType`
-- Options: `OptionType`, `OptionExerciseType`, `SettlementType`, `DeliveryType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`
+- Options: `OptionType`, `OptionExerciseType`, `SettlementType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`
 - Bonds: `BondType`
-- Commodities: `CommodityType`, `EnergyType`, `MetalsType`, `AgricultureType`
+- Commodities: `CommodityType`, `EnergyType`, `MetalType`, `AgricultureType`
 - Funds: `FundType`, `FundSubType`, `MutualFundEndedness`
 - Futures: `FutureAssetClass`, `SettlementType`, `ContractUnit`, `LegRole`
-- Fixed income and financing: `CouponType`, `CouponFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
-- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `ResetFrequency`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
-- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `RebalanceFrequency`, `CorporateActionAdjustmentType`, `CalculationAgentType`
+- Fixed income and financing: `CouponType`, `ScheduleFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
+- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 
 The taxonomy is deliberately descriptive rather than behavioral. It does
 not attempt to price or model instruments; it standardizes labels.
@@ -191,9 +191,9 @@ ______________________________________________________________________
 Shared post-trade and fund-operation vocabularies now include:
 
 - Portfolio and booking: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`
-- Fund and vehicle structure: `VehicleWrapper`, `DistributionPolicy`, `ShareClassHedging`, `LiquidityTerm`, `RedemptionFrequency`
+- Fund structure: `DistributionPolicy`, `ShareClassHedging`
 - Security lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
-- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `FailsReason`, `AllocationMethod`, `GiveUpType`
+- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
 
 These enums are intended for validation and shared schemas across
 execution, risk, portfolio, and reference-data workflows.
@@ -219,7 +219,7 @@ Trading workflow identifiers include:
 
 - Order workflow: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `OrderCapacity`, `PositionEffect`, `ShortSaleRestriction`
 - Venue and execution flags: `LiquidityFlag`, `OrderFlag`, `TimeInForce`
-- Market-data conditions: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
+- Market-data conditions: `QuoteCondition`, `TradeCondition`, `CrossType`, `PriceKind`, `PriceNotation`
 - Side: `Side`
 
 These enums are intended for validation and shared API contracts rather than order routing logic.
