@@ -1,6 +1,6 @@
 [package]
 name = "finance_enums_core"
-version = "0.8.0"
+version = "0.9.0"
 authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
 edition = "2021"
 license = "Apache-2.0"
@@ -18,7 +18,7 @@ default = []
 polars = ["dep:polars-core"]
 
 [dependencies]
-abi_safe_enum = { path = "abi_safe_enum", version = "0.8.0" }
+abi_safe_enum = { path = "abi_safe_enum", version = "0.9.0" }
 polars-core = { version = "0.55", optional = true, default-features = false, features = ["dtype-categorical"] }
 
 [workspace]

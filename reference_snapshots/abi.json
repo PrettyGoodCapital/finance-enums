@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "release": "0.8.0",
-  "semantic_abi": [0, 8, 0],
+  "release": "0.9.0",
+  "semantic_abi": [0, 9, 0],
   "family_count": 147,
   "variant_count": 5084,
   "enum_schema_sha256": "44e8c67279b9e882f6ac3f9213ddbe258fff67a6aad96ac322a59e029f9646b3",

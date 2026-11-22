@@ -49,7 +49,7 @@
 /**
  * Minor component of the semantic enum-data ABI version.
  */
-#define FINANCE_ENUMS_ABI_VERSION_MINOR 8
+#define FINANCE_ENUMS_ABI_VERSION_MINOR 9
 
 /**
  * Patch component of the semantic enum-data ABI version.

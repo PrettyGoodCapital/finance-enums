@@ -1,6 +1,6 @@
 [package]
 name = "finance_enums_capi"
-version = "0.8.0"
+version = "0.9.0"
 authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
 edition = "2021"
 license = "Apache-2.0"
@@ -15,7 +15,7 @@ path = "src/lib.rs"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-finance_enums_core = { path = "..", version = "0.8.0" }
+finance_enums_core = { path = "..", version = "0.9.0" }
 
 [build-dependencies]
 cbindgen = { version = "0.29", default-features = false }

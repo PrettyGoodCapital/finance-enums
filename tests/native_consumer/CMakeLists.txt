@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(finance-enums-consumer LANGUAGES C CXX)
 
-set(FINANCE_ENUMS_REQUIRED_VERSION "0.8" CACHE STRING "Required finance-enums version")
+set(FINANCE_ENUMS_REQUIRED_VERSION "0.9" CACHE STRING "Required finance-enums version")
 find_package(finance-enums ${FINANCE_ENUMS_REQUIRED_VERSION} CONFIG REQUIRED)
 
 add_executable(finance_enums_c ../../finance_enums/tests/ffi/test.c)

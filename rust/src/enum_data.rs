@@ -130,7 +130,7 @@ impl EnumFamilySpec {
 ///   metadata, display names, internal refactors).
 pub const ENUM_ABI_VERSION_MAJOR: u32 = 0;
 /// Minor component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
-pub const ENUM_ABI_VERSION_MINOR: u32 = 8;
+pub const ENUM_ABI_VERSION_MINOR: u32 = 9;
 /// Patch component of the enum-data ABI version. See [`ENUM_ABI_VERSION_MAJOR`].
 pub const ENUM_ABI_VERSION_PATCH: u32 = 0;
 

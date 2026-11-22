@@ -41,7 +41,7 @@ pub const FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION: u32 = 1;
 /// against the loaded library.
 pub const FINANCE_ENUMS_ABI_VERSION_MAJOR: u32 = 0;
 /// Minor component of the semantic enum-data ABI version.
-pub const FINANCE_ENUMS_ABI_VERSION_MINOR: u32 = 8;
+pub const FINANCE_ENUMS_ABI_VERSION_MINOR: u32 = 9;
 /// Patch component of the semantic enum-data ABI version.
 pub const FINANCE_ENUMS_ABI_VERSION_PATCH: u32 = 0;
 
