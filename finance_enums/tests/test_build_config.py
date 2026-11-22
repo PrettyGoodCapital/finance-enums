@@ -77,7 +77,9 @@ def test_cargo_crates_split_core_c_abi_and_extension():
     assert capi["lib"]["name"] == "finance_enums"
     assert "cdylib" in capi["lib"]["crate-type"]
     assert capi["dependencies"]["finance_enums_core"]["path"] == ".."
-    for crate in (extension, core, capi):
+    abi_safe_enum = _toml("rust/abi_safe_enum/Cargo.toml")
+    abi_safe_enum_macros = _toml("rust/abi_safe_enum_macros/Cargo.toml")
+    for crate in (extension, core, capi, abi_safe_enum, abi_safe_enum_macros):
         assert crate["package"]["version"] == core["package"]["version"]
 
 
