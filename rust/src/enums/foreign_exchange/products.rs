@@ -1,7 +1,19 @@
-//! Foreign exchange conventions.
+//! FX products, tenors, quoting, and fixings.
 
 use abi_safe_enum::abi_safe_enum;
 
+/// Foreign exchange products (FIX SecurityType FXSPOT, FXFWD, FXSWAP, FXNDF, FXNDS).
+#[abi_safe_enum]
+pub enum ForeignExchangeProductType {
+    Invalid = 0,
+    Spot,
+    OutrightForward,
+    Swap,
+    NonDeliverableForward,
+    NonDeliverableSwap,
+}
+
+/// Standard FX settlement tenors. There is no `Month12`: use `Year1`.
 #[abi_safe_enum]
 pub enum ForeignExchangeTenor {
     Invalid = 0,
@@ -57,4 +69,26 @@ pub enum ForeignExchangeTenor {
     InternationalMonetaryMarket2,
     InternationalMonetaryMarket3,
     InternationalMonetaryMarket4,
+    TomorrowNext,
+    BrokenDate,
+}
+
+/// How an exchange rate is quoted.
+#[abi_safe_enum]
+pub enum ForeignExchangeQuoteBasis {
+    Invalid = 0,
+    BaseCurrencyPerQuoteCurrency,
+    QuoteCurrencyPerBaseCurrency,
+}
+
+/// FX fixing benchmarks (FIX FXBenchmark).
+#[abi_safe_enum]
+pub enum ForeignExchangeBenchmark {
+    Invalid = 0,
+    WorldMarketsReuters,
+    Bloomberg,
+    EuropeanCentralBank,
+    CentralBank,
+    MitsubishiUfj,
+    Other,
 }

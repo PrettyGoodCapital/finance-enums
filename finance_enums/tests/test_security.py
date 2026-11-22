@@ -35,7 +35,7 @@ class TestSecurityType:
         assert len(OptionType) == 3
 
     def test_bond_type_basic(self):
-        assert len(BondType) == 4
+        assert len(BondType) == 12
 
     def test_commodity_type_basic(self):
         assert len(CommodityType) == 9
@@ -56,7 +56,7 @@ class TestSecurityType:
         assert len(OptionExerciseType) == 4
 
     def test_settlement_type_basic(self):
-        assert len(SettlementType) == 10
+        assert len(SettlementType) == 5
 
     def test_underlying_asset_class_basic(self):
         assert len(UnderlyingAssetClass) == 25

@@ -47,13 +47,12 @@ def _enum_variants(body):
 def parse_families():
     """``[(family, variants), ...]`` for the taxonomy families, without the ``Invalid`` sentinel."""
     enums_dir = root / "rust/src/enums"
-    modules = re.findall(r"^mod (\w+);", (enums_dir / "mod.rs").read_text(), re.MULTILINE)
 
     families = []
-    for module in modules:
-        if module == "country":
+    for path in sorted(enums_dir.rglob("*.rs")):
+        if path.relative_to(enums_dir).as_posix() == "reference/country.rs":
             continue
-        for name, body in _ENUM_RE.findall((enums_dir / f"{module}.rs").read_text()):
+        for name, body in _ENUM_RE.findall(path.read_text()):
             families.append((name, [variant for variant in _enum_variants(body) if variant != "Invalid"]))
     return families
 

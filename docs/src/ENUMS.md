@@ -177,8 +177,12 @@ subtypes:
 - Commodities: `CommodityType`, `EnergyType`, `MetalType`, `AgricultureType`
 - Funds: `FundType`, `FundSubType`, `MutualFundEndedness`
 - Futures: `FutureAssetClass`, `SettlementType`, `ContractUnit`, `LegRole`
-- Fixed income and financing: `CouponType`, `ScheduleFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
-- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Financing: `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
+- Swaps and structured products: `SwapType`, `SwapLegType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Rates and schedules: `DayCountConvention`, `BusinessDayConvention`, `RollConvention`, `StubType`, `ScheduleFrequency`, `PeriodUnit`, `PeriodTiming`, `RateIndex`, `CompoundingMethod`, `OvernightAccrualMethod`, `PriceIndexCalculationMethod`, `InterestRateSwapType`, `InterestRateProductType`, `SwaptionCashSettlementMethod`
+- Bonds and money markets: `BondType`, `IssuerType`, `CouponType`, `Seniority`, `RedemptionFeature`, `DebtGuaranteeType`, `AmortizationType`, `SecurityForm`, `AssetBackedCollateralType`, `MoneyMarketInstrumentType`, `YieldType`, `DurationType`
+- Credit: `RestructuringClause`, `CreditEventType`, `ObligationCategory`, `ObligationCharacteristic`, `CreditDefaultSwapTransactionType`, `CreditRatingAgency`, `CreditRatingOutlook`, `CreditQuality`
+- Foreign exchange: `ForeignExchangeProductType`, `ForeignExchangeTenor`, `ForeignExchangeQuoteBasis`, `ForeignExchangeBenchmark`, `ForeignExchangeDeltaConvention`, `ForeignExchangeAtTheMoneyConvention`, `ForeignExchangeVolatilityQuoteType`, `OptionStrikeQuoteBasis`, `OptionPremiumQuoteBasis`, `TouchType`, `PayoutTiming`
 - Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 
 The taxonomy is deliberately descriptive rather than behavioral. It does
@@ -193,7 +197,7 @@ Shared post-trade and fund-operation vocabularies now include:
 - Portfolio and booking: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`
 - Fund structure: `DistributionPolicy`, `ShareClassHedging`
 - Security lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
-- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
+- Post-trade and clearing: `SettlementType`, `DeliveryType`, `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
 
 These enums are intended for validation and shared schemas across
 execution, risk, portfolio, and reference-data workflows.
@@ -218,8 +222,8 @@ ______________________________________________________________________
 Trading workflow identifiers include:
 
 - Order workflow: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `OrderCapacity`, `PositionEffect`, `ShortSaleRestriction`
-- Venue and execution flags: `LiquidityFlag`, `OrderFlag`, `TimeInForce`
-- Market-data conditions: `QuoteCondition`, `TradeCondition`, `CrossType`, `PriceKind`, `PriceNotation`
+- Venue and execution flags: `LiquidityFlag`, `TimeInForce`
+- Market-data conditions: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
 - Side: `Side`
 
 These enums are intended for validation and shared API contracts rather than order routing logic.

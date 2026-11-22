@@ -32,7 +32,7 @@ def _enum_variants(body):
 
 def _rust_variant_values(name: str) -> list[str]:
     """Variant names of the ``#[abi_safe_enum]`` family ``name``, including its sentinel."""
-    for path in sorted((ROOT / "rust" / "src" / "enums").glob("*.rs")):
+    for path in sorted((ROOT / "rust" / "src" / "enums").rglob("*.rs")):
         for enum_name, body in _ENUM_RE.findall(path.read_text(encoding="utf-8")):
             if enum_name == name:
                 return _enum_variants(body)

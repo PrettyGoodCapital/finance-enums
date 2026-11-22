@@ -1,47 +1,6 @@
-//! Settlement, clearing, and allocation.
+//! Clearing and allocation.
 
 use abi_safe_enum::abi_safe_enum;
-
-#[abi_safe_enum]
-pub enum SettlementType {
-    Invalid = 0,
-    Physical,
-    Cash,
-    NonDeliverable,
-    ElectAtExercise,
-    DeliveryVersusPayment,
-    PaymentVersusPayment,
-    FreeOfPayment,
-    HoldInCustody,
-    TriParty,
-}
-
-#[abi_safe_enum]
-pub enum SettlementStatus {
-    Invalid = 0,
-    Pending,
-    Instructed,
-    Matched,
-    Unmatched,
-    Settled,
-    PartiallySettled,
-    Failed,
-    Canceled,
-}
-
-#[abi_safe_enum]
-pub enum SettlementFailReason {
-    Invalid = 0,
-    InsufficientSecurities,
-    InsufficientCash,
-    CounterpartyMismatch,
-    InstructionMismatch,
-    RegulatoryHold,
-    MarketDeadlineMissed,
-    CorporateAction,
-    SystemIssue,
-    Other,
-}
 
 #[abi_safe_enum]
 pub enum ClearingModel {

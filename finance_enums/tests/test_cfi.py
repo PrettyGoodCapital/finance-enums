@@ -6,6 +6,7 @@ from finance_enums import (
     BondType,
     CommodityType,
     ContractStyle,
+    DeliveryType,
     FinancingType,
     FundType,
     FutureAssetClass,
@@ -252,10 +253,18 @@ class TestCFI:
                 underlying_asset_class=UnderlyingAssetClass.Equity,
                 underlying_security_type=SecurityType.Currency,
             )
-        with pytest.raises(ValueError, match="settlement_type"):
+        with pytest.raises(ValueError, match="delivery_type"):
             build_cfi(
-                security_type=SecurityType.Future,
-                settlement_type=SettlementType.PaymentVersusPayment,
+                security_type=SecurityType.Financing,
+                financing_type=FinancingType.RepurchaseAgreement,
+                delivery_type=DeliveryType.PaymentVersusPayment,
+            )
+        with pytest.raises(ValueError, match="not both"):
+            build_cfi(
+                security_type=SecurityType.Financing,
+                financing_type=FinancingType.RepurchaseAgreement,
+                settlement_type=SettlementType.Cash,
+                delivery_type=DeliveryType.TriParty,
             )
         with pytest.raises(ValueError, match="swap_type"):
             build_cfi(security_type=SecurityType.Swap)
@@ -321,7 +330,12 @@ class TestCFI:
         {
             "security_type": SecurityType.Financing,
             "financing_type": FinancingType.RepurchaseAgreement,
-            "settlement_type": SettlementType.DeliveryVersusPayment,
+            "delivery_type": DeliveryType.DeliveryVersusPayment,
+        },
+        {
+            "security_type": SecurityType.Financing,
+            "financing_type": FinancingType.SecuritiesLending,
+            "settlement_type": SettlementType.Cash,
         },
         {"security_type": SecurityType.Forward, "underlying_security_type": SecurityType.Currency},
         {"security_type": SecurityType.Spread, "underlying_security_type": SecurityType.Commodity},

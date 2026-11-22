@@ -19,20 +19,7 @@ from finance_enums import (
 @pytest.mark.parametrize(
     ("enum_type", "expected_members"),
     [
-        (
-            SettlementType,
-            {
-                "Physical",
-                "Cash",
-                "NonDeliverable",
-                "ElectAtExercise",
-                "DeliveryVersusPayment",
-                "PaymentVersusPayment",
-                "FreeOfPayment",
-                "HoldInCustody",
-                "TriParty",
-            },
-        ),
+        (SettlementType, {"Physical", "Cash", "NonDeliverable", "ElectAtExercise"}),
         (SettlementStatus, {"Pending", "Matched", "Settled", "Failed", "PartiallySettled", "Canceled"}),
         (ClearingModel, {"Bilateral", "CentralCounterparty", "PrimeBroker", "AgentCleared"}),
         (

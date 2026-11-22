@@ -1,7 +1,6 @@
 import pytest
 
 from finance_enums import (
-    OrderFlag,
     OrderType,
     PositionEffect,
     PositionType,
@@ -14,18 +13,15 @@ from finance_enums import (
 
 class TestCurrency:
     def test_order_type_basic(self):
-        assert len(OrderType) == 8
+        assert len(OrderType) == 11
         assert {"StopLimit", "MarketOnClose", "LimitOnClose", "Pegged"}.issubset(OrderType.__members__)
 
     def test_side_basic(self):
         assert len(Side) == 3
 
     def test_time_in_force_basic(self):
-        assert len(TimeInForce) == 9
-        assert {"ImmediateOrCancel", "FillOrKill", "GoodTillDate", "AtOpen", "AtClose"}.issubset(TimeInForce.__members__)
-
-    def test_order_flag_basic(self):
-        assert len(OrderFlag) == 5
+        assert len(TimeInForce) == 12
+        assert {"ImmediateOrCancel", "FillOrKill", "GoodTillDate", "AtOpen", "AtClose", "GoodTillCrossing"}.issubset(TimeInForce.__members__)
 
 
 def test_side_remains_direction_only_without_position_intent_aliases():

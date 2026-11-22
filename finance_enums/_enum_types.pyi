@@ -13,6 +13,12 @@ class AccountType(IntEnum):
     Settlement = 5
     Omnibus = 6
 
+class AggressorSide(IntEnum):
+    Invalid = 0
+    Buy = 1
+    Sell = 2
+    NoAggressor = 3
+
 class AgricultureType(IntEnum):
     Invalid = 0
     Corn = 1
@@ -48,6 +54,15 @@ class AmortizationType(IntEnum):
     NegativeAmortization = 4
     SinkingFund = 5
     Accreting = 6
+
+class AssetBackedCollateralType(IntEnum):
+    Invalid = 0
+    HomeEquityLoan = 1
+    AutoLoan = 2
+    StudentLoan = 3
+    CreditCardReceivable = 4
+    Mortgage = 5
+    Other = 6
 
 class AuctionType(IntEnum):
     Invalid = 0
@@ -92,6 +107,17 @@ class BondType(IntEnum):
     Corporate = 1
     Government = 2
     Municipal = 3
+    Agency = 4
+    Supranational = 5
+    CoveredBond = 6
+    AssetBacked = 7
+    MortgageBacked = 8
+    Convertible = 9
+    StructuredNote = 10
+    CollateralizedDebtObligation = 11
+    ABS = 7
+    MBS = 8
+    CDO = 11
 
 class BookType(IntEnum):
     Invalid = 0
@@ -109,6 +135,16 @@ class BorrowType(IntEnum):
     MarginLoan = 3
     RepoBorrow = 4
     UnsecuredBorrow = 5
+
+class BusinessDayConvention(IntEnum):
+    Invalid = 0
+    Unadjusted = 1
+    Following = 2
+    ModifiedFollowing = 3
+    Preceding = 4
+    ModifiedPreceding = 5
+    Nearest = 6
+    FloatingRateNote = 7
 
 class CalculationAgentType(IntEnum):
     Invalid = 0
@@ -171,11 +207,9 @@ class CommodityType(IntEnum):
 
 class CompoundingMethod(IntEnum):
     Invalid = 0
-    Simple = 1
-    Compounded = 2
-    Averaged = 3
-    Flat = 4
-    Straight = 5
+    Straight = 2
+    Flat = 3
+    SpreadExclusive = 4
 
 class ContractStyle(IntEnum):
     Invalid = 0
@@ -731,14 +765,82 @@ class CouponType(IntEnum):
     StepUp = 4
     InflationLinked = 5
     PaymentInKind = 6
+    InverseFloating = 7
+    IndexLinked = 8
+    Structured = 9
+    StepDown = 10
+    InterestOnly = 11
+
+class CreditDefaultSwapTransactionType(IntEnum):
+    Invalid = 0
+    NorthAmericanCorporate = 1
+    EuropeanCorporate = 2
+    EuropeanFinancialCorporate = 3
+    WesternEuropeanSovereign = 4
+    EmergingEuropeanCorporate = 5
+    AsiaCorporate = 6
+    AsiaSovereign = 7
+    JapanCorporate = 8
+    JapanSovereign = 9
+    AustraliaCorporate = 10
+    LatinAmericaSovereign = 11
+    NewZealandCorporate = 12
+    SingaporeCorporate = 13
+
+class CreditEventType(IntEnum):
+    Invalid = 0
+    Bankruptcy = 1
+    FailureToPay = 2
+    Restructuring = 3
+    ObligationAcceleration = 4
+    ObligationDefault = 5
+    RepudiationMoratorium = 6
+    GovernmentalIntervention = 7
+    Writedown = 8
+    ImpliedWritedown = 9
+    MaturityExtension = 10
+    DistressedRatingsDowngrade = 11
+
+class CreditQuality(IntEnum):
+    Invalid = 0
+    InvestmentGrade = 1
+    HighYield = 2
+    Distressed = 3
+    Defaulted = 4
+
+class CreditRatingAgency(IntEnum):
+    Invalid = 0
+    StandardAndPoors = 1
+    Moodys = 2
+    Fitch = 3
+    DominionBondRatingService = 4
+    AmBest = 5
+    JapanCreditRatingAgency = 6
+    RatingAndInvestmentInformation = 7
+    KrollBondRatingAgency = 8
+    ScopeRatings = 9
+    SP = 1
+    DBRS = 4
+    JCR = 6
+    KBRA = 8
+
+class CreditRatingOutlook(IntEnum):
+    Invalid = 0
+    Positive = 1
+    Negative = 2
+    Stable = 3
+    Developing = 4
 
 class CrossType(IntEnum):
     Invalid = 0
-    Internal = 1
-    Exchange = 2
-    Broker = 3
-    OpeningAuction = 4
-    ClosingAuction = 5
+    AllOrNone = 1
+    ImmediateOrCancel = 2
+    OneSide = 3
+    SamePrice = 4
+    Basis = 5
+    Contingent = 6
+    VolumeWeightedAveragePrice = 7
+    CustomerToCustomer = 8
 
 class Currency(IntEnum):
     XXX = 0
@@ -942,16 +1044,44 @@ class CurrencyRole(IntEnum):
     Margin = 4
     ProfitAndLoss = 5
     Reporting = 6
+    Dealt = 7
+    Call = 8
+    Put = 9
+    Premium = 10
     PnL = 5
 
 class DayCountConvention(IntEnum):
     Invalid = 0
     Actual360 = 1
     Actual365Fixed = 2
-    ActualActual = 3
-    Thirty360 = 4
+    ActualActualIsda = 3
+    Thirty360Isda = 4
     Thirty360European = 5
     Business252 = 6
+    ActualActualIcma = 7
+    ActualActualAfb = 8
+    ActualActualYear = 9
+    Actual365Actual = 10
+    Actual365Leap = 11
+    Actual364 = 12
+    Actual36525 = 13
+    NoLeap360 = 14
+    NoLeap365 = 15
+    Thirty360UnitedStates = 16
+    Thirty360UnitedStatesEndOfMonth = 17
+    Thirty360PublicSecuritiesAssociation = 18
+    Thirty360EuropeanIsda = 19
+    Thirty360EuropeanPlus = 20
+    Thirty365European = 21
+    OneOne = 22
+
+class DebtGuaranteeType(IntEnum):
+    Invalid = 0
+    GovernmentGuaranteed = 1
+    JointlyGuaranteed = 2
+    Secured = 3
+    Unsecured = 4
+    NegativePledge = 5
 
 class DelistingReason(IntEnum):
     Invalid = 0
@@ -962,6 +1092,18 @@ class DelistingReason(IntEnum):
     Voluntary = 5
     FailureToMeetRequirements = 6
 
+class DeliveryType(IntEnum):
+    Invalid = 0
+    DeliveryVersusPayment = 1
+    FreeOfPayment = 2
+    PaymentVersusPayment = 3
+    TriParty = 4
+    HoldInCustody = 5
+    DeliverByValue = 6
+    DVP = 1
+    FOP = 2
+    PVP = 3
+
 class DistributionPolicy(IntEnum):
     Invalid = 0
     Accumulating = 1
@@ -969,6 +1111,12 @@ class DistributionPolicy(IntEnum):
     Income = 3
     Growth = 4
     Mixed = 5
+
+class DurationType(IntEnum):
+    Invalid = 0
+    Simple = 1
+    Macaulay = 2
+    Modified = 3
 
 class EnergyType(IntEnum):
     Invalid = 0
@@ -3871,12 +4019,6 @@ class ExchangeCode(IntEnum):
     def regulatory_flags(self) -> tuple[VenueRegulatoryFlag, ...]: ...
     def has_regulatory_flag(self, regulatory_flag: VenueRegulatoryFlag | str) -> bool: ...
 
-class ExecutionDisposition(IntEnum):
-    Invalid = 0
-    Regular = 1
-    Bust = 2
-    Correct = 3
-
 class ExecutionInstruction(IntEnum):
     Invalid = 0
     AllOrNone = 1
@@ -3887,6 +4029,15 @@ class ExecutionInstruction(IntEnum):
     StayOnBidSide = 6
     LastPeg = 7
     MidPricePeg = 8
+    Held = 9
+    NotHeld = 10
+    IntermarketSweep = 11
+    CancelOnTradingHalt = 12
+    ReinstateOnTradingHalt = 13
+    CancelOnConnectionLoss = 14
+    NoCross = 15
+    ExternalRoutingNotAllowed = 16
+    ImbalanceOnly = 17
 
 class ExecutionType(IntEnum):
     Invalid = 0
@@ -3898,6 +4049,15 @@ class ExecutionType(IntEnum):
     Expired = 6
     TradeCorrect = 7
     TradeCancel = 8
+    PendingNew = 9
+    PendingCancel = 10
+    PendingReplace = 11
+    Restated = 12
+    DoneForDay = 13
+    Suspended = 14
+    Stopped = 15
+    OrderStatus = 16
+    TriggeredOrActivatedBySystem = 17
 
 class ExerciseEventType(IntEnum):
     Invalid = 0
@@ -3939,6 +4099,47 @@ class FinancingType(IntEnum):
     LoanLease = 1
     RepurchaseAgreement = 2
     SecuritiesLending = 3
+
+class ForeignExchangeAtTheMoneyConvention(IntEnum):
+    Invalid = 0
+    Spot = 1
+    Forward = 2
+    DeltaNeutral = 3
+    PutCallFiftyDelta = 4
+
+class ForeignExchangeBenchmark(IntEnum):
+    Invalid = 0
+    WorldMarketsReuters = 1
+    Bloomberg = 2
+    EuropeanCentralBank = 3
+    CentralBank = 4
+    MitsubishiUfj = 5
+    Other = 6
+    WMR = 1
+    BFIX = 2
+    ECB = 3
+
+class ForeignExchangeDeltaConvention(IntEnum):
+    Invalid = 0
+    Spot = 1
+    Forward = 2
+    PremiumAdjustedSpot = 3
+    PremiumAdjustedForward = 4
+
+class ForeignExchangeProductType(IntEnum):
+    Invalid = 0
+    Spot = 1
+    OutrightForward = 2
+    Swap = 3
+    NonDeliverableForward = 4
+    NonDeliverableSwap = 5
+    NDF = 4
+    NDS = 5
+
+class ForeignExchangeQuoteBasis(IntEnum):
+    Invalid = 0
+    BaseCurrencyPerQuoteCurrency = 1
+    QuoteCurrencyPerBaseCurrency = 2
 
 class ForeignExchangeTenor(IntEnum):
     Invalid = 0
@@ -3994,6 +4195,14 @@ class ForeignExchangeTenor(IntEnum):
     InternationalMonetaryMarket2 = 50
     InternationalMonetaryMarket3 = 51
     InternationalMonetaryMarket4 = 52
+    TomorrowNext = 53
+    BrokenDate = 54
+
+class ForeignExchangeVolatilityQuoteType(IntEnum):
+    Invalid = 0
+    AtTheMoney = 1
+    RiskReversal = 2
+    Butterfly = 3
 
 class FundSubType(IntEnum):
     Invalid = 0
@@ -4219,6 +4428,26 @@ class InstrumentType(IntEnum):
     Pair = 10
     Basket = 11
 
+class InterestRateProductType(IntEnum):
+    Invalid = 0
+    Swap = 1
+    ForwardRateAgreement = 2
+    Cap = 3
+    Floor = 4
+    Collar = 5
+    Swaption = 6
+    Future = 7
+
+class InterestRateSwapType(IntEnum):
+    Invalid = 0
+    FixedForFloating = 1
+    Basis = 2
+    OvernightIndex = 3
+    CrossCurrency = 4
+    ZeroCouponInflation = 5
+    YearOnYearInflation = 6
+    Amortizing = 7
+
 class InventoryType(IntEnum):
     Invalid = 0
     Available = 1
@@ -4227,6 +4456,19 @@ class InventoryType(IntEnum):
     Lent = 4
     Encumbered = 5
     PendingSettlement = 6
+
+class IssuerType(IntEnum):
+    Invalid = 0
+    Sovereign = 1
+    CentralBank = 2
+    QuasiGovernment = 3
+    RegionalGovernment = 4
+    LocalGovernment = 5
+    Supranational = 6
+    Corporate = 7
+    FinancialInstitution = 8
+    SpecialPurposeVehicle = 9
+    Fund = 10
 
 class LegRole(IntEnum):
     Invalid = 0
@@ -4241,7 +4483,9 @@ class LiquidityFlag(IntEnum):
     Removed = 2
     RoutedOut = 3
     Auction = 4
-    Neutral = 6
+    Neutral = 5
+    TriggeredStopOrder = 6
+    TriggeredMarketOrder = 7
 
 class ListingStatus(IntEnum):
     Invalid = 0
@@ -4290,6 +4534,9 @@ class MarketState(IntEnum):
     Closed = 2
     Halted = 3
     Suspended = 4
+    Outage = 5
+    PartialOutage = 6
+    Delayed = 7
 
 class MarketStatusReason(IntEnum):
     Invalid = 0
@@ -4332,6 +4579,22 @@ class MetalType(IntEnum):
     Cobalt = 12
     Iron = 13
 
+class MoneyMarketInstrumentType(IntEnum):
+    Invalid = 0
+    TreasuryBill = 1
+    CommercialPaper = 2
+    CertificateOfDeposit = 3
+    BankersAcceptance = 4
+    MediumTermNote = 5
+    TimeDeposit = 6
+    PromissoryNote = 7
+    BankNote = 8
+    EuroCommercialPaper = 9
+    CP = 2
+    CD = 3
+    ECP = 9
+    MTN = 5
+
 class MutualFundEndedness(IntEnum):
     Invalid = 0
     OpenEnded = 1
@@ -4344,11 +4607,51 @@ class NettingType(IntEnum):
     Portfolio = 4
     CrossProduct = 5
 
+class ObligationCategory(IntEnum):
+    Invalid = 0
+    Payment = 1
+    BorrowedMoney = 2
+    ReferenceObligationsOnly = 3
+    Bond = 4
+    Loan = 5
+    BondOrLoan = 6
+
+class ObligationCharacteristic(IntEnum):
+    Invalid = 0
+    NotSubordinated = 1
+    SpecifiedCurrency = 2
+    NotSovereignLender = 3
+    NotDomesticCurrency = 4
+    NotDomesticLaw = 5
+    Listed = 6
+    NotDomesticIssuance = 7
+    NotContingent = 8
+    AssignableLoan = 9
+    ConsentRequiredLoan = 10
+    DirectLoanParticipation = 11
+    Transferable = 12
+    MaximumMaturity = 13
+    AcceleratedOrMatured = 14
+    NotBearer = 15
+
 class OptionExerciseType(IntEnum):
     Invalid = 0
     American = 1
     European = 2
     Bermudan = 3
+
+class OptionPremiumQuoteBasis(IntEnum):
+    Invalid = 0
+    PercentageOfCallCurrencyAmount = 1
+    PercentageOfPutCurrencyAmount = 2
+    CallCurrencyPerPutCurrency = 3
+    PutCurrencyPerCallCurrency = 4
+    Explicit = 5
+
+class OptionStrikeQuoteBasis(IntEnum):
+    Invalid = 0
+    PutCurrencyPerCallCurrency = 1
+    CallCurrencyPerPutCurrency = 2
 
 class OptionType(IntEnum):
     Invalid = 0
@@ -4362,12 +4665,8 @@ class OrderCapacity(IntEnum):
     RisklessPrincipal = 3
     Proprietary = 4
     MarketMaker = 5
-
-class OrderFlag(IntEnum):
-    Invalid = 0
-    FillOrKill = 2
-    AllOrNone = 3
-    ImmediateOrCancel = 4
+    Individual = 6
+    MixedCapacity = 7
 
 class OrderSide(IntEnum):
     Invalid = 0
@@ -4375,6 +4674,8 @@ class OrderSide(IntEnum):
     Sell = 2
     SellShort = 3
     BuyToCover = 4
+    Cross = 5
+    Undisclosed = 6
 
 class OrderStatus(IntEnum):
     Invalid = 0
@@ -4387,6 +4688,9 @@ class OrderStatus(IntEnum):
     Expired = 7
     Suspended = 8
     PendingCancel = 9
+    PendingReplace = 10
+    DoneForDay = 11
+    Stopped = 12
 
 class OrderType(IntEnum):
     Invalid = 0
@@ -4397,12 +4701,39 @@ class OrderType(IntEnum):
     MarketOnClose = 5
     LimitOnClose = 6
     Pegged = 7
+    MarketIfTouched = 8
+    MarketToLimit = 9
+    TrailingStop = 10
+
+class OvernightAccrualMethod(IntEnum):
+    Invalid = 0
+    Compounded = 1
+    OvernightCompoundedAnnualRate = 2
+    Averaged = 3
+    AveragedDaily = 4
 
 class PayoffStyle(IntEnum):
     Invalid = 0
     Linear = 1
     Optional = 2
     Binary = 3
+
+class PayoutTiming(IntEnum):
+    Invalid = 0
+    Immediate = 1
+    Deferred = 2
+
+class PeriodTiming(IntEnum):
+    Invalid = 0
+    PeriodStart = 1
+    PeriodEnd = 2
+
+class PeriodUnit(IntEnum):
+    Invalid = 0
+    Day = 1
+    Week = 2
+    Month = 3
+    Year = 4
 
 class PositionEffect(IntEnum):
     Invalid = 0
@@ -4419,6 +4750,12 @@ class PositionType(IntEnum):
     Flat = 3
     Net = 4
     Gross = 5
+
+class PriceIndexCalculationMethod(IntEnum):
+    Invalid = 0
+    Monthly = 1
+    Interpolated = 2
+    InterpolatedJapan = 3
 
 class PriceKind(IntEnum):
     Invalid = 0
@@ -4444,6 +4781,10 @@ class PriceNotation(IntEnum):
     Percentage = 10
     CleanPrice = 11
     DirtyPrice = 12
+    Discount = 13
+    Premium = 14
+    UpfrontPoints = 15
+    PercentageOfNotional = 16
 
 class QuantityUnit(IntEnum):
     Invalid = 0
@@ -4468,7 +4809,7 @@ class QuoteCondition(IntEnum):
 class RateIndex(IntEnum):
     Invalid = 0
     SecuredOvernightFinancingRate = 1
-    FedFunds = 2
+    EffectiveFederalFundsRate = 2
     EuroShortTermRate = 3
     SterlingOvernightIndexAverage = 4
     EuroInterbankOfferedRate = 5
@@ -4476,12 +4817,26 @@ class RateIndex(IntEnum):
     SwissAverageRateOvernight = 7
     ConsumerPriceIndex = 8
     SOFR = 1
+    FedFunds = 2
+    EFFR = 2
     ESTR = 3
     SONIA = 4
     EURIBOR = 5
     TONAR = 6
     SARON = 7
     CPI = 8
+
+class RedemptionFeature(IntEnum):
+    Invalid = 0
+    Callable = 1
+    Puttable = 2
+    Convertible = 3
+    Exchangeable = 4
+    ContingentConvertible = 5
+    Sinkable = 6
+    Extendible = 7
+    Perpetual = 8
+    MakeWholeCallable = 9
 
 class RepoType(IntEnum):
     Invalid = 0
@@ -4491,6 +4846,65 @@ class RepoType(IntEnum):
     Open = 4
     Term = 5
     Evergreen = 6
+
+class RestructuringClause(IntEnum):
+    Invalid = 0
+    NoRestructuring = 1
+    FullRestructuring = 2
+    ModifiedRestructuring = 3
+    ModifiedModifiedRestructuring = 4
+    XR = 1
+    CR = 2
+    MR = 3
+    MM = 4
+
+class RollConvention(IntEnum):
+    Invalid = 0
+    EndOfMonth = 2
+    InternationalMoneyMarket = 3
+    InternationalMoneyMarketAustralia = 4
+    InternationalMoneyMarketCanada = 5
+    InternationalMoneyMarketNewZealand = 6
+    SydneyFuturesExchange = 7
+    TreasuryBill = 8
+    FloatingRateNote = 9
+    DayOfMonth1 = 10
+    DayOfMonth2 = 11
+    DayOfMonth3 = 12
+    DayOfMonth4 = 13
+    DayOfMonth5 = 14
+    DayOfMonth6 = 15
+    DayOfMonth7 = 16
+    DayOfMonth8 = 17
+    DayOfMonth9 = 18
+    DayOfMonth10 = 19
+    DayOfMonth11 = 20
+    DayOfMonth12 = 21
+    DayOfMonth13 = 22
+    DayOfMonth14 = 23
+    DayOfMonth15 = 24
+    DayOfMonth16 = 25
+    DayOfMonth17 = 26
+    DayOfMonth18 = 27
+    DayOfMonth19 = 28
+    DayOfMonth20 = 29
+    DayOfMonth21 = 30
+    DayOfMonth22 = 31
+    DayOfMonth23 = 32
+    DayOfMonth24 = 33
+    DayOfMonth25 = 34
+    DayOfMonth26 = 35
+    DayOfMonth27 = 36
+    DayOfMonth28 = 37
+    DayOfMonth29 = 38
+    DayOfMonth30 = 39
+    Monday = 40
+    Tuesday = 41
+    Wednesday = 42
+    Thursday = 43
+    Friday = 44
+    Saturday = 45
+    Sunday = 46
 
 class ScheduleFrequency(IntEnum):
     Invalid = 0
@@ -4502,6 +4916,10 @@ class ScheduleFrequency(IntEnum):
     Annual = 6
     AtMaturity = 7
     AdHoc = 8
+    Biweekly = 9
+    EveryFourWeeks = 10
+    EveryTwoMonths = 11
+    EveryFourMonths = 12
 
 class Sector(IntEnum):
     Invalid = 0
@@ -4516,6 +4934,12 @@ class Sector(IntEnum):
     CommunicationServices = 9
     Utilities = 10
     RealEstate = 11
+
+class SecurityForm(IntEnum):
+    Invalid = 0
+    Bearer = 1
+    Registered = 2
+    BearerOrRegistered = 3
 
 class SecurityStatus(IntEnum):
     Invalid = 0
@@ -4564,6 +4988,10 @@ class Seniority(IntEnum):
     Subordinated = 4
     JuniorSubordinated = 5
     Preferred = 6
+    SeniorNonPreferred = 7
+    LowerTierTwoSubordinated = 8
+    UpperTierTwoSubordinated = 9
+    TierOneSubordinated = 10
 
 class SettlementFailReason(IntEnum):
     Invalid = 0
@@ -4594,11 +5022,6 @@ class SettlementType(IntEnum):
     Cash = 2
     NonDeliverable = 3
     ElectAtExercise = 4
-    DeliveryVersusPayment = 5
-    PaymentVersusPayment = 6
-    FreeOfPayment = 7
-    HoldInCustody = 8
-    TriParty = 9
 
 class ShareClassHedging(IntEnum):
     Invalid = 0
@@ -4636,6 +5059,9 @@ class StubType(IntEnum):
     ShortBack = 3
     LongFront = 4
     LongBack = 5
+    SmartFront = 6
+    SmartBack = 7
+    Both = 8
 
 class StyleFactor(IntEnum):
     Invalid = 0
@@ -4836,6 +5262,7 @@ class SwapLegType(IntEnum):
     Commodity = 6
     ForeignExchange = 7
     Basis = 8
+    Overnight = 9
 
 class SwapType(IntEnum):
     Invalid = 0
@@ -4845,6 +5272,13 @@ class SwapType(IntEnum):
     Credit = 4
     ForeignExchange = 5
     Other = 6
+
+class SwaptionCashSettlementMethod(IntEnum):
+    Invalid = 0
+    CashPrice = 1
+    ParYield = 2
+    ZeroCouponYield = 3
+    CollateralizedCashPrice = 4
 
 class Symbology(IntEnum):
     Invalid = 0
@@ -4895,6 +5329,16 @@ class TimeInForce(IntEnum):
     GoodTillDate = 6
     AtOpen = 7
     AtClose = 8
+    GoodForAuction = 9
+    GoodTillCrossing = 10
+    AtCrossing = 11
+
+class TouchType(IntEnum):
+    Invalid = 0
+    OneTouch = 1
+    NoTouch = 2
+    DoubleOneTouch = 3
+    DoubleNoTouch = 4
 
 class TradeCondition(IntEnum):
     Invalid = 0
@@ -4987,3 +5431,34 @@ class VenueType(IntEnum):
     ElectronicCommunicationNetwork = 6
     Dealer = 7
     RequestForQuote = 8
+
+class YieldType(IntEnum):
+    Invalid = 0
+    AfterTaxYield = 1
+    AnnualYield = 2
+    YieldAtIssue = 3
+    YieldToAverageMaturity = 4
+    BookYield = 5
+    YieldToNextCall = 6
+    YieldChangeSinceClose = 7
+    CompoundYield = 8
+    CurrentYield = 9
+    TrueGrossYield = 10
+    YieldWithInflationAssumption = 11
+    InverseFloaterBondYield = 12
+    MostRecentClosingYield = 13
+    YieldToLongestAverageLife = 14
+    MarkToMarketYield = 15
+    YieldToMaturity = 16
+    YieldToNextRefund = 17
+    OpenAverageYield = 18
+    PreviousCloseYield = 19
+    ProceedsYield = 20
+    YieldToNextPut = 21
+    SemiAnnualYield = 22
+    YieldToShortestAverageLife = 23
+    SimpleYield = 24
+    TaxEquivalentYield = 25
+    YieldToTenderDate = 26
+    TrueYield = 27
+    YieldToWorst = 28

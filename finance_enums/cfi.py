@@ -28,6 +28,7 @@ FundType = _int_enums.FundType
 MutualFundEndedness = _int_enums.MutualFundEndedness
 FutureAssetClass = _int_enums.FutureAssetClass
 SettlementType = _int_enums.SettlementType
+DeliveryType = _int_enums.DeliveryType
 UnderlyingAssetClass = _int_enums.UnderlyingAssetClass
 ContractStyle = _int_enums.ContractStyle
 SwapType = _int_enums.SwapType
@@ -51,6 +52,7 @@ class CFIClassification:
     mutual_fund_endedness: MutualFundEndedness | None = None
     future_asset_class: FutureAssetClass | None = None
     settlement_type: SettlementType | None = None
+    delivery_type: DeliveryType | None = None
     underlying_asset_class: UnderlyingAssetClass | None = None
     contract_style: ContractStyle | None = None
     swap_type: SwapType | None = None
@@ -96,17 +98,21 @@ _DERIVATIVE_DELIVERY_ATTR_TO_TYPE = {
     "E": SettlementType.ElectAtExercise,
 }
 _DERIVATIVE_DELIVERY_TYPE_TO_ATTR = {value: key for key, value in _DERIVATIVE_DELIVERY_ATTR_TO_TYPE.items()}
-_FINANCING_DELIVERY_ATTR_TO_TYPE = {
+# The financing delivery attribute mixes the two axes: P/C/N give the settlement
+# method and D/F/H/T give the delivery type.
+_FINANCING_SETTLEMENT_ATTR_TO_TYPE = {
     "P": SettlementType.Physical,
     "C": SettlementType.Cash,
     "N": SettlementType.NonDeliverable,
-    "D": SettlementType.DeliveryVersusPayment,
-    "F": SettlementType.FreeOfPayment,
-    "H": SettlementType.HoldInCustody,
-    "T": SettlementType.TriParty,
+}
+_FINANCING_SETTLEMENT_TYPE_TO_ATTR = {value: key for key, value in _FINANCING_SETTLEMENT_ATTR_TO_TYPE.items()}
+_FINANCING_DELIVERY_ATTR_TO_TYPE = {
+    "D": DeliveryType.DeliveryVersusPayment,
+    "F": DeliveryType.FreeOfPayment,
+    "H": DeliveryType.HoldInCustody,
+    "T": DeliveryType.TriParty,
 }
 _FINANCING_DELIVERY_TYPE_TO_ATTR = {value: key for key, value in _FINANCING_DELIVERY_ATTR_TO_TYPE.items()}
-_CFI_SETTLEMENT_TYPES = set(_DERIVATIVE_DELIVERY_TYPE_TO_ATTR) | set(_FINANCING_DELIVERY_TYPE_TO_ATTR)
 _CONTRACT_STYLE_TO_ATTR = {
     ContractStyle.Standardized: "S",
     ContractStyle.NonStandardized: "N",
@@ -281,6 +287,7 @@ def parse_cfi(code: str) -> CFIClassification:
     mutual_fund_endedness = None
     future_asset_class = None
     settlement_type = None
+    delivery_type = None
     underlying_asset_class = None
     contract_style = None
     swap_type = None
@@ -354,7 +361,8 @@ def parse_cfi(code: str) -> CFIClassification:
         security_type = SecurityType.Financing
         instrument_type = InstrumentType.Financing
         financing_type = _FINANCING_GROUP_TO_TYPE.get(group)
-        settlement_type = _FINANCING_DELIVERY_ATTR_TO_TYPE.get(attributes[3])
+        settlement_type = _FINANCING_SETTLEMENT_ATTR_TO_TYPE.get(attributes[3])
+        delivery_type = _FINANCING_DELIVERY_ATTR_TO_TYPE.get(attributes[3])
     elif category == "K":
         security_type = SecurityType.Spread
         instrument_type = InstrumentType.Spread
@@ -393,6 +401,7 @@ def parse_cfi(code: str) -> CFIClassification:
         mutual_fund_endedness=mutual_fund_endedness,
         future_asset_class=future_asset_class,
         settlement_type=settlement_type,
+        delivery_type=delivery_type,
         underlying_asset_class=underlying_asset_class,
         contract_style=contract_style,
         swap_type=swap_type,
@@ -415,6 +424,7 @@ def build_cfi(
     mutual_fund_endedness: MutualFundEndedness | str | None = None,
     future_asset_class: FutureAssetClass | str | None = None,
     settlement_type: SettlementType | str | None = None,
+    delivery_type: DeliveryType | str | None = None,
     underlying_asset_class: UnderlyingAssetClass | str | None = None,
     contract_style: ContractStyle | str | None = None,
     swap_type: SwapType | str | None = None,
@@ -434,14 +444,15 @@ def build_cfi(
     mutual_fund_endedness = _coerce_enum(MutualFundEndedness, mutual_fund_endedness, "mutual_fund_endedness")
     future_asset_class = _coerce_enum(FutureAssetClass, future_asset_class, "future_asset_class")
     settlement_type = _coerce_enum(SettlementType, settlement_type, "settlement_type")
+    delivery_type = _coerce_enum(DeliveryType, delivery_type, "delivery_type")
     underlying_asset_class = _coerce_enum(UnderlyingAssetClass, underlying_asset_class, "underlying_asset_class")
     contract_style = _coerce_enum(ContractStyle, contract_style, "contract_style")
     swap_type = _coerce_enum(SwapType, swap_type, "swap_type")
     underlying_security_type = _coerce_enum(SecurityType, underlying_security_type, "underlying_security_type")
 
     underlying_asset_class = _resolve_underlying_asset_class(underlying_asset_class, underlying_security_type)
-    if settlement_type is not None and settlement_type not in _CFI_SETTLEMENT_TYPES:
-        raise ValueError(f"settlement_type {settlement_type.name} is not supported by CFI delivery attributes")
+    if delivery_type is not None and delivery_type not in _FINANCING_DELIVERY_TYPE_TO_ATTR:
+        raise ValueError(f"delivery_type {delivery_type.name} is not supported by CFI delivery attributes")
 
     if category is not None or group is not None or attributes is not None:
         if category is None or group is None:
@@ -524,7 +535,9 @@ def build_cfi(
     if security_type == SecurityType.Financing:
         if financing_type is None:
             raise ValueError("financing_type is required when building a financing CFI")
-        delivery_attr = _FINANCING_DELIVERY_TYPE_TO_ATTR.get(settlement_type, "X")
+        if settlement_type is not None and delivery_type is not None:
+            raise ValueError("a financing CFI holds either settlement_type or delivery_type, not both")
+        delivery_attr = _FINANCING_SETTLEMENT_TYPE_TO_ATTR.get(settlement_type) or _FINANCING_DELIVERY_TYPE_TO_ATTR.get(delivery_type, "X")
         return f"L{_FINANCING_TYPE_TO_GROUP[financing_type]}XXX{delivery_attr}"
 
     if security_type == SecurityType.Forward:
@@ -567,6 +580,7 @@ def build_cfi_from_classification(classification: CFIClassification) -> str:
                 mutual_fund_endedness=classification.mutual_fund_endedness,
                 future_asset_class=classification.future_asset_class,
                 settlement_type=classification.settlement_type,
+                delivery_type=classification.delivery_type,
                 underlying_asset_class=classification.underlying_asset_class,
                 contract_style=classification.contract_style,
                 swap_type=classification.swap_type,

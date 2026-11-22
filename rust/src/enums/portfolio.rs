@@ -1,4 +1,4 @@
-//! Accounts, books, positions, and fund share classes.
+//! Accounts, books, and positions.
 
 use abi_safe_enum::abi_safe_enum;
 
@@ -64,24 +64,4 @@ pub enum NettingType {
     Multilateral,
     Portfolio,
     CrossProduct,
-}
-
-#[abi_safe_enum]
-pub enum DistributionPolicy {
-    Invalid = 0,
-    Accumulating,
-    Distributing,
-    Income,
-    Growth,
-    Mixed,
-}
-
-#[abi_safe_enum]
-pub enum ShareClassHedging {
-    Invalid = 0,
-    Unhedged,
-    CurrencyHedged,
-    DurationHedged,
-    CommodityHedged,
-    PartialHedged,
 }

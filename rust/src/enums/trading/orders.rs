@@ -1,4 +1,4 @@
-//! Orders, executions, and market-data conditions.
+//! Order terms and instructions.
 
 use abi_safe_enum::abi_safe_enum;
 
@@ -12,6 +12,9 @@ pub enum OrderType {
     MarketOnClose,
     LimitOnClose,
     Pegged,
+    MarketIfTouched,
+    MarketToLimit,
+    TrailingStop,
 }
 
 #[abi_safe_enum]
@@ -26,6 +29,9 @@ pub enum OrderStatus {
     Expired,
     Suspended,
     PendingCancel,
+    PendingReplace,
+    DoneForDay,
+    Stopped,
 }
 
 #[abi_safe_enum]
@@ -35,6 +41,8 @@ pub enum OrderSide {
     Sell,
     SellShort,
     BuyToCover,
+    Cross,
+    Undisclosed,
 }
 
 #[abi_safe_enum]
@@ -45,15 +53,6 @@ pub enum Side {
 }
 
 #[abi_safe_enum]
-pub enum OrderFlag {
-    Invalid = 0,
-    None,
-    FillOrKill,
-    AllOrNone,
-    ImmediateOrCancel,
-}
-
-#[abi_safe_enum]
 pub enum OrderCapacity {
     Invalid = 0,
     Agency,
@@ -61,6 +60,8 @@ pub enum OrderCapacity {
     RisklessPrincipal,
     Proprietary,
     MarketMaker,
+    Individual,
+    MixedCapacity,
 }
 
 #[abi_safe_enum]
@@ -74,19 +75,9 @@ pub enum TimeInForce {
     GoodTillDate,
     AtOpen,
     AtClose,
-}
-
-#[abi_safe_enum]
-pub enum ExecutionType {
-    Invalid = 0,
-    New,
-    Trade,
-    Canceled,
-    Replaced,
-    Rejected,
-    Expired,
-    TradeCorrect,
-    TradeCancel,
+    GoodForAuction,
+    GoodTillCrossing,
+    AtCrossing,
 }
 
 #[abi_safe_enum]
@@ -100,25 +91,15 @@ pub enum ExecutionInstruction {
     StayOnBidSide,
     LastPeg,
     MidPricePeg,
-}
-
-#[abi_safe_enum]
-pub enum ExecutionDisposition {
-    Invalid = 0,
-    Regular,
-    Bust,
-    Correct,
-}
-
-#[abi_safe_enum]
-pub enum LiquidityFlag {
-    Invalid = 0,
-    Added,
-    Removed,
-    RoutedOut,
-    Auction,
-    None,
-    Neutral,
+    Held,
+    NotHeld,
+    IntermarketSweep,
+    CancelOnTradingHalt,
+    ReinstateOnTradingHalt,
+    CancelOnConnectionLoss,
+    NoCross,
+    ExternalRoutingNotAllowed,
+    ImbalanceOnly,
 }
 
 #[abi_safe_enum]
@@ -139,45 +120,4 @@ pub enum ShortSaleRestriction {
     UptickRule,
     LocateRequired,
     BorrowRequired,
-}
-
-#[abi_safe_enum]
-pub enum QuoteCondition {
-    Invalid = 0,
-    Regular,
-    Indicative,
-    Manual,
-    FastTrading,
-    SlowTrading,
-    Closed,
-}
-
-#[abi_safe_enum]
-pub enum TradeCondition {
-    Invalid = 0,
-    Regular,
-    Auction,
-    AveragePrice,
-    Block,
-    DerivativelyPriced,
-    PriorReferencePrice,
-    OutOfSequence,
-    Canceled,
-}
-
-#[abi_safe_enum]
-pub enum CrossType {
-    Invalid = 0,
-    Internal,
-    Exchange,
-    Broker,
-    OpeningAuction,
-    ClosingAuction,
-}
-
-#[abi_safe_enum]
-pub enum TickDirection {
-    Invalid = 0,
-    Up,
-    Down,
 }

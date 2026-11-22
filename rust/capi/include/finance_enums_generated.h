@@ -19,6 +19,13 @@ typedef enum {
 } FE_AccountType;
 
 typedef enum {
+    FE_AggressorSide_Invalid = 0,
+    FE_AggressorSide_Buy = 1,
+    FE_AggressorSide_Sell = 2,
+    FE_AggressorSide_NoAggressor = 3
+} FE_AggressorSide;
+
+typedef enum {
     FE_AgricultureType_Invalid = 0,
     FE_AgricultureType_Corn = 1,
     FE_AgricultureType_Wheat = 2,
@@ -54,6 +61,16 @@ typedef enum {
     FE_AmortizationType_SinkingFund = 5,
     FE_AmortizationType_Accreting = 6
 } FE_AmortizationType;
+
+typedef enum {
+    FE_AssetBackedCollateralType_Invalid = 0,
+    FE_AssetBackedCollateralType_HomeEquityLoan = 1,
+    FE_AssetBackedCollateralType_AutoLoan = 2,
+    FE_AssetBackedCollateralType_StudentLoan = 3,
+    FE_AssetBackedCollateralType_CreditCardReceivable = 4,
+    FE_AssetBackedCollateralType_Mortgage = 5,
+    FE_AssetBackedCollateralType_Other = 6
+} FE_AssetBackedCollateralType;
 
 typedef enum {
     FE_AuctionType_Invalid = 0,
@@ -100,7 +117,15 @@ typedef enum {
     FE_BondType_Invalid = 0,
     FE_BondType_Corporate = 1,
     FE_BondType_Government = 2,
-    FE_BondType_Municipal = 3
+    FE_BondType_Municipal = 3,
+    FE_BondType_Agency = 4,
+    FE_BondType_Supranational = 5,
+    FE_BondType_CoveredBond = 6,
+    FE_BondType_AssetBacked = 7,
+    FE_BondType_MortgageBacked = 8,
+    FE_BondType_Convertible = 9,
+    FE_BondType_StructuredNote = 10,
+    FE_BondType_CollateralizedDebtObligation = 11
 } FE_BondType;
 
 typedef enum {
@@ -121,6 +146,17 @@ typedef enum {
     FE_BorrowType_RepoBorrow = 4,
     FE_BorrowType_UnsecuredBorrow = 5
 } FE_BorrowType;
+
+typedef enum {
+    FE_BusinessDayConvention_Invalid = 0,
+    FE_BusinessDayConvention_Unadjusted = 1,
+    FE_BusinessDayConvention_Following = 2,
+    FE_BusinessDayConvention_ModifiedFollowing = 3,
+    FE_BusinessDayConvention_Preceding = 4,
+    FE_BusinessDayConvention_ModifiedPreceding = 5,
+    FE_BusinessDayConvention_Nearest = 6,
+    FE_BusinessDayConvention_FloatingRateNote = 7
+} FE_BusinessDayConvention;
 
 typedef enum {
     FE_CalculationAgentType_Invalid = 0,
@@ -181,11 +217,10 @@ typedef enum {
 
 typedef enum {
     FE_CompoundingMethod_Invalid = 0,
-    FE_CompoundingMethod_Simple = 1,
-    FE_CompoundingMethod_Compounded = 2,
-    FE_CompoundingMethod_Averaged = 3,
-    FE_CompoundingMethod_Flat = 4,
-    FE_CompoundingMethod_Straight = 5
+    FE_CompoundingMethod_None = 1,
+    FE_CompoundingMethod_Straight = 2,
+    FE_CompoundingMethod_Flat = 3,
+    FE_CompoundingMethod_SpreadExclusive = 4
 } FE_CompoundingMethod;
 
 typedef enum {
@@ -743,16 +778,85 @@ typedef enum {
     FE_CouponType_Zero = 3,
     FE_CouponType_StepUp = 4,
     FE_CouponType_InflationLinked = 5,
-    FE_CouponType_PaymentInKind = 6
+    FE_CouponType_PaymentInKind = 6,
+    FE_CouponType_InverseFloating = 7,
+    FE_CouponType_IndexLinked = 8,
+    FE_CouponType_Structured = 9,
+    FE_CouponType_StepDown = 10,
+    FE_CouponType_InterestOnly = 11
 } FE_CouponType;
 
 typedef enum {
+    FE_CreditDefaultSwapTransactionType_Invalid = 0,
+    FE_CreditDefaultSwapTransactionType_NorthAmericanCorporate = 1,
+    FE_CreditDefaultSwapTransactionType_EuropeanCorporate = 2,
+    FE_CreditDefaultSwapTransactionType_EuropeanFinancialCorporate = 3,
+    FE_CreditDefaultSwapTransactionType_WesternEuropeanSovereign = 4,
+    FE_CreditDefaultSwapTransactionType_EmergingEuropeanCorporate = 5,
+    FE_CreditDefaultSwapTransactionType_AsiaCorporate = 6,
+    FE_CreditDefaultSwapTransactionType_AsiaSovereign = 7,
+    FE_CreditDefaultSwapTransactionType_JapanCorporate = 8,
+    FE_CreditDefaultSwapTransactionType_JapanSovereign = 9,
+    FE_CreditDefaultSwapTransactionType_AustraliaCorporate = 10,
+    FE_CreditDefaultSwapTransactionType_LatinAmericaSovereign = 11,
+    FE_CreditDefaultSwapTransactionType_NewZealandCorporate = 12,
+    FE_CreditDefaultSwapTransactionType_SingaporeCorporate = 13
+} FE_CreditDefaultSwapTransactionType;
+
+typedef enum {
+    FE_CreditEventType_Invalid = 0,
+    FE_CreditEventType_Bankruptcy = 1,
+    FE_CreditEventType_FailureToPay = 2,
+    FE_CreditEventType_Restructuring = 3,
+    FE_CreditEventType_ObligationAcceleration = 4,
+    FE_CreditEventType_ObligationDefault = 5,
+    FE_CreditEventType_RepudiationMoratorium = 6,
+    FE_CreditEventType_GovernmentalIntervention = 7,
+    FE_CreditEventType_Writedown = 8,
+    FE_CreditEventType_ImpliedWritedown = 9,
+    FE_CreditEventType_MaturityExtension = 10,
+    FE_CreditEventType_DistressedRatingsDowngrade = 11
+} FE_CreditEventType;
+
+typedef enum {
+    FE_CreditQuality_Invalid = 0,
+    FE_CreditQuality_InvestmentGrade = 1,
+    FE_CreditQuality_HighYield = 2,
+    FE_CreditQuality_Distressed = 3,
+    FE_CreditQuality_Defaulted = 4
+} FE_CreditQuality;
+
+typedef enum {
+    FE_CreditRatingAgency_Invalid = 0,
+    FE_CreditRatingAgency_StandardAndPoors = 1,
+    FE_CreditRatingAgency_Moodys = 2,
+    FE_CreditRatingAgency_Fitch = 3,
+    FE_CreditRatingAgency_DominionBondRatingService = 4,
+    FE_CreditRatingAgency_AmBest = 5,
+    FE_CreditRatingAgency_JapanCreditRatingAgency = 6,
+    FE_CreditRatingAgency_RatingAndInvestmentInformation = 7,
+    FE_CreditRatingAgency_KrollBondRatingAgency = 8,
+    FE_CreditRatingAgency_ScopeRatings = 9
+} FE_CreditRatingAgency;
+
+typedef enum {
+    FE_CreditRatingOutlook_Invalid = 0,
+    FE_CreditRatingOutlook_Positive = 1,
+    FE_CreditRatingOutlook_Negative = 2,
+    FE_CreditRatingOutlook_Stable = 3,
+    FE_CreditRatingOutlook_Developing = 4
+} FE_CreditRatingOutlook;
+
+typedef enum {
     FE_CrossType_Invalid = 0,
-    FE_CrossType_Internal = 1,
-    FE_CrossType_Exchange = 2,
-    FE_CrossType_Broker = 3,
-    FE_CrossType_OpeningAuction = 4,
-    FE_CrossType_ClosingAuction = 5
+    FE_CrossType_AllOrNone = 1,
+    FE_CrossType_ImmediateOrCancel = 2,
+    FE_CrossType_OneSide = 3,
+    FE_CrossType_SamePrice = 4,
+    FE_CrossType_Basis = 5,
+    FE_CrossType_Contingent = 6,
+    FE_CrossType_VolumeWeightedAveragePrice = 7,
+    FE_CrossType_CustomerToCustomer = 8
 } FE_CrossType;
 
 typedef enum {
@@ -953,18 +1057,47 @@ typedef enum {
     FE_CurrencyRole_Settlement = 3,
     FE_CurrencyRole_Margin = 4,
     FE_CurrencyRole_ProfitAndLoss = 5,
-    FE_CurrencyRole_Reporting = 6
+    FE_CurrencyRole_Reporting = 6,
+    FE_CurrencyRole_Dealt = 7,
+    FE_CurrencyRole_Call = 8,
+    FE_CurrencyRole_Put = 9,
+    FE_CurrencyRole_Premium = 10
 } FE_CurrencyRole;
 
 typedef enum {
     FE_DayCountConvention_Invalid = 0,
     FE_DayCountConvention_Actual360 = 1,
     FE_DayCountConvention_Actual365Fixed = 2,
-    FE_DayCountConvention_ActualActual = 3,
-    FE_DayCountConvention_Thirty360 = 4,
+    FE_DayCountConvention_ActualActualIsda = 3,
+    FE_DayCountConvention_Thirty360Isda = 4,
     FE_DayCountConvention_Thirty360European = 5,
-    FE_DayCountConvention_Business252 = 6
+    FE_DayCountConvention_Business252 = 6,
+    FE_DayCountConvention_ActualActualIcma = 7,
+    FE_DayCountConvention_ActualActualAfb = 8,
+    FE_DayCountConvention_ActualActualYear = 9,
+    FE_DayCountConvention_Actual365Actual = 10,
+    FE_DayCountConvention_Actual365Leap = 11,
+    FE_DayCountConvention_Actual364 = 12,
+    FE_DayCountConvention_Actual36525 = 13,
+    FE_DayCountConvention_NoLeap360 = 14,
+    FE_DayCountConvention_NoLeap365 = 15,
+    FE_DayCountConvention_Thirty360UnitedStates = 16,
+    FE_DayCountConvention_Thirty360UnitedStatesEndOfMonth = 17,
+    FE_DayCountConvention_Thirty360PublicSecuritiesAssociation = 18,
+    FE_DayCountConvention_Thirty360EuropeanIsda = 19,
+    FE_DayCountConvention_Thirty360EuropeanPlus = 20,
+    FE_DayCountConvention_Thirty365European = 21,
+    FE_DayCountConvention_OneOne = 22
 } FE_DayCountConvention;
+
+typedef enum {
+    FE_DebtGuaranteeType_Invalid = 0,
+    FE_DebtGuaranteeType_GovernmentGuaranteed = 1,
+    FE_DebtGuaranteeType_JointlyGuaranteed = 2,
+    FE_DebtGuaranteeType_Secured = 3,
+    FE_DebtGuaranteeType_Unsecured = 4,
+    FE_DebtGuaranteeType_NegativePledge = 5
+} FE_DebtGuaranteeType;
 
 typedef enum {
     FE_DelistingReason_Invalid = 0,
@@ -977,6 +1110,16 @@ typedef enum {
 } FE_DelistingReason;
 
 typedef enum {
+    FE_DeliveryType_Invalid = 0,
+    FE_DeliveryType_DeliveryVersusPayment = 1,
+    FE_DeliveryType_FreeOfPayment = 2,
+    FE_DeliveryType_PaymentVersusPayment = 3,
+    FE_DeliveryType_TriParty = 4,
+    FE_DeliveryType_HoldInCustody = 5,
+    FE_DeliveryType_DeliverByValue = 6
+} FE_DeliveryType;
+
+typedef enum {
     FE_DistributionPolicy_Invalid = 0,
     FE_DistributionPolicy_Accumulating = 1,
     FE_DistributionPolicy_Distributing = 2,
@@ -984,6 +1127,13 @@ typedef enum {
     FE_DistributionPolicy_Growth = 4,
     FE_DistributionPolicy_Mixed = 5
 } FE_DistributionPolicy;
+
+typedef enum {
+    FE_DurationType_Invalid = 0,
+    FE_DurationType_Simple = 1,
+    FE_DurationType_Macaulay = 2,
+    FE_DurationType_Modified = 3
+} FE_DurationType;
 
 typedef enum {
     FE_EnergyType_Invalid = 0,
@@ -3894,13 +4044,6 @@ typedef enum {
 } FE_ExchangeCode;
 
 typedef enum {
-    FE_ExecutionDisposition_Invalid = 0,
-    FE_ExecutionDisposition_Regular = 1,
-    FE_ExecutionDisposition_Bust = 2,
-    FE_ExecutionDisposition_Correct = 3
-} FE_ExecutionDisposition;
-
-typedef enum {
     FE_ExecutionInstruction_Invalid = 0,
     FE_ExecutionInstruction_AllOrNone = 1,
     FE_ExecutionInstruction_DoNotIncrease = 2,
@@ -3909,7 +4052,16 @@ typedef enum {
     FE_ExecutionInstruction_StayOnOfferSide = 5,
     FE_ExecutionInstruction_StayOnBidSide = 6,
     FE_ExecutionInstruction_LastPeg = 7,
-    FE_ExecutionInstruction_MidPricePeg = 8
+    FE_ExecutionInstruction_MidPricePeg = 8,
+    FE_ExecutionInstruction_Held = 9,
+    FE_ExecutionInstruction_NotHeld = 10,
+    FE_ExecutionInstruction_IntermarketSweep = 11,
+    FE_ExecutionInstruction_CancelOnTradingHalt = 12,
+    FE_ExecutionInstruction_ReinstateOnTradingHalt = 13,
+    FE_ExecutionInstruction_CancelOnConnectionLoss = 14,
+    FE_ExecutionInstruction_NoCross = 15,
+    FE_ExecutionInstruction_ExternalRoutingNotAllowed = 16,
+    FE_ExecutionInstruction_ImbalanceOnly = 17
 } FE_ExecutionInstruction;
 
 typedef enum {
@@ -3921,7 +4073,16 @@ typedef enum {
     FE_ExecutionType_Rejected = 5,
     FE_ExecutionType_Expired = 6,
     FE_ExecutionType_TradeCorrect = 7,
-    FE_ExecutionType_TradeCancel = 8
+    FE_ExecutionType_TradeCancel = 8,
+    FE_ExecutionType_PendingNew = 9,
+    FE_ExecutionType_PendingCancel = 10,
+    FE_ExecutionType_PendingReplace = 11,
+    FE_ExecutionType_Restated = 12,
+    FE_ExecutionType_DoneForDay = 13,
+    FE_ExecutionType_Suspended = 14,
+    FE_ExecutionType_Stopped = 15,
+    FE_ExecutionType_OrderStatus = 16,
+    FE_ExecutionType_TriggeredOrActivatedBySystem = 17
 } FE_ExecutionType;
 
 typedef enum {
@@ -3969,6 +4130,47 @@ typedef enum {
     FE_FinancingType_RepurchaseAgreement = 2,
     FE_FinancingType_SecuritiesLending = 3
 } FE_FinancingType;
+
+typedef enum {
+    FE_ForeignExchangeAtTheMoneyConvention_Invalid = 0,
+    FE_ForeignExchangeAtTheMoneyConvention_Spot = 1,
+    FE_ForeignExchangeAtTheMoneyConvention_Forward = 2,
+    FE_ForeignExchangeAtTheMoneyConvention_DeltaNeutral = 3,
+    FE_ForeignExchangeAtTheMoneyConvention_PutCallFiftyDelta = 4
+} FE_ForeignExchangeAtTheMoneyConvention;
+
+typedef enum {
+    FE_ForeignExchangeBenchmark_Invalid = 0,
+    FE_ForeignExchangeBenchmark_WorldMarketsReuters = 1,
+    FE_ForeignExchangeBenchmark_Bloomberg = 2,
+    FE_ForeignExchangeBenchmark_EuropeanCentralBank = 3,
+    FE_ForeignExchangeBenchmark_CentralBank = 4,
+    FE_ForeignExchangeBenchmark_MitsubishiUfj = 5,
+    FE_ForeignExchangeBenchmark_Other = 6
+} FE_ForeignExchangeBenchmark;
+
+typedef enum {
+    FE_ForeignExchangeDeltaConvention_Invalid = 0,
+    FE_ForeignExchangeDeltaConvention_Spot = 1,
+    FE_ForeignExchangeDeltaConvention_Forward = 2,
+    FE_ForeignExchangeDeltaConvention_PremiumAdjustedSpot = 3,
+    FE_ForeignExchangeDeltaConvention_PremiumAdjustedForward = 4
+} FE_ForeignExchangeDeltaConvention;
+
+typedef enum {
+    FE_ForeignExchangeProductType_Invalid = 0,
+    FE_ForeignExchangeProductType_Spot = 1,
+    FE_ForeignExchangeProductType_OutrightForward = 2,
+    FE_ForeignExchangeProductType_Swap = 3,
+    FE_ForeignExchangeProductType_NonDeliverableForward = 4,
+    FE_ForeignExchangeProductType_NonDeliverableSwap = 5
+} FE_ForeignExchangeProductType;
+
+typedef enum {
+    FE_ForeignExchangeQuoteBasis_Invalid = 0,
+    FE_ForeignExchangeQuoteBasis_BaseCurrencyPerQuoteCurrency = 1,
+    FE_ForeignExchangeQuoteBasis_QuoteCurrencyPerBaseCurrency = 2
+} FE_ForeignExchangeQuoteBasis;
 
 typedef enum {
     FE_ForeignExchangeTenor_Invalid = 0,
@@ -4023,8 +4225,17 @@ typedef enum {
     FE_ForeignExchangeTenor_InternationalMonetaryMarket1 = 49,
     FE_ForeignExchangeTenor_InternationalMonetaryMarket2 = 50,
     FE_ForeignExchangeTenor_InternationalMonetaryMarket3 = 51,
-    FE_ForeignExchangeTenor_InternationalMonetaryMarket4 = 52
+    FE_ForeignExchangeTenor_InternationalMonetaryMarket4 = 52,
+    FE_ForeignExchangeTenor_TomorrowNext = 53,
+    FE_ForeignExchangeTenor_BrokenDate = 54
 } FE_ForeignExchangeTenor;
+
+typedef enum {
+    FE_ForeignExchangeVolatilityQuoteType_Invalid = 0,
+    FE_ForeignExchangeVolatilityQuoteType_AtTheMoney = 1,
+    FE_ForeignExchangeVolatilityQuoteType_RiskReversal = 2,
+    FE_ForeignExchangeVolatilityQuoteType_Butterfly = 3
+} FE_ForeignExchangeVolatilityQuoteType;
 
 typedef enum {
     FE_FundSubType_Invalid = 0,
@@ -4241,6 +4452,28 @@ typedef enum {
 } FE_InstrumentType;
 
 typedef enum {
+    FE_InterestRateProductType_Invalid = 0,
+    FE_InterestRateProductType_Swap = 1,
+    FE_InterestRateProductType_ForwardRateAgreement = 2,
+    FE_InterestRateProductType_Cap = 3,
+    FE_InterestRateProductType_Floor = 4,
+    FE_InterestRateProductType_Collar = 5,
+    FE_InterestRateProductType_Swaption = 6,
+    FE_InterestRateProductType_Future = 7
+} FE_InterestRateProductType;
+
+typedef enum {
+    FE_InterestRateSwapType_Invalid = 0,
+    FE_InterestRateSwapType_FixedForFloating = 1,
+    FE_InterestRateSwapType_Basis = 2,
+    FE_InterestRateSwapType_OvernightIndex = 3,
+    FE_InterestRateSwapType_CrossCurrency = 4,
+    FE_InterestRateSwapType_ZeroCouponInflation = 5,
+    FE_InterestRateSwapType_YearOnYearInflation = 6,
+    FE_InterestRateSwapType_Amortizing = 7
+} FE_InterestRateSwapType;
+
+typedef enum {
     FE_InventoryType_Invalid = 0,
     FE_InventoryType_Available = 1,
     FE_InventoryType_Reserved = 2,
@@ -4249,6 +4482,20 @@ typedef enum {
     FE_InventoryType_Encumbered = 5,
     FE_InventoryType_PendingSettlement = 6
 } FE_InventoryType;
+
+typedef enum {
+    FE_IssuerType_Invalid = 0,
+    FE_IssuerType_Sovereign = 1,
+    FE_IssuerType_CentralBank = 2,
+    FE_IssuerType_QuasiGovernment = 3,
+    FE_IssuerType_RegionalGovernment = 4,
+    FE_IssuerType_LocalGovernment = 5,
+    FE_IssuerType_Supranational = 6,
+    FE_IssuerType_Corporate = 7,
+    FE_IssuerType_FinancialInstitution = 8,
+    FE_IssuerType_SpecialPurposeVehicle = 9,
+    FE_IssuerType_Fund = 10
+} FE_IssuerType;
 
 typedef enum {
     FE_LegRole_Invalid = 0,
@@ -4264,8 +4511,9 @@ typedef enum {
     FE_LiquidityFlag_Removed = 2,
     FE_LiquidityFlag_RoutedOut = 3,
     FE_LiquidityFlag_Auction = 4,
-    FE_LiquidityFlag_None = 5,
-    FE_LiquidityFlag_Neutral = 6
+    FE_LiquidityFlag_Neutral = 5,
+    FE_LiquidityFlag_TriggeredStopOrder = 6,
+    FE_LiquidityFlag_TriggeredMarketOrder = 7
 } FE_LiquidityFlag;
 
 typedef enum {
@@ -4318,7 +4566,10 @@ typedef enum {
     FE_MarketState_Open = 1,
     FE_MarketState_Closed = 2,
     FE_MarketState_Halted = 3,
-    FE_MarketState_Suspended = 4
+    FE_MarketState_Suspended = 4,
+    FE_MarketState_Outage = 5,
+    FE_MarketState_PartialOutage = 6,
+    FE_MarketState_Delayed = 7
 } FE_MarketState;
 
 typedef enum {
@@ -4365,6 +4616,19 @@ typedef enum {
 } FE_MetalType;
 
 typedef enum {
+    FE_MoneyMarketInstrumentType_Invalid = 0,
+    FE_MoneyMarketInstrumentType_TreasuryBill = 1,
+    FE_MoneyMarketInstrumentType_CommercialPaper = 2,
+    FE_MoneyMarketInstrumentType_CertificateOfDeposit = 3,
+    FE_MoneyMarketInstrumentType_BankersAcceptance = 4,
+    FE_MoneyMarketInstrumentType_MediumTermNote = 5,
+    FE_MoneyMarketInstrumentType_TimeDeposit = 6,
+    FE_MoneyMarketInstrumentType_PromissoryNote = 7,
+    FE_MoneyMarketInstrumentType_BankNote = 8,
+    FE_MoneyMarketInstrumentType_EuroCommercialPaper = 9
+} FE_MoneyMarketInstrumentType;
+
+typedef enum {
     FE_MutualFundEndedness_Invalid = 0,
     FE_MutualFundEndedness_OpenEnded = 1,
     FE_MutualFundEndedness_ClosedEnded = 2
@@ -4380,11 +4644,55 @@ typedef enum {
 } FE_NettingType;
 
 typedef enum {
+    FE_ObligationCategory_Invalid = 0,
+    FE_ObligationCategory_Payment = 1,
+    FE_ObligationCategory_BorrowedMoney = 2,
+    FE_ObligationCategory_ReferenceObligationsOnly = 3,
+    FE_ObligationCategory_Bond = 4,
+    FE_ObligationCategory_Loan = 5,
+    FE_ObligationCategory_BondOrLoan = 6
+} FE_ObligationCategory;
+
+typedef enum {
+    FE_ObligationCharacteristic_Invalid = 0,
+    FE_ObligationCharacteristic_NotSubordinated = 1,
+    FE_ObligationCharacteristic_SpecifiedCurrency = 2,
+    FE_ObligationCharacteristic_NotSovereignLender = 3,
+    FE_ObligationCharacteristic_NotDomesticCurrency = 4,
+    FE_ObligationCharacteristic_NotDomesticLaw = 5,
+    FE_ObligationCharacteristic_Listed = 6,
+    FE_ObligationCharacteristic_NotDomesticIssuance = 7,
+    FE_ObligationCharacteristic_NotContingent = 8,
+    FE_ObligationCharacteristic_AssignableLoan = 9,
+    FE_ObligationCharacteristic_ConsentRequiredLoan = 10,
+    FE_ObligationCharacteristic_DirectLoanParticipation = 11,
+    FE_ObligationCharacteristic_Transferable = 12,
+    FE_ObligationCharacteristic_MaximumMaturity = 13,
+    FE_ObligationCharacteristic_AcceleratedOrMatured = 14,
+    FE_ObligationCharacteristic_NotBearer = 15
+} FE_ObligationCharacteristic;
+
+typedef enum {
     FE_OptionExerciseType_Invalid = 0,
     FE_OptionExerciseType_American = 1,
     FE_OptionExerciseType_European = 2,
     FE_OptionExerciseType_Bermudan = 3
 } FE_OptionExerciseType;
+
+typedef enum {
+    FE_OptionPremiumQuoteBasis_Invalid = 0,
+    FE_OptionPremiumQuoteBasis_PercentageOfCallCurrencyAmount = 1,
+    FE_OptionPremiumQuoteBasis_PercentageOfPutCurrencyAmount = 2,
+    FE_OptionPremiumQuoteBasis_CallCurrencyPerPutCurrency = 3,
+    FE_OptionPremiumQuoteBasis_PutCurrencyPerCallCurrency = 4,
+    FE_OptionPremiumQuoteBasis_Explicit = 5
+} FE_OptionPremiumQuoteBasis;
+
+typedef enum {
+    FE_OptionStrikeQuoteBasis_Invalid = 0,
+    FE_OptionStrikeQuoteBasis_PutCurrencyPerCallCurrency = 1,
+    FE_OptionStrikeQuoteBasis_CallCurrencyPerPutCurrency = 2
+} FE_OptionStrikeQuoteBasis;
 
 typedef enum {
     FE_OptionType_Invalid = 0,
@@ -4398,23 +4706,19 @@ typedef enum {
     FE_OrderCapacity_Principal = 2,
     FE_OrderCapacity_RisklessPrincipal = 3,
     FE_OrderCapacity_Proprietary = 4,
-    FE_OrderCapacity_MarketMaker = 5
+    FE_OrderCapacity_MarketMaker = 5,
+    FE_OrderCapacity_Individual = 6,
+    FE_OrderCapacity_MixedCapacity = 7
 } FE_OrderCapacity;
-
-typedef enum {
-    FE_OrderFlag_Invalid = 0,
-    FE_OrderFlag_None = 1,
-    FE_OrderFlag_FillOrKill = 2,
-    FE_OrderFlag_AllOrNone = 3,
-    FE_OrderFlag_ImmediateOrCancel = 4
-} FE_OrderFlag;
 
 typedef enum {
     FE_OrderSide_Invalid = 0,
     FE_OrderSide_Buy = 1,
     FE_OrderSide_Sell = 2,
     FE_OrderSide_SellShort = 3,
-    FE_OrderSide_BuyToCover = 4
+    FE_OrderSide_BuyToCover = 4,
+    FE_OrderSide_Cross = 5,
+    FE_OrderSide_Undisclosed = 6
 } FE_OrderSide;
 
 typedef enum {
@@ -4427,7 +4731,10 @@ typedef enum {
     FE_OrderStatus_Rejected = 6,
     FE_OrderStatus_Expired = 7,
     FE_OrderStatus_Suspended = 8,
-    FE_OrderStatus_PendingCancel = 9
+    FE_OrderStatus_PendingCancel = 9,
+    FE_OrderStatus_PendingReplace = 10,
+    FE_OrderStatus_DoneForDay = 11,
+    FE_OrderStatus_Stopped = 12
 } FE_OrderStatus;
 
 typedef enum {
@@ -4438,8 +4745,19 @@ typedef enum {
     FE_OrderType_StopLimit = 4,
     FE_OrderType_MarketOnClose = 5,
     FE_OrderType_LimitOnClose = 6,
-    FE_OrderType_Pegged = 7
+    FE_OrderType_Pegged = 7,
+    FE_OrderType_MarketIfTouched = 8,
+    FE_OrderType_MarketToLimit = 9,
+    FE_OrderType_TrailingStop = 10
 } FE_OrderType;
+
+typedef enum {
+    FE_OvernightAccrualMethod_Invalid = 0,
+    FE_OvernightAccrualMethod_Compounded = 1,
+    FE_OvernightAccrualMethod_OvernightCompoundedAnnualRate = 2,
+    FE_OvernightAccrualMethod_Averaged = 3,
+    FE_OvernightAccrualMethod_AveragedDaily = 4
+} FE_OvernightAccrualMethod;
 
 typedef enum {
     FE_PayoffStyle_Invalid = 0,
@@ -4447,6 +4765,26 @@ typedef enum {
     FE_PayoffStyle_Optional = 2,
     FE_PayoffStyle_Binary = 3
 } FE_PayoffStyle;
+
+typedef enum {
+    FE_PayoutTiming_Invalid = 0,
+    FE_PayoutTiming_Immediate = 1,
+    FE_PayoutTiming_Deferred = 2
+} FE_PayoutTiming;
+
+typedef enum {
+    FE_PeriodTiming_Invalid = 0,
+    FE_PeriodTiming_PeriodStart = 1,
+    FE_PeriodTiming_PeriodEnd = 2
+} FE_PeriodTiming;
+
+typedef enum {
+    FE_PeriodUnit_Invalid = 0,
+    FE_PeriodUnit_Day = 1,
+    FE_PeriodUnit_Week = 2,
+    FE_PeriodUnit_Month = 3,
+    FE_PeriodUnit_Year = 4
+} FE_PeriodUnit;
 
 typedef enum {
     FE_PositionEffect_Invalid = 0,
@@ -4465,6 +4803,13 @@ typedef enum {
     FE_PositionType_Net = 4,
     FE_PositionType_Gross = 5
 } FE_PositionType;
+
+typedef enum {
+    FE_PriceIndexCalculationMethod_Invalid = 0,
+    FE_PriceIndexCalculationMethod_Monthly = 1,
+    FE_PriceIndexCalculationMethod_Interpolated = 2,
+    FE_PriceIndexCalculationMethod_InterpolatedJapan = 3
+} FE_PriceIndexCalculationMethod;
 
 typedef enum {
     FE_PriceKind_Invalid = 0,
@@ -4489,7 +4834,11 @@ typedef enum {
     FE_PriceNotation_PerUnit = 9,
     FE_PriceNotation_Percentage = 10,
     FE_PriceNotation_CleanPrice = 11,
-    FE_PriceNotation_DirtyPrice = 12
+    FE_PriceNotation_DirtyPrice = 12,
+    FE_PriceNotation_Discount = 13,
+    FE_PriceNotation_Premium = 14,
+    FE_PriceNotation_UpfrontPoints = 15,
+    FE_PriceNotation_PercentageOfNotional = 16
 } FE_PriceNotation;
 
 typedef enum {
@@ -4517,7 +4866,7 @@ typedef enum {
 typedef enum {
     FE_RateIndex_Invalid = 0,
     FE_RateIndex_SecuredOvernightFinancingRate = 1,
-    FE_RateIndex_FedFunds = 2,
+    FE_RateIndex_EffectiveFederalFundsRate = 2,
     FE_RateIndex_EuroShortTermRate = 3,
     FE_RateIndex_SterlingOvernightIndexAverage = 4,
     FE_RateIndex_EuroInterbankOfferedRate = 5,
@@ -4525,6 +4874,19 @@ typedef enum {
     FE_RateIndex_SwissAverageRateOvernight = 7,
     FE_RateIndex_ConsumerPriceIndex = 8
 } FE_RateIndex;
+
+typedef enum {
+    FE_RedemptionFeature_Invalid = 0,
+    FE_RedemptionFeature_Callable = 1,
+    FE_RedemptionFeature_Puttable = 2,
+    FE_RedemptionFeature_Convertible = 3,
+    FE_RedemptionFeature_Exchangeable = 4,
+    FE_RedemptionFeature_ContingentConvertible = 5,
+    FE_RedemptionFeature_Sinkable = 6,
+    FE_RedemptionFeature_Extendible = 7,
+    FE_RedemptionFeature_Perpetual = 8,
+    FE_RedemptionFeature_MakeWholeCallable = 9
+} FE_RedemptionFeature;
 
 typedef enum {
     FE_RepoType_Invalid = 0,
@@ -4537,6 +4899,64 @@ typedef enum {
 } FE_RepoType;
 
 typedef enum {
+    FE_RestructuringClause_Invalid = 0,
+    FE_RestructuringClause_NoRestructuring = 1,
+    FE_RestructuringClause_FullRestructuring = 2,
+    FE_RestructuringClause_ModifiedRestructuring = 3,
+    FE_RestructuringClause_ModifiedModifiedRestructuring = 4
+} FE_RestructuringClause;
+
+typedef enum {
+    FE_RollConvention_Invalid = 0,
+    FE_RollConvention_None = 1,
+    FE_RollConvention_EndOfMonth = 2,
+    FE_RollConvention_InternationalMoneyMarket = 3,
+    FE_RollConvention_InternationalMoneyMarketAustralia = 4,
+    FE_RollConvention_InternationalMoneyMarketCanada = 5,
+    FE_RollConvention_InternationalMoneyMarketNewZealand = 6,
+    FE_RollConvention_SydneyFuturesExchange = 7,
+    FE_RollConvention_TreasuryBill = 8,
+    FE_RollConvention_FloatingRateNote = 9,
+    FE_RollConvention_DayOfMonth1 = 10,
+    FE_RollConvention_DayOfMonth2 = 11,
+    FE_RollConvention_DayOfMonth3 = 12,
+    FE_RollConvention_DayOfMonth4 = 13,
+    FE_RollConvention_DayOfMonth5 = 14,
+    FE_RollConvention_DayOfMonth6 = 15,
+    FE_RollConvention_DayOfMonth7 = 16,
+    FE_RollConvention_DayOfMonth8 = 17,
+    FE_RollConvention_DayOfMonth9 = 18,
+    FE_RollConvention_DayOfMonth10 = 19,
+    FE_RollConvention_DayOfMonth11 = 20,
+    FE_RollConvention_DayOfMonth12 = 21,
+    FE_RollConvention_DayOfMonth13 = 22,
+    FE_RollConvention_DayOfMonth14 = 23,
+    FE_RollConvention_DayOfMonth15 = 24,
+    FE_RollConvention_DayOfMonth16 = 25,
+    FE_RollConvention_DayOfMonth17 = 26,
+    FE_RollConvention_DayOfMonth18 = 27,
+    FE_RollConvention_DayOfMonth19 = 28,
+    FE_RollConvention_DayOfMonth20 = 29,
+    FE_RollConvention_DayOfMonth21 = 30,
+    FE_RollConvention_DayOfMonth22 = 31,
+    FE_RollConvention_DayOfMonth23 = 32,
+    FE_RollConvention_DayOfMonth24 = 33,
+    FE_RollConvention_DayOfMonth25 = 34,
+    FE_RollConvention_DayOfMonth26 = 35,
+    FE_RollConvention_DayOfMonth27 = 36,
+    FE_RollConvention_DayOfMonth28 = 37,
+    FE_RollConvention_DayOfMonth29 = 38,
+    FE_RollConvention_DayOfMonth30 = 39,
+    FE_RollConvention_Monday = 40,
+    FE_RollConvention_Tuesday = 41,
+    FE_RollConvention_Wednesday = 42,
+    FE_RollConvention_Thursday = 43,
+    FE_RollConvention_Friday = 44,
+    FE_RollConvention_Saturday = 45,
+    FE_RollConvention_Sunday = 46
+} FE_RollConvention;
+
+typedef enum {
     FE_ScheduleFrequency_Invalid = 0,
     FE_ScheduleFrequency_Daily = 1,
     FE_ScheduleFrequency_Weekly = 2,
@@ -4545,7 +4965,11 @@ typedef enum {
     FE_ScheduleFrequency_SemiAnnual = 5,
     FE_ScheduleFrequency_Annual = 6,
     FE_ScheduleFrequency_AtMaturity = 7,
-    FE_ScheduleFrequency_AdHoc = 8
+    FE_ScheduleFrequency_AdHoc = 8,
+    FE_ScheduleFrequency_Biweekly = 9,
+    FE_ScheduleFrequency_EveryFourWeeks = 10,
+    FE_ScheduleFrequency_EveryTwoMonths = 11,
+    FE_ScheduleFrequency_EveryFourMonths = 12
 } FE_ScheduleFrequency;
 
 typedef enum {
@@ -4562,6 +4986,13 @@ typedef enum {
     FE_Sector_Utilities = 10,
     FE_Sector_RealEstate = 11
 } FE_Sector;
+
+typedef enum {
+    FE_SecurityForm_Invalid = 0,
+    FE_SecurityForm_Bearer = 1,
+    FE_SecurityForm_Registered = 2,
+    FE_SecurityForm_BearerOrRegistered = 3
+} FE_SecurityForm;
 
 typedef enum {
     FE_SecurityStatus_Invalid = 0,
@@ -4612,7 +5043,11 @@ typedef enum {
     FE_Seniority_SeniorSubordinated = 3,
     FE_Seniority_Subordinated = 4,
     FE_Seniority_JuniorSubordinated = 5,
-    FE_Seniority_Preferred = 6
+    FE_Seniority_Preferred = 6,
+    FE_Seniority_SeniorNonPreferred = 7,
+    FE_Seniority_LowerTierTwoSubordinated = 8,
+    FE_Seniority_UpperTierTwoSubordinated = 9,
+    FE_Seniority_TierOneSubordinated = 10
 } FE_Seniority;
 
 typedef enum {
@@ -4645,12 +5080,7 @@ typedef enum {
     FE_SettlementType_Physical = 1,
     FE_SettlementType_Cash = 2,
     FE_SettlementType_NonDeliverable = 3,
-    FE_SettlementType_ElectAtExercise = 4,
-    FE_SettlementType_DeliveryVersusPayment = 5,
-    FE_SettlementType_PaymentVersusPayment = 6,
-    FE_SettlementType_FreeOfPayment = 7,
-    FE_SettlementType_HoldInCustody = 8,
-    FE_SettlementType_TriParty = 9
+    FE_SettlementType_ElectAtExercise = 4
 } FE_SettlementType;
 
 typedef enum {
@@ -4693,7 +5123,10 @@ typedef enum {
     FE_StubType_ShortFront = 2,
     FE_StubType_ShortBack = 3,
     FE_StubType_LongFront = 4,
-    FE_StubType_LongBack = 5
+    FE_StubType_LongBack = 5,
+    FE_StubType_SmartFront = 6,
+    FE_StubType_SmartBack = 7,
+    FE_StubType_Both = 8
 } FE_StubType;
 
 typedef enum {
@@ -4882,7 +5315,8 @@ typedef enum {
     FE_SwapLegType_Equity = 5,
     FE_SwapLegType_Commodity = 6,
     FE_SwapLegType_ForeignExchange = 7,
-    FE_SwapLegType_Basis = 8
+    FE_SwapLegType_Basis = 8,
+    FE_SwapLegType_Overnight = 9
 } FE_SwapLegType;
 
 typedef enum {
@@ -4894,6 +5328,14 @@ typedef enum {
     FE_SwapType_ForeignExchange = 5,
     FE_SwapType_Other = 6
 } FE_SwapType;
+
+typedef enum {
+    FE_SwaptionCashSettlementMethod_Invalid = 0,
+    FE_SwaptionCashSettlementMethod_CashPrice = 1,
+    FE_SwaptionCashSettlementMethod_ParYield = 2,
+    FE_SwaptionCashSettlementMethod_ZeroCouponYield = 3,
+    FE_SwaptionCashSettlementMethod_CollateralizedCashPrice = 4
+} FE_SwaptionCashSettlementMethod;
 
 typedef enum {
     FE_Symbology_Invalid = 0,
@@ -4947,8 +5389,19 @@ typedef enum {
     FE_TimeInForce_FillOrKill = 5,
     FE_TimeInForce_GoodTillDate = 6,
     FE_TimeInForce_AtOpen = 7,
-    FE_TimeInForce_AtClose = 8
+    FE_TimeInForce_AtClose = 8,
+    FE_TimeInForce_GoodForAuction = 9,
+    FE_TimeInForce_GoodTillCrossing = 10,
+    FE_TimeInForce_AtCrossing = 11
 } FE_TimeInForce;
+
+typedef enum {
+    FE_TouchType_Invalid = 0,
+    FE_TouchType_OneTouch = 1,
+    FE_TouchType_NoTouch = 2,
+    FE_TouchType_DoubleOneTouch = 3,
+    FE_TouchType_DoubleNoTouch = 4
+} FE_TouchType;
 
 typedef enum {
     FE_TradeCondition_Invalid = 0,
@@ -5048,9 +5501,44 @@ typedef enum {
     FE_VenueType_RequestForQuote = 8
 } FE_VenueType;
 
+typedef enum {
+    FE_YieldType_Invalid = 0,
+    FE_YieldType_AfterTaxYield = 1,
+    FE_YieldType_AnnualYield = 2,
+    FE_YieldType_YieldAtIssue = 3,
+    FE_YieldType_YieldToAverageMaturity = 4,
+    FE_YieldType_BookYield = 5,
+    FE_YieldType_YieldToNextCall = 6,
+    FE_YieldType_YieldChangeSinceClose = 7,
+    FE_YieldType_CompoundYield = 8,
+    FE_YieldType_CurrentYield = 9,
+    FE_YieldType_TrueGrossYield = 10,
+    FE_YieldType_YieldWithInflationAssumption = 11,
+    FE_YieldType_InverseFloaterBondYield = 12,
+    FE_YieldType_MostRecentClosingYield = 13,
+    FE_YieldType_YieldToLongestAverageLife = 14,
+    FE_YieldType_MarkToMarketYield = 15,
+    FE_YieldType_YieldToMaturity = 16,
+    FE_YieldType_YieldToNextRefund = 17,
+    FE_YieldType_OpenAverageYield = 18,
+    FE_YieldType_PreviousCloseYield = 19,
+    FE_YieldType_ProceedsYield = 20,
+    FE_YieldType_YieldToNextPut = 21,
+    FE_YieldType_SemiAnnualYield = 22,
+    FE_YieldType_YieldToShortestAverageLife = 23,
+    FE_YieldType_SimpleYield = 24,
+    FE_YieldType_TaxEquivalentYield = 25,
+    FE_YieldType_YieldToTenderDate = 26,
+    FE_YieldType_TrueYield = 27,
+    FE_YieldType_YieldToWorst = 28
+} FE_YieldType;
+
 #define FE_AccountType_COUNT 7u
 #define FE_AccountType_MAX_ORDINAL 6u
 #define FE_AccountType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_AggressorSide_COUNT 4u
+#define FE_AggressorSide_MAX_ORDINAL 3u
+#define FE_AggressorSide_ORDINAL_VALID(o) ((size_t)(o) < 4u)
 #define FE_AgricultureType_COUNT 12u
 #define FE_AgricultureType_MAX_ORDINAL 11u
 #define FE_AgricultureType_ORDINAL_VALID(o) ((size_t)(o) < 12u)
@@ -5060,6 +5548,9 @@ typedef enum {
 #define FE_AmortizationType_COUNT 7u
 #define FE_AmortizationType_MAX_ORDINAL 6u
 #define FE_AmortizationType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_AssetBackedCollateralType_COUNT 7u
+#define FE_AssetBackedCollateralType_MAX_ORDINAL 6u
+#define FE_AssetBackedCollateralType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
 #define FE_AuctionType_COUNT 7u
 #define FE_AuctionType_MAX_ORDINAL 6u
 #define FE_AuctionType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
@@ -5072,15 +5563,18 @@ typedef enum {
 #define FE_BenchmarkType_COUNT 9u
 #define FE_BenchmarkType_MAX_ORDINAL 8u
 #define FE_BenchmarkType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
-#define FE_BondType_COUNT 4u
-#define FE_BondType_MAX_ORDINAL 3u
-#define FE_BondType_ORDINAL_VALID(o) ((size_t)(o) < 4u)
+#define FE_BondType_COUNT 12u
+#define FE_BondType_MAX_ORDINAL 11u
+#define FE_BondType_ORDINAL_VALID(o) ((size_t)(o) < 12u)
 #define FE_BookType_COUNT 7u
 #define FE_BookType_MAX_ORDINAL 6u
 #define FE_BookType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
 #define FE_BorrowType_COUNT 6u
 #define FE_BorrowType_MAX_ORDINAL 5u
 #define FE_BorrowType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_BusinessDayConvention_COUNT 8u
+#define FE_BusinessDayConvention_MAX_ORDINAL 7u
+#define FE_BusinessDayConvention_ORDINAL_VALID(o) ((size_t)(o) < 8u)
 #define FE_CalculationAgentType_COUNT 8u
 #define FE_CalculationAgentType_MAX_ORDINAL 7u
 #define FE_CalculationAgentType_ORDINAL_VALID(o) ((size_t)(o) < 8u)
@@ -5096,9 +5590,9 @@ typedef enum {
 #define FE_CommodityType_COUNT 9u
 #define FE_CommodityType_MAX_ORDINAL 8u
 #define FE_CommodityType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
-#define FE_CompoundingMethod_COUNT 6u
-#define FE_CompoundingMethod_MAX_ORDINAL 5u
-#define FE_CompoundingMethod_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_CompoundingMethod_COUNT 5u
+#define FE_CompoundingMethod_MAX_ORDINAL 4u
+#define FE_CompoundingMethod_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_ContractStyle_COUNT 3u
 #define FE_ContractStyle_MAX_ORDINAL 2u
 #define FE_ContractStyle_ORDINAL_VALID(o) ((size_t)(o) < 3u)
@@ -5117,27 +5611,51 @@ typedef enum {
 #define FE_CountryCodeAlpha3_COUNT 251u
 #define FE_CountryCodeAlpha3_MAX_ORDINAL 250u
 #define FE_CountryCodeAlpha3_ORDINAL_VALID(o) ((size_t)(o) < 251u)
-#define FE_CouponType_COUNT 7u
-#define FE_CouponType_MAX_ORDINAL 6u
-#define FE_CouponType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
-#define FE_CrossType_COUNT 6u
-#define FE_CrossType_MAX_ORDINAL 5u
-#define FE_CrossType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_CouponType_COUNT 12u
+#define FE_CouponType_MAX_ORDINAL 11u
+#define FE_CouponType_ORDINAL_VALID(o) ((size_t)(o) < 12u)
+#define FE_CreditDefaultSwapTransactionType_COUNT 14u
+#define FE_CreditDefaultSwapTransactionType_MAX_ORDINAL 13u
+#define FE_CreditDefaultSwapTransactionType_ORDINAL_VALID(o) ((size_t)(o) < 14u)
+#define FE_CreditEventType_COUNT 12u
+#define FE_CreditEventType_MAX_ORDINAL 11u
+#define FE_CreditEventType_ORDINAL_VALID(o) ((size_t)(o) < 12u)
+#define FE_CreditQuality_COUNT 5u
+#define FE_CreditQuality_MAX_ORDINAL 4u
+#define FE_CreditQuality_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_CreditRatingAgency_COUNT 10u
+#define FE_CreditRatingAgency_MAX_ORDINAL 9u
+#define FE_CreditRatingAgency_ORDINAL_VALID(o) ((size_t)(o) < 10u)
+#define FE_CreditRatingOutlook_COUNT 5u
+#define FE_CreditRatingOutlook_MAX_ORDINAL 4u
+#define FE_CreditRatingOutlook_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_CrossType_COUNT 9u
+#define FE_CrossType_MAX_ORDINAL 8u
+#define FE_CrossType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
 #define FE_Currency_COUNT 188u
 #define FE_Currency_MAX_ORDINAL 187u
 #define FE_Currency_ORDINAL_VALID(o) ((size_t)(o) < 188u)
-#define FE_CurrencyRole_COUNT 7u
-#define FE_CurrencyRole_MAX_ORDINAL 6u
-#define FE_CurrencyRole_ORDINAL_VALID(o) ((size_t)(o) < 7u)
-#define FE_DayCountConvention_COUNT 7u
-#define FE_DayCountConvention_MAX_ORDINAL 6u
-#define FE_DayCountConvention_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_CurrencyRole_COUNT 11u
+#define FE_CurrencyRole_MAX_ORDINAL 10u
+#define FE_CurrencyRole_ORDINAL_VALID(o) ((size_t)(o) < 11u)
+#define FE_DayCountConvention_COUNT 23u
+#define FE_DayCountConvention_MAX_ORDINAL 22u
+#define FE_DayCountConvention_ORDINAL_VALID(o) ((size_t)(o) < 23u)
+#define FE_DebtGuaranteeType_COUNT 6u
+#define FE_DebtGuaranteeType_MAX_ORDINAL 5u
+#define FE_DebtGuaranteeType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
 #define FE_DelistingReason_COUNT 7u
 #define FE_DelistingReason_MAX_ORDINAL 6u
 #define FE_DelistingReason_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_DeliveryType_COUNT 7u
+#define FE_DeliveryType_MAX_ORDINAL 6u
+#define FE_DeliveryType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
 #define FE_DistributionPolicy_COUNT 6u
 #define FE_DistributionPolicy_MAX_ORDINAL 5u
 #define FE_DistributionPolicy_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_DurationType_COUNT 4u
+#define FE_DurationType_MAX_ORDINAL 3u
+#define FE_DurationType_ORDINAL_VALID(o) ((size_t)(o) < 4u)
 #define FE_EnergyType_COUNT 9u
 #define FE_EnergyType_MAX_ORDINAL 8u
 #define FE_EnergyType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
@@ -5147,15 +5665,12 @@ typedef enum {
 #define FE_ExchangeCode_COUNT 2881u
 #define FE_ExchangeCode_MAX_ORDINAL 2880u
 #define FE_ExchangeCode_ORDINAL_VALID(o) ((size_t)(o) < 2881u)
-#define FE_ExecutionDisposition_COUNT 4u
-#define FE_ExecutionDisposition_MAX_ORDINAL 3u
-#define FE_ExecutionDisposition_ORDINAL_VALID(o) ((size_t)(o) < 4u)
-#define FE_ExecutionInstruction_COUNT 9u
-#define FE_ExecutionInstruction_MAX_ORDINAL 8u
-#define FE_ExecutionInstruction_ORDINAL_VALID(o) ((size_t)(o) < 9u)
-#define FE_ExecutionType_COUNT 9u
-#define FE_ExecutionType_MAX_ORDINAL 8u
-#define FE_ExecutionType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_ExecutionInstruction_COUNT 18u
+#define FE_ExecutionInstruction_MAX_ORDINAL 17u
+#define FE_ExecutionInstruction_ORDINAL_VALID(o) ((size_t)(o) < 18u)
+#define FE_ExecutionType_COUNT 18u
+#define FE_ExecutionType_MAX_ORDINAL 17u
+#define FE_ExecutionType_ORDINAL_VALID(o) ((size_t)(o) < 18u)
 #define FE_ExerciseEventType_COUNT 6u
 #define FE_ExerciseEventType_MAX_ORDINAL 5u
 #define FE_ExerciseEventType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
@@ -5171,9 +5686,27 @@ typedef enum {
 #define FE_FinancingType_COUNT 4u
 #define FE_FinancingType_MAX_ORDINAL 3u
 #define FE_FinancingType_ORDINAL_VALID(o) ((size_t)(o) < 4u)
-#define FE_ForeignExchangeTenor_COUNT 53u
-#define FE_ForeignExchangeTenor_MAX_ORDINAL 52u
-#define FE_ForeignExchangeTenor_ORDINAL_VALID(o) ((size_t)(o) < 53u)
+#define FE_ForeignExchangeAtTheMoneyConvention_COUNT 5u
+#define FE_ForeignExchangeAtTheMoneyConvention_MAX_ORDINAL 4u
+#define FE_ForeignExchangeAtTheMoneyConvention_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_ForeignExchangeBenchmark_COUNT 7u
+#define FE_ForeignExchangeBenchmark_MAX_ORDINAL 6u
+#define FE_ForeignExchangeBenchmark_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_ForeignExchangeDeltaConvention_COUNT 5u
+#define FE_ForeignExchangeDeltaConvention_MAX_ORDINAL 4u
+#define FE_ForeignExchangeDeltaConvention_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_ForeignExchangeProductType_COUNT 6u
+#define FE_ForeignExchangeProductType_MAX_ORDINAL 5u
+#define FE_ForeignExchangeProductType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_ForeignExchangeQuoteBasis_COUNT 3u
+#define FE_ForeignExchangeQuoteBasis_MAX_ORDINAL 2u
+#define FE_ForeignExchangeQuoteBasis_ORDINAL_VALID(o) ((size_t)(o) < 3u)
+#define FE_ForeignExchangeTenor_COUNT 55u
+#define FE_ForeignExchangeTenor_MAX_ORDINAL 54u
+#define FE_ForeignExchangeTenor_ORDINAL_VALID(o) ((size_t)(o) < 55u)
+#define FE_ForeignExchangeVolatilityQuoteType_COUNT 4u
+#define FE_ForeignExchangeVolatilityQuoteType_MAX_ORDINAL 3u
+#define FE_ForeignExchangeVolatilityQuoteType_ORDINAL_VALID(o) ((size_t)(o) < 4u)
 #define FE_FundSubType_COUNT 5u
 #define FE_FundSubType_MAX_ORDINAL 4u
 #define FE_FundSubType_ORDINAL_VALID(o) ((size_t)(o) < 5u)
@@ -5210,15 +5743,24 @@ typedef enum {
 #define FE_InstrumentType_COUNT 12u
 #define FE_InstrumentType_MAX_ORDINAL 11u
 #define FE_InstrumentType_ORDINAL_VALID(o) ((size_t)(o) < 12u)
+#define FE_InterestRateProductType_COUNT 8u
+#define FE_InterestRateProductType_MAX_ORDINAL 7u
+#define FE_InterestRateProductType_ORDINAL_VALID(o) ((size_t)(o) < 8u)
+#define FE_InterestRateSwapType_COUNT 8u
+#define FE_InterestRateSwapType_MAX_ORDINAL 7u
+#define FE_InterestRateSwapType_ORDINAL_VALID(o) ((size_t)(o) < 8u)
 #define FE_InventoryType_COUNT 7u
 #define FE_InventoryType_MAX_ORDINAL 6u
 #define FE_InventoryType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_IssuerType_COUNT 11u
+#define FE_IssuerType_MAX_ORDINAL 10u
+#define FE_IssuerType_ORDINAL_VALID(o) ((size_t)(o) < 11u)
 #define FE_LegRole_COUNT 5u
 #define FE_LegRole_MAX_ORDINAL 4u
 #define FE_LegRole_ORDINAL_VALID(o) ((size_t)(o) < 5u)
-#define FE_LiquidityFlag_COUNT 7u
-#define FE_LiquidityFlag_MAX_ORDINAL 6u
-#define FE_LiquidityFlag_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_LiquidityFlag_COUNT 8u
+#define FE_LiquidityFlag_MAX_ORDINAL 7u
+#define FE_LiquidityFlag_ORDINAL_VALID(o) ((size_t)(o) < 8u)
 #define FE_ListingStatus_COUNT 7u
 #define FE_ListingStatus_MAX_ORDINAL 6u
 #define FE_ListingStatus_ORDINAL_VALID(o) ((size_t)(o) < 7u)
@@ -5231,9 +5773,9 @@ typedef enum {
 #define FE_MarketCategory_COUNT 15u
 #define FE_MarketCategory_MAX_ORDINAL 14u
 #define FE_MarketCategory_ORDINAL_VALID(o) ((size_t)(o) < 15u)
-#define FE_MarketState_COUNT 5u
-#define FE_MarketState_MAX_ORDINAL 4u
-#define FE_MarketState_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_MarketState_COUNT 8u
+#define FE_MarketState_MAX_ORDINAL 7u
+#define FE_MarketState_ORDINAL_VALID(o) ((size_t)(o) < 8u)
 #define FE_MarketStatusReason_COUNT 9u
 #define FE_MarketStatusReason_MAX_ORDINAL 8u
 #define FE_MarketStatusReason_ORDINAL_VALID(o) ((size_t)(o) < 9u)
@@ -5243,48 +5785,75 @@ typedef enum {
 #define FE_MetalType_COUNT 14u
 #define FE_MetalType_MAX_ORDINAL 13u
 #define FE_MetalType_ORDINAL_VALID(o) ((size_t)(o) < 14u)
+#define FE_MoneyMarketInstrumentType_COUNT 10u
+#define FE_MoneyMarketInstrumentType_MAX_ORDINAL 9u
+#define FE_MoneyMarketInstrumentType_ORDINAL_VALID(o) ((size_t)(o) < 10u)
 #define FE_MutualFundEndedness_COUNT 3u
 #define FE_MutualFundEndedness_MAX_ORDINAL 2u
 #define FE_MutualFundEndedness_ORDINAL_VALID(o) ((size_t)(o) < 3u)
 #define FE_NettingType_COUNT 6u
 #define FE_NettingType_MAX_ORDINAL 5u
 #define FE_NettingType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_ObligationCategory_COUNT 7u
+#define FE_ObligationCategory_MAX_ORDINAL 6u
+#define FE_ObligationCategory_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_ObligationCharacteristic_COUNT 16u
+#define FE_ObligationCharacteristic_MAX_ORDINAL 15u
+#define FE_ObligationCharacteristic_ORDINAL_VALID(o) ((size_t)(o) < 16u)
 #define FE_OptionExerciseType_COUNT 4u
 #define FE_OptionExerciseType_MAX_ORDINAL 3u
 #define FE_OptionExerciseType_ORDINAL_VALID(o) ((size_t)(o) < 4u)
+#define FE_OptionPremiumQuoteBasis_COUNT 6u
+#define FE_OptionPremiumQuoteBasis_MAX_ORDINAL 5u
+#define FE_OptionPremiumQuoteBasis_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_OptionStrikeQuoteBasis_COUNT 3u
+#define FE_OptionStrikeQuoteBasis_MAX_ORDINAL 2u
+#define FE_OptionStrikeQuoteBasis_ORDINAL_VALID(o) ((size_t)(o) < 3u)
 #define FE_OptionType_COUNT 3u
 #define FE_OptionType_MAX_ORDINAL 2u
 #define FE_OptionType_ORDINAL_VALID(o) ((size_t)(o) < 3u)
-#define FE_OrderCapacity_COUNT 6u
-#define FE_OrderCapacity_MAX_ORDINAL 5u
-#define FE_OrderCapacity_ORDINAL_VALID(o) ((size_t)(o) < 6u)
-#define FE_OrderFlag_COUNT 5u
-#define FE_OrderFlag_MAX_ORDINAL 4u
-#define FE_OrderFlag_ORDINAL_VALID(o) ((size_t)(o) < 5u)
-#define FE_OrderSide_COUNT 5u
-#define FE_OrderSide_MAX_ORDINAL 4u
-#define FE_OrderSide_ORDINAL_VALID(o) ((size_t)(o) < 5u)
-#define FE_OrderStatus_COUNT 10u
-#define FE_OrderStatus_MAX_ORDINAL 9u
-#define FE_OrderStatus_ORDINAL_VALID(o) ((size_t)(o) < 10u)
-#define FE_OrderType_COUNT 8u
-#define FE_OrderType_MAX_ORDINAL 7u
-#define FE_OrderType_ORDINAL_VALID(o) ((size_t)(o) < 8u)
+#define FE_OrderCapacity_COUNT 8u
+#define FE_OrderCapacity_MAX_ORDINAL 7u
+#define FE_OrderCapacity_ORDINAL_VALID(o) ((size_t)(o) < 8u)
+#define FE_OrderSide_COUNT 7u
+#define FE_OrderSide_MAX_ORDINAL 6u
+#define FE_OrderSide_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_OrderStatus_COUNT 13u
+#define FE_OrderStatus_MAX_ORDINAL 12u
+#define FE_OrderStatus_ORDINAL_VALID(o) ((size_t)(o) < 13u)
+#define FE_OrderType_COUNT 11u
+#define FE_OrderType_MAX_ORDINAL 10u
+#define FE_OrderType_ORDINAL_VALID(o) ((size_t)(o) < 11u)
+#define FE_OvernightAccrualMethod_COUNT 5u
+#define FE_OvernightAccrualMethod_MAX_ORDINAL 4u
+#define FE_OvernightAccrualMethod_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_PayoffStyle_COUNT 4u
 #define FE_PayoffStyle_MAX_ORDINAL 3u
 #define FE_PayoffStyle_ORDINAL_VALID(o) ((size_t)(o) < 4u)
+#define FE_PayoutTiming_COUNT 3u
+#define FE_PayoutTiming_MAX_ORDINAL 2u
+#define FE_PayoutTiming_ORDINAL_VALID(o) ((size_t)(o) < 3u)
+#define FE_PeriodTiming_COUNT 3u
+#define FE_PeriodTiming_MAX_ORDINAL 2u
+#define FE_PeriodTiming_ORDINAL_VALID(o) ((size_t)(o) < 3u)
+#define FE_PeriodUnit_COUNT 5u
+#define FE_PeriodUnit_MAX_ORDINAL 4u
+#define FE_PeriodUnit_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_PositionEffect_COUNT 6u
 #define FE_PositionEffect_MAX_ORDINAL 5u
 #define FE_PositionEffect_ORDINAL_VALID(o) ((size_t)(o) < 6u)
 #define FE_PositionType_COUNT 6u
 #define FE_PositionType_MAX_ORDINAL 5u
 #define FE_PositionType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_PriceIndexCalculationMethod_COUNT 4u
+#define FE_PriceIndexCalculationMethod_MAX_ORDINAL 3u
+#define FE_PriceIndexCalculationMethod_ORDINAL_VALID(o) ((size_t)(o) < 4u)
 #define FE_PriceKind_COUNT 7u
 #define FE_PriceKind_MAX_ORDINAL 6u
 #define FE_PriceKind_ORDINAL_VALID(o) ((size_t)(o) < 7u)
-#define FE_PriceNotation_COUNT 13u
-#define FE_PriceNotation_MAX_ORDINAL 12u
-#define FE_PriceNotation_ORDINAL_VALID(o) ((size_t)(o) < 13u)
+#define FE_PriceNotation_COUNT 17u
+#define FE_PriceNotation_MAX_ORDINAL 16u
+#define FE_PriceNotation_ORDINAL_VALID(o) ((size_t)(o) < 17u)
 #define FE_QuantityUnit_COUNT 9u
 #define FE_QuantityUnit_MAX_ORDINAL 8u
 #define FE_QuantityUnit_ORDINAL_VALID(o) ((size_t)(o) < 9u)
@@ -5294,15 +5863,27 @@ typedef enum {
 #define FE_RateIndex_COUNT 9u
 #define FE_RateIndex_MAX_ORDINAL 8u
 #define FE_RateIndex_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_RedemptionFeature_COUNT 10u
+#define FE_RedemptionFeature_MAX_ORDINAL 9u
+#define FE_RedemptionFeature_ORDINAL_VALID(o) ((size_t)(o) < 10u)
 #define FE_RepoType_COUNT 7u
 #define FE_RepoType_MAX_ORDINAL 6u
 #define FE_RepoType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
-#define FE_ScheduleFrequency_COUNT 9u
-#define FE_ScheduleFrequency_MAX_ORDINAL 8u
-#define FE_ScheduleFrequency_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_RestructuringClause_COUNT 5u
+#define FE_RestructuringClause_MAX_ORDINAL 4u
+#define FE_RestructuringClause_ORDINAL_VALID(o) ((size_t)(o) < 5u)
+#define FE_RollConvention_COUNT 47u
+#define FE_RollConvention_MAX_ORDINAL 46u
+#define FE_RollConvention_ORDINAL_VALID(o) ((size_t)(o) < 47u)
+#define FE_ScheduleFrequency_COUNT 13u
+#define FE_ScheduleFrequency_MAX_ORDINAL 12u
+#define FE_ScheduleFrequency_ORDINAL_VALID(o) ((size_t)(o) < 13u)
 #define FE_Sector_COUNT 12u
 #define FE_Sector_MAX_ORDINAL 11u
 #define FE_Sector_ORDINAL_VALID(o) ((size_t)(o) < 12u)
+#define FE_SecurityForm_COUNT 4u
+#define FE_SecurityForm_MAX_ORDINAL 3u
+#define FE_SecurityForm_ORDINAL_VALID(o) ((size_t)(o) < 4u)
 #define FE_SecurityStatus_COUNT 8u
 #define FE_SecurityStatus_MAX_ORDINAL 7u
 #define FE_SecurityStatus_ORDINAL_VALID(o) ((size_t)(o) < 8u)
@@ -5312,18 +5893,18 @@ typedef enum {
 #define FE_SegmentType_COUNT 8u
 #define FE_SegmentType_MAX_ORDINAL 7u
 #define FE_SegmentType_ORDINAL_VALID(o) ((size_t)(o) < 8u)
-#define FE_Seniority_COUNT 7u
-#define FE_Seniority_MAX_ORDINAL 6u
-#define FE_Seniority_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_Seniority_COUNT 11u
+#define FE_Seniority_MAX_ORDINAL 10u
+#define FE_Seniority_ORDINAL_VALID(o) ((size_t)(o) < 11u)
 #define FE_SettlementFailReason_COUNT 10u
 #define FE_SettlementFailReason_MAX_ORDINAL 9u
 #define FE_SettlementFailReason_ORDINAL_VALID(o) ((size_t)(o) < 10u)
 #define FE_SettlementStatus_COUNT 9u
 #define FE_SettlementStatus_MAX_ORDINAL 8u
 #define FE_SettlementStatus_ORDINAL_VALID(o) ((size_t)(o) < 9u)
-#define FE_SettlementType_COUNT 10u
-#define FE_SettlementType_MAX_ORDINAL 9u
-#define FE_SettlementType_ORDINAL_VALID(o) ((size_t)(o) < 10u)
+#define FE_SettlementType_COUNT 5u
+#define FE_SettlementType_MAX_ORDINAL 4u
+#define FE_SettlementType_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_ShareClassHedging_COUNT 6u
 #define FE_ShareClassHedging_MAX_ORDINAL 5u
 #define FE_ShareClassHedging_ORDINAL_VALID(o) ((size_t)(o) < 6u)
@@ -5336,21 +5917,24 @@ typedef enum {
 #define FE_StrategyType_COUNT 7u
 #define FE_StrategyType_MAX_ORDINAL 6u
 #define FE_StrategyType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
-#define FE_StubType_COUNT 6u
-#define FE_StubType_MAX_ORDINAL 5u
-#define FE_StubType_ORDINAL_VALID(o) ((size_t)(o) < 6u)
+#define FE_StubType_COUNT 9u
+#define FE_StubType_MAX_ORDINAL 8u
+#define FE_StubType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
 #define FE_StyleFactor_COUNT 7u
 #define FE_StyleFactor_MAX_ORDINAL 6u
 #define FE_StyleFactor_ORDINAL_VALID(o) ((size_t)(o) < 7u)
 #define FE_SubIndustry_COUNT 164u
 #define FE_SubIndustry_MAX_ORDINAL 163u
 #define FE_SubIndustry_ORDINAL_VALID(o) ((size_t)(o) < 164u)
-#define FE_SwapLegType_COUNT 9u
-#define FE_SwapLegType_MAX_ORDINAL 8u
-#define FE_SwapLegType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_SwapLegType_COUNT 10u
+#define FE_SwapLegType_MAX_ORDINAL 9u
+#define FE_SwapLegType_ORDINAL_VALID(o) ((size_t)(o) < 10u)
 #define FE_SwapType_COUNT 7u
 #define FE_SwapType_MAX_ORDINAL 6u
 #define FE_SwapType_ORDINAL_VALID(o) ((size_t)(o) < 7u)
+#define FE_SwaptionCashSettlementMethod_COUNT 5u
+#define FE_SwaptionCashSettlementMethod_MAX_ORDINAL 4u
+#define FE_SwaptionCashSettlementMethod_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_Symbology_COUNT 13u
 #define FE_Symbology_MAX_ORDINAL 12u
 #define FE_Symbology_ORDINAL_VALID(o) ((size_t)(o) < 13u)
@@ -5363,9 +5947,12 @@ typedef enum {
 #define FE_TickerNamespace_COUNT 9u
 #define FE_TickerNamespace_MAX_ORDINAL 8u
 #define FE_TickerNamespace_ORDINAL_VALID(o) ((size_t)(o) < 9u)
-#define FE_TimeInForce_COUNT 9u
-#define FE_TimeInForce_MAX_ORDINAL 8u
-#define FE_TimeInForce_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_TimeInForce_COUNT 12u
+#define FE_TimeInForce_MAX_ORDINAL 11u
+#define FE_TimeInForce_ORDINAL_VALID(o) ((size_t)(o) < 12u)
+#define FE_TouchType_COUNT 5u
+#define FE_TouchType_MAX_ORDINAL 4u
+#define FE_TouchType_ORDINAL_VALID(o) ((size_t)(o) < 5u)
 #define FE_TradeCondition_COUNT 9u
 #define FE_TradeCondition_MAX_ORDINAL 8u
 #define FE_TradeCondition_ORDINAL_VALID(o) ((size_t)(o) < 9u)
@@ -5384,6 +5971,9 @@ typedef enum {
 #define FE_VenueType_COUNT 9u
 #define FE_VenueType_MAX_ORDINAL 8u
 #define FE_VenueType_ORDINAL_VALID(o) ((size_t)(o) < 9u)
+#define FE_YieldType_COUNT 29u
+#define FE_YieldType_MAX_ORDINAL 28u
+#define FE_YieldType_ORDINAL_VALID(o) ((size_t)(o) < 29u)
 
 /*
  * Compile-time ordinal validation for a family known at the call site.
@@ -5423,6 +6013,20 @@ struct enum_traits<AccountType> {
     static constexpr std::size_t count = FE_AccountType_COUNT;
     static constexpr std::size_t max_ordinal = FE_AccountType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_AccountType_ORDINAL_VALID(o); }
+};
+
+enum class AggressorSide : std::uint8_t {
+    Invalid = 0,
+    Buy = 1,
+    Sell = 2,
+    NoAggressor = 3
+};
+
+template <>
+struct enum_traits<AggressorSide> {
+    static constexpr std::size_t count = FE_AggressorSide_COUNT;
+    static constexpr std::size_t max_ordinal = FE_AggressorSide_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_AggressorSide_ORDINAL_VALID(o); }
 };
 
 enum class AgricultureType : std::uint8_t {
@@ -5481,6 +6085,23 @@ struct enum_traits<AmortizationType> {
     static constexpr std::size_t count = FE_AmortizationType_COUNT;
     static constexpr std::size_t max_ordinal = FE_AmortizationType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_AmortizationType_ORDINAL_VALID(o); }
+};
+
+enum class AssetBackedCollateralType : std::uint8_t {
+    Invalid = 0,
+    HomeEquityLoan = 1,
+    AutoLoan = 2,
+    StudentLoan = 3,
+    CreditCardReceivable = 4,
+    Mortgage = 5,
+    Other = 6
+};
+
+template <>
+struct enum_traits<AssetBackedCollateralType> {
+    static constexpr std::size_t count = FE_AssetBackedCollateralType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_AssetBackedCollateralType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_AssetBackedCollateralType_ORDINAL_VALID(o); }
 };
 
 enum class AuctionType : std::uint8_t {
@@ -5556,7 +6177,15 @@ enum class BondType : std::uint8_t {
     Invalid = 0,
     Corporate = 1,
     Government = 2,
-    Municipal = 3
+    Municipal = 3,
+    Agency = 4,
+    Supranational = 5,
+    CoveredBond = 6,
+    AssetBacked = 7,
+    MortgageBacked = 8,
+    Convertible = 9,
+    StructuredNote = 10,
+    CollateralizedDebtObligation = 11
 };
 
 template <>
@@ -5597,6 +6226,24 @@ struct enum_traits<BorrowType> {
     static constexpr std::size_t count = FE_BorrowType_COUNT;
     static constexpr std::size_t max_ordinal = FE_BorrowType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_BorrowType_ORDINAL_VALID(o); }
+};
+
+enum class BusinessDayConvention : std::uint8_t {
+    Invalid = 0,
+    Unadjusted = 1,
+    Following = 2,
+    ModifiedFollowing = 3,
+    Preceding = 4,
+    ModifiedPreceding = 5,
+    Nearest = 6,
+    FloatingRateNote = 7
+};
+
+template <>
+struct enum_traits<BusinessDayConvention> {
+    static constexpr std::size_t count = FE_BusinessDayConvention_COUNT;
+    static constexpr std::size_t max_ordinal = FE_BusinessDayConvention_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_BusinessDayConvention_ORDINAL_VALID(o); }
 };
 
 enum class CalculationAgentType : std::uint8_t {
@@ -5693,11 +6340,10 @@ struct enum_traits<CommodityType> {
 
 enum class CompoundingMethod : std::uint8_t {
     Invalid = 0,
-    Simple = 1,
-    Compounded = 2,
-    Averaged = 3,
-    Flat = 4,
-    Straight = 5
+    None = 1,
+    Straight = 2,
+    Flat = 3,
+    SpreadExclusive = 4
 };
 
 template <>
@@ -6304,7 +6950,12 @@ enum class CouponType : std::uint8_t {
     Zero = 3,
     StepUp = 4,
     InflationLinked = 5,
-    PaymentInKind = 6
+    PaymentInKind = 6,
+    InverseFloating = 7,
+    IndexLinked = 8,
+    Structured = 9,
+    StepDown = 10,
+    InterestOnly = 11
 };
 
 template <>
@@ -6314,13 +6965,112 @@ struct enum_traits<CouponType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_CouponType_ORDINAL_VALID(o); }
 };
 
+enum class CreditDefaultSwapTransactionType : std::uint8_t {
+    Invalid = 0,
+    NorthAmericanCorporate = 1,
+    EuropeanCorporate = 2,
+    EuropeanFinancialCorporate = 3,
+    WesternEuropeanSovereign = 4,
+    EmergingEuropeanCorporate = 5,
+    AsiaCorporate = 6,
+    AsiaSovereign = 7,
+    JapanCorporate = 8,
+    JapanSovereign = 9,
+    AustraliaCorporate = 10,
+    LatinAmericaSovereign = 11,
+    NewZealandCorporate = 12,
+    SingaporeCorporate = 13
+};
+
+template <>
+struct enum_traits<CreditDefaultSwapTransactionType> {
+    static constexpr std::size_t count = FE_CreditDefaultSwapTransactionType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_CreditDefaultSwapTransactionType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_CreditDefaultSwapTransactionType_ORDINAL_VALID(o); }
+};
+
+enum class CreditEventType : std::uint8_t {
+    Invalid = 0,
+    Bankruptcy = 1,
+    FailureToPay = 2,
+    Restructuring = 3,
+    ObligationAcceleration = 4,
+    ObligationDefault = 5,
+    RepudiationMoratorium = 6,
+    GovernmentalIntervention = 7,
+    Writedown = 8,
+    ImpliedWritedown = 9,
+    MaturityExtension = 10,
+    DistressedRatingsDowngrade = 11
+};
+
+template <>
+struct enum_traits<CreditEventType> {
+    static constexpr std::size_t count = FE_CreditEventType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_CreditEventType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_CreditEventType_ORDINAL_VALID(o); }
+};
+
+enum class CreditQuality : std::uint8_t {
+    Invalid = 0,
+    InvestmentGrade = 1,
+    HighYield = 2,
+    Distressed = 3,
+    Defaulted = 4
+};
+
+template <>
+struct enum_traits<CreditQuality> {
+    static constexpr std::size_t count = FE_CreditQuality_COUNT;
+    static constexpr std::size_t max_ordinal = FE_CreditQuality_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_CreditQuality_ORDINAL_VALID(o); }
+};
+
+enum class CreditRatingAgency : std::uint8_t {
+    Invalid = 0,
+    StandardAndPoors = 1,
+    Moodys = 2,
+    Fitch = 3,
+    DominionBondRatingService = 4,
+    AmBest = 5,
+    JapanCreditRatingAgency = 6,
+    RatingAndInvestmentInformation = 7,
+    KrollBondRatingAgency = 8,
+    ScopeRatings = 9
+};
+
+template <>
+struct enum_traits<CreditRatingAgency> {
+    static constexpr std::size_t count = FE_CreditRatingAgency_COUNT;
+    static constexpr std::size_t max_ordinal = FE_CreditRatingAgency_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_CreditRatingAgency_ORDINAL_VALID(o); }
+};
+
+enum class CreditRatingOutlook : std::uint8_t {
+    Invalid = 0,
+    Positive = 1,
+    Negative = 2,
+    Stable = 3,
+    Developing = 4
+};
+
+template <>
+struct enum_traits<CreditRatingOutlook> {
+    static constexpr std::size_t count = FE_CreditRatingOutlook_COUNT;
+    static constexpr std::size_t max_ordinal = FE_CreditRatingOutlook_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_CreditRatingOutlook_ORDINAL_VALID(o); }
+};
+
 enum class CrossType : std::uint8_t {
     Invalid = 0,
-    Internal = 1,
-    Exchange = 2,
-    Broker = 3,
-    OpeningAuction = 4,
-    ClosingAuction = 5
+    AllOrNone = 1,
+    ImmediateOrCancel = 2,
+    OneSide = 3,
+    SamePrice = 4,
+    Basis = 5,
+    Contingent = 6,
+    VolumeWeightedAveragePrice = 7,
+    CustomerToCustomer = 8
 };
 
 template <>
@@ -6535,7 +7285,11 @@ enum class CurrencyRole : std::uint8_t {
     Settlement = 3,
     Margin = 4,
     ProfitAndLoss = 5,
-    Reporting = 6
+    Reporting = 6,
+    Dealt = 7,
+    Call = 8,
+    Put = 9,
+    Premium = 10
 };
 
 template <>
@@ -6549,10 +7303,26 @@ enum class DayCountConvention : std::uint8_t {
     Invalid = 0,
     Actual360 = 1,
     Actual365Fixed = 2,
-    ActualActual = 3,
-    Thirty360 = 4,
+    ActualActualIsda = 3,
+    Thirty360Isda = 4,
     Thirty360European = 5,
-    Business252 = 6
+    Business252 = 6,
+    ActualActualIcma = 7,
+    ActualActualAfb = 8,
+    ActualActualYear = 9,
+    Actual365Actual = 10,
+    Actual365Leap = 11,
+    Actual364 = 12,
+    Actual36525 = 13,
+    NoLeap360 = 14,
+    NoLeap365 = 15,
+    Thirty360UnitedStates = 16,
+    Thirty360UnitedStatesEndOfMonth = 17,
+    Thirty360PublicSecuritiesAssociation = 18,
+    Thirty360EuropeanIsda = 19,
+    Thirty360EuropeanPlus = 20,
+    Thirty365European = 21,
+    OneOne = 22
 };
 
 template <>
@@ -6560,6 +7330,22 @@ struct enum_traits<DayCountConvention> {
     static constexpr std::size_t count = FE_DayCountConvention_COUNT;
     static constexpr std::size_t max_ordinal = FE_DayCountConvention_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_DayCountConvention_ORDINAL_VALID(o); }
+};
+
+enum class DebtGuaranteeType : std::uint8_t {
+    Invalid = 0,
+    GovernmentGuaranteed = 1,
+    JointlyGuaranteed = 2,
+    Secured = 3,
+    Unsecured = 4,
+    NegativePledge = 5
+};
+
+template <>
+struct enum_traits<DebtGuaranteeType> {
+    static constexpr std::size_t count = FE_DebtGuaranteeType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_DebtGuaranteeType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_DebtGuaranteeType_ORDINAL_VALID(o); }
 };
 
 enum class DelistingReason : std::uint8_t {
@@ -6579,6 +7365,23 @@ struct enum_traits<DelistingReason> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_DelistingReason_ORDINAL_VALID(o); }
 };
 
+enum class DeliveryType : std::uint8_t {
+    Invalid = 0,
+    DeliveryVersusPayment = 1,
+    FreeOfPayment = 2,
+    PaymentVersusPayment = 3,
+    TriParty = 4,
+    HoldInCustody = 5,
+    DeliverByValue = 6
+};
+
+template <>
+struct enum_traits<DeliveryType> {
+    static constexpr std::size_t count = FE_DeliveryType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_DeliveryType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_DeliveryType_ORDINAL_VALID(o); }
+};
+
 enum class DistributionPolicy : std::uint8_t {
     Invalid = 0,
     Accumulating = 1,
@@ -6593,6 +7396,20 @@ struct enum_traits<DistributionPolicy> {
     static constexpr std::size_t count = FE_DistributionPolicy_COUNT;
     static constexpr std::size_t max_ordinal = FE_DistributionPolicy_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_DistributionPolicy_ORDINAL_VALID(o); }
+};
+
+enum class DurationType : std::uint8_t {
+    Invalid = 0,
+    Simple = 1,
+    Macaulay = 2,
+    Modified = 3
+};
+
+template <>
+struct enum_traits<DurationType> {
+    static constexpr std::size_t count = FE_DurationType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_DurationType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_DurationType_ORDINAL_VALID(o); }
 };
 
 enum class EnergyType : std::uint8_t {
@@ -9524,20 +10341,6 @@ struct enum_traits<ExchangeCode> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_ExchangeCode_ORDINAL_VALID(o); }
 };
 
-enum class ExecutionDisposition : std::uint8_t {
-    Invalid = 0,
-    Regular = 1,
-    Bust = 2,
-    Correct = 3
-};
-
-template <>
-struct enum_traits<ExecutionDisposition> {
-    static constexpr std::size_t count = FE_ExecutionDisposition_COUNT;
-    static constexpr std::size_t max_ordinal = FE_ExecutionDisposition_MAX_ORDINAL;
-    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ExecutionDisposition_ORDINAL_VALID(o); }
-};
-
 enum class ExecutionInstruction : std::uint8_t {
     Invalid = 0,
     AllOrNone = 1,
@@ -9547,7 +10350,16 @@ enum class ExecutionInstruction : std::uint8_t {
     StayOnOfferSide = 5,
     StayOnBidSide = 6,
     LastPeg = 7,
-    MidPricePeg = 8
+    MidPricePeg = 8,
+    Held = 9,
+    NotHeld = 10,
+    IntermarketSweep = 11,
+    CancelOnTradingHalt = 12,
+    ReinstateOnTradingHalt = 13,
+    CancelOnConnectionLoss = 14,
+    NoCross = 15,
+    ExternalRoutingNotAllowed = 16,
+    ImbalanceOnly = 17
 };
 
 template <>
@@ -9566,7 +10378,16 @@ enum class ExecutionType : std::uint8_t {
     Rejected = 5,
     Expired = 6,
     TradeCorrect = 7,
-    TradeCancel = 8
+    TradeCancel = 8,
+    PendingNew = 9,
+    PendingCancel = 10,
+    PendingReplace = 11,
+    Restated = 12,
+    DoneForDay = 13,
+    Suspended = 14,
+    Stopped = 15,
+    OrderStatus = 16,
+    TriggeredOrActivatedBySystem = 17
 };
 
 template <>
@@ -9657,6 +10478,82 @@ struct enum_traits<FinancingType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_FinancingType_ORDINAL_VALID(o); }
 };
 
+enum class ForeignExchangeAtTheMoneyConvention : std::uint8_t {
+    Invalid = 0,
+    Spot = 1,
+    Forward = 2,
+    DeltaNeutral = 3,
+    PutCallFiftyDelta = 4
+};
+
+template <>
+struct enum_traits<ForeignExchangeAtTheMoneyConvention> {
+    static constexpr std::size_t count = FE_ForeignExchangeAtTheMoneyConvention_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeAtTheMoneyConvention_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeAtTheMoneyConvention_ORDINAL_VALID(o); }
+};
+
+enum class ForeignExchangeBenchmark : std::uint8_t {
+    Invalid = 0,
+    WorldMarketsReuters = 1,
+    Bloomberg = 2,
+    EuropeanCentralBank = 3,
+    CentralBank = 4,
+    MitsubishiUfj = 5,
+    Other = 6
+};
+
+template <>
+struct enum_traits<ForeignExchangeBenchmark> {
+    static constexpr std::size_t count = FE_ForeignExchangeBenchmark_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeBenchmark_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeBenchmark_ORDINAL_VALID(o); }
+};
+
+enum class ForeignExchangeDeltaConvention : std::uint8_t {
+    Invalid = 0,
+    Spot = 1,
+    Forward = 2,
+    PremiumAdjustedSpot = 3,
+    PremiumAdjustedForward = 4
+};
+
+template <>
+struct enum_traits<ForeignExchangeDeltaConvention> {
+    static constexpr std::size_t count = FE_ForeignExchangeDeltaConvention_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeDeltaConvention_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeDeltaConvention_ORDINAL_VALID(o); }
+};
+
+enum class ForeignExchangeProductType : std::uint8_t {
+    Invalid = 0,
+    Spot = 1,
+    OutrightForward = 2,
+    Swap = 3,
+    NonDeliverableForward = 4,
+    NonDeliverableSwap = 5
+};
+
+template <>
+struct enum_traits<ForeignExchangeProductType> {
+    static constexpr std::size_t count = FE_ForeignExchangeProductType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeProductType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeProductType_ORDINAL_VALID(o); }
+};
+
+enum class ForeignExchangeQuoteBasis : std::uint8_t {
+    Invalid = 0,
+    BaseCurrencyPerQuoteCurrency = 1,
+    QuoteCurrencyPerBaseCurrency = 2
+};
+
+template <>
+struct enum_traits<ForeignExchangeQuoteBasis> {
+    static constexpr std::size_t count = FE_ForeignExchangeQuoteBasis_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeQuoteBasis_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeQuoteBasis_ORDINAL_VALID(o); }
+};
+
 enum class ForeignExchangeTenor : std::uint8_t {
     Invalid = 0,
     Today = 1,
@@ -9710,7 +10607,9 @@ enum class ForeignExchangeTenor : std::uint8_t {
     InternationalMonetaryMarket1 = 49,
     InternationalMonetaryMarket2 = 50,
     InternationalMonetaryMarket3 = 51,
-    InternationalMonetaryMarket4 = 52
+    InternationalMonetaryMarket4 = 52,
+    TomorrowNext = 53,
+    BrokenDate = 54
 };
 
 template <>
@@ -9718,6 +10617,20 @@ struct enum_traits<ForeignExchangeTenor> {
     static constexpr std::size_t count = FE_ForeignExchangeTenor_COUNT;
     static constexpr std::size_t max_ordinal = FE_ForeignExchangeTenor_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeTenor_ORDINAL_VALID(o); }
+};
+
+enum class ForeignExchangeVolatilityQuoteType : std::uint8_t {
+    Invalid = 0,
+    AtTheMoney = 1,
+    RiskReversal = 2,
+    Butterfly = 3
+};
+
+template <>
+struct enum_traits<ForeignExchangeVolatilityQuoteType> {
+    static constexpr std::size_t count = FE_ForeignExchangeVolatilityQuoteType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ForeignExchangeVolatilityQuoteType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ForeignExchangeVolatilityQuoteType_ORDINAL_VALID(o); }
 };
 
 enum class FundSubType : std::uint8_t {
@@ -10018,6 +10931,42 @@ struct enum_traits<InstrumentType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_InstrumentType_ORDINAL_VALID(o); }
 };
 
+enum class InterestRateProductType : std::uint8_t {
+    Invalid = 0,
+    Swap = 1,
+    ForwardRateAgreement = 2,
+    Cap = 3,
+    Floor = 4,
+    Collar = 5,
+    Swaption = 6,
+    Future = 7
+};
+
+template <>
+struct enum_traits<InterestRateProductType> {
+    static constexpr std::size_t count = FE_InterestRateProductType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_InterestRateProductType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_InterestRateProductType_ORDINAL_VALID(o); }
+};
+
+enum class InterestRateSwapType : std::uint8_t {
+    Invalid = 0,
+    FixedForFloating = 1,
+    Basis = 2,
+    OvernightIndex = 3,
+    CrossCurrency = 4,
+    ZeroCouponInflation = 5,
+    YearOnYearInflation = 6,
+    Amortizing = 7
+};
+
+template <>
+struct enum_traits<InterestRateSwapType> {
+    static constexpr std::size_t count = FE_InterestRateSwapType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_InterestRateSwapType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_InterestRateSwapType_ORDINAL_VALID(o); }
+};
+
 enum class InventoryType : std::uint8_t {
     Invalid = 0,
     Available = 1,
@@ -10033,6 +10982,27 @@ struct enum_traits<InventoryType> {
     static constexpr std::size_t count = FE_InventoryType_COUNT;
     static constexpr std::size_t max_ordinal = FE_InventoryType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_InventoryType_ORDINAL_VALID(o); }
+};
+
+enum class IssuerType : std::uint8_t {
+    Invalid = 0,
+    Sovereign = 1,
+    CentralBank = 2,
+    QuasiGovernment = 3,
+    RegionalGovernment = 4,
+    LocalGovernment = 5,
+    Supranational = 6,
+    Corporate = 7,
+    FinancialInstitution = 8,
+    SpecialPurposeVehicle = 9,
+    Fund = 10
+};
+
+template <>
+struct enum_traits<IssuerType> {
+    static constexpr std::size_t count = FE_IssuerType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_IssuerType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_IssuerType_ORDINAL_VALID(o); }
 };
 
 enum class LegRole : std::uint8_t {
@@ -10056,8 +11026,9 @@ enum class LiquidityFlag : std::uint8_t {
     Removed = 2,
     RoutedOut = 3,
     Auction = 4,
-    None = 5,
-    Neutral = 6
+    Neutral = 5,
+    TriggeredStopOrder = 6,
+    TriggeredMarketOrder = 7
 };
 
 template <>
@@ -10145,7 +11116,10 @@ enum class MarketState : std::uint8_t {
     Open = 1,
     Closed = 2,
     Halted = 3,
-    Suspended = 4
+    Suspended = 4,
+    Outage = 5,
+    PartialOutage = 6,
+    Delayed = 7
 };
 
 template <>
@@ -10219,6 +11193,26 @@ struct enum_traits<MetalType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_MetalType_ORDINAL_VALID(o); }
 };
 
+enum class MoneyMarketInstrumentType : std::uint8_t {
+    Invalid = 0,
+    TreasuryBill = 1,
+    CommercialPaper = 2,
+    CertificateOfDeposit = 3,
+    BankersAcceptance = 4,
+    MediumTermNote = 5,
+    TimeDeposit = 6,
+    PromissoryNote = 7,
+    BankNote = 8,
+    EuroCommercialPaper = 9
+};
+
+template <>
+struct enum_traits<MoneyMarketInstrumentType> {
+    static constexpr std::size_t count = FE_MoneyMarketInstrumentType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_MoneyMarketInstrumentType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_MoneyMarketInstrumentType_ORDINAL_VALID(o); }
+};
+
 enum class MutualFundEndedness : std::uint8_t {
     Invalid = 0,
     OpenEnded = 1,
@@ -10248,6 +11242,49 @@ struct enum_traits<NettingType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_NettingType_ORDINAL_VALID(o); }
 };
 
+enum class ObligationCategory : std::uint8_t {
+    Invalid = 0,
+    Payment = 1,
+    BorrowedMoney = 2,
+    ReferenceObligationsOnly = 3,
+    Bond = 4,
+    Loan = 5,
+    BondOrLoan = 6
+};
+
+template <>
+struct enum_traits<ObligationCategory> {
+    static constexpr std::size_t count = FE_ObligationCategory_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ObligationCategory_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ObligationCategory_ORDINAL_VALID(o); }
+};
+
+enum class ObligationCharacteristic : std::uint8_t {
+    Invalid = 0,
+    NotSubordinated = 1,
+    SpecifiedCurrency = 2,
+    NotSovereignLender = 3,
+    NotDomesticCurrency = 4,
+    NotDomesticLaw = 5,
+    Listed = 6,
+    NotDomesticIssuance = 7,
+    NotContingent = 8,
+    AssignableLoan = 9,
+    ConsentRequiredLoan = 10,
+    DirectLoanParticipation = 11,
+    Transferable = 12,
+    MaximumMaturity = 13,
+    AcceleratedOrMatured = 14,
+    NotBearer = 15
+};
+
+template <>
+struct enum_traits<ObligationCharacteristic> {
+    static constexpr std::size_t count = FE_ObligationCharacteristic_COUNT;
+    static constexpr std::size_t max_ordinal = FE_ObligationCharacteristic_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_ObligationCharacteristic_ORDINAL_VALID(o); }
+};
+
 enum class OptionExerciseType : std::uint8_t {
     Invalid = 0,
     American = 1,
@@ -10260,6 +11297,35 @@ struct enum_traits<OptionExerciseType> {
     static constexpr std::size_t count = FE_OptionExerciseType_COUNT;
     static constexpr std::size_t max_ordinal = FE_OptionExerciseType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_OptionExerciseType_ORDINAL_VALID(o); }
+};
+
+enum class OptionPremiumQuoteBasis : std::uint8_t {
+    Invalid = 0,
+    PercentageOfCallCurrencyAmount = 1,
+    PercentageOfPutCurrencyAmount = 2,
+    CallCurrencyPerPutCurrency = 3,
+    PutCurrencyPerCallCurrency = 4,
+    Explicit = 5
+};
+
+template <>
+struct enum_traits<OptionPremiumQuoteBasis> {
+    static constexpr std::size_t count = FE_OptionPremiumQuoteBasis_COUNT;
+    static constexpr std::size_t max_ordinal = FE_OptionPremiumQuoteBasis_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_OptionPremiumQuoteBasis_ORDINAL_VALID(o); }
+};
+
+enum class OptionStrikeQuoteBasis : std::uint8_t {
+    Invalid = 0,
+    PutCurrencyPerCallCurrency = 1,
+    CallCurrencyPerPutCurrency = 2
+};
+
+template <>
+struct enum_traits<OptionStrikeQuoteBasis> {
+    static constexpr std::size_t count = FE_OptionStrikeQuoteBasis_COUNT;
+    static constexpr std::size_t max_ordinal = FE_OptionStrikeQuoteBasis_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_OptionStrikeQuoteBasis_ORDINAL_VALID(o); }
 };
 
 enum class OptionType : std::uint8_t {
@@ -10281,7 +11347,9 @@ enum class OrderCapacity : std::uint8_t {
     Principal = 2,
     RisklessPrincipal = 3,
     Proprietary = 4,
-    MarketMaker = 5
+    MarketMaker = 5,
+    Individual = 6,
+    MixedCapacity = 7
 };
 
 template <>
@@ -10291,27 +11359,14 @@ struct enum_traits<OrderCapacity> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_OrderCapacity_ORDINAL_VALID(o); }
 };
 
-enum class OrderFlag : std::uint8_t {
-    Invalid = 0,
-    None = 1,
-    FillOrKill = 2,
-    AllOrNone = 3,
-    ImmediateOrCancel = 4
-};
-
-template <>
-struct enum_traits<OrderFlag> {
-    static constexpr std::size_t count = FE_OrderFlag_COUNT;
-    static constexpr std::size_t max_ordinal = FE_OrderFlag_MAX_ORDINAL;
-    static constexpr bool is_valid(std::size_t o) noexcept { return FE_OrderFlag_ORDINAL_VALID(o); }
-};
-
 enum class OrderSide : std::uint8_t {
     Invalid = 0,
     Buy = 1,
     Sell = 2,
     SellShort = 3,
-    BuyToCover = 4
+    BuyToCover = 4,
+    Cross = 5,
+    Undisclosed = 6
 };
 
 template <>
@@ -10331,7 +11386,10 @@ enum class OrderStatus : std::uint8_t {
     Rejected = 6,
     Expired = 7,
     Suspended = 8,
-    PendingCancel = 9
+    PendingCancel = 9,
+    PendingReplace = 10,
+    DoneForDay = 11,
+    Stopped = 12
 };
 
 template <>
@@ -10349,7 +11407,10 @@ enum class OrderType : std::uint8_t {
     StopLimit = 4,
     MarketOnClose = 5,
     LimitOnClose = 6,
-    Pegged = 7
+    Pegged = 7,
+    MarketIfTouched = 8,
+    MarketToLimit = 9,
+    TrailingStop = 10
 };
 
 template <>
@@ -10357,6 +11418,21 @@ struct enum_traits<OrderType> {
     static constexpr std::size_t count = FE_OrderType_COUNT;
     static constexpr std::size_t max_ordinal = FE_OrderType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_OrderType_ORDINAL_VALID(o); }
+};
+
+enum class OvernightAccrualMethod : std::uint8_t {
+    Invalid = 0,
+    Compounded = 1,
+    OvernightCompoundedAnnualRate = 2,
+    Averaged = 3,
+    AveragedDaily = 4
+};
+
+template <>
+struct enum_traits<OvernightAccrualMethod> {
+    static constexpr std::size_t count = FE_OvernightAccrualMethod_COUNT;
+    static constexpr std::size_t max_ordinal = FE_OvernightAccrualMethod_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_OvernightAccrualMethod_ORDINAL_VALID(o); }
 };
 
 enum class PayoffStyle : std::uint8_t {
@@ -10371,6 +11447,47 @@ struct enum_traits<PayoffStyle> {
     static constexpr std::size_t count = FE_PayoffStyle_COUNT;
     static constexpr std::size_t max_ordinal = FE_PayoffStyle_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_PayoffStyle_ORDINAL_VALID(o); }
+};
+
+enum class PayoutTiming : std::uint8_t {
+    Invalid = 0,
+    Immediate = 1,
+    Deferred = 2
+};
+
+template <>
+struct enum_traits<PayoutTiming> {
+    static constexpr std::size_t count = FE_PayoutTiming_COUNT;
+    static constexpr std::size_t max_ordinal = FE_PayoutTiming_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_PayoutTiming_ORDINAL_VALID(o); }
+};
+
+enum class PeriodTiming : std::uint8_t {
+    Invalid = 0,
+    PeriodStart = 1,
+    PeriodEnd = 2
+};
+
+template <>
+struct enum_traits<PeriodTiming> {
+    static constexpr std::size_t count = FE_PeriodTiming_COUNT;
+    static constexpr std::size_t max_ordinal = FE_PeriodTiming_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_PeriodTiming_ORDINAL_VALID(o); }
+};
+
+enum class PeriodUnit : std::uint8_t {
+    Invalid = 0,
+    Day = 1,
+    Week = 2,
+    Month = 3,
+    Year = 4
+};
+
+template <>
+struct enum_traits<PeriodUnit> {
+    static constexpr std::size_t count = FE_PeriodUnit_COUNT;
+    static constexpr std::size_t max_ordinal = FE_PeriodUnit_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_PeriodUnit_ORDINAL_VALID(o); }
 };
 
 enum class PositionEffect : std::uint8_t {
@@ -10405,6 +11522,20 @@ struct enum_traits<PositionType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_PositionType_ORDINAL_VALID(o); }
 };
 
+enum class PriceIndexCalculationMethod : std::uint8_t {
+    Invalid = 0,
+    Monthly = 1,
+    Interpolated = 2,
+    InterpolatedJapan = 3
+};
+
+template <>
+struct enum_traits<PriceIndexCalculationMethod> {
+    static constexpr std::size_t count = FE_PriceIndexCalculationMethod_COUNT;
+    static constexpr std::size_t max_ordinal = FE_PriceIndexCalculationMethod_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_PriceIndexCalculationMethod_ORDINAL_VALID(o); }
+};
+
 enum class PriceKind : std::uint8_t {
     Invalid = 0,
     Bid = 1,
@@ -10435,7 +11566,11 @@ enum class PriceNotation : std::uint8_t {
     PerUnit = 9,
     Percentage = 10,
     CleanPrice = 11,
-    DirtyPrice = 12
+    DirtyPrice = 12,
+    Discount = 13,
+    Premium = 14,
+    UpfrontPoints = 15,
+    PercentageOfNotional = 16
 };
 
 template <>
@@ -10484,7 +11619,7 @@ struct enum_traits<QuoteCondition> {
 enum class RateIndex : std::uint8_t {
     Invalid = 0,
     SecuredOvernightFinancingRate = 1,
-    FedFunds = 2,
+    EffectiveFederalFundsRate = 2,
     EuroShortTermRate = 3,
     SterlingOvernightIndexAverage = 4,
     EuroInterbankOfferedRate = 5,
@@ -10498,6 +11633,26 @@ struct enum_traits<RateIndex> {
     static constexpr std::size_t count = FE_RateIndex_COUNT;
     static constexpr std::size_t max_ordinal = FE_RateIndex_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_RateIndex_ORDINAL_VALID(o); }
+};
+
+enum class RedemptionFeature : std::uint8_t {
+    Invalid = 0,
+    Callable = 1,
+    Puttable = 2,
+    Convertible = 3,
+    Exchangeable = 4,
+    ContingentConvertible = 5,
+    Sinkable = 6,
+    Extendible = 7,
+    Perpetual = 8,
+    MakeWholeCallable = 9
+};
+
+template <>
+struct enum_traits<RedemptionFeature> {
+    static constexpr std::size_t count = FE_RedemptionFeature_COUNT;
+    static constexpr std::size_t max_ordinal = FE_RedemptionFeature_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_RedemptionFeature_ORDINAL_VALID(o); }
 };
 
 enum class RepoType : std::uint8_t {
@@ -10517,6 +11672,78 @@ struct enum_traits<RepoType> {
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_RepoType_ORDINAL_VALID(o); }
 };
 
+enum class RestructuringClause : std::uint8_t {
+    Invalid = 0,
+    NoRestructuring = 1,
+    FullRestructuring = 2,
+    ModifiedRestructuring = 3,
+    ModifiedModifiedRestructuring = 4
+};
+
+template <>
+struct enum_traits<RestructuringClause> {
+    static constexpr std::size_t count = FE_RestructuringClause_COUNT;
+    static constexpr std::size_t max_ordinal = FE_RestructuringClause_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_RestructuringClause_ORDINAL_VALID(o); }
+};
+
+enum class RollConvention : std::uint8_t {
+    Invalid = 0,
+    None = 1,
+    EndOfMonth = 2,
+    InternationalMoneyMarket = 3,
+    InternationalMoneyMarketAustralia = 4,
+    InternationalMoneyMarketCanada = 5,
+    InternationalMoneyMarketNewZealand = 6,
+    SydneyFuturesExchange = 7,
+    TreasuryBill = 8,
+    FloatingRateNote = 9,
+    DayOfMonth1 = 10,
+    DayOfMonth2 = 11,
+    DayOfMonth3 = 12,
+    DayOfMonth4 = 13,
+    DayOfMonth5 = 14,
+    DayOfMonth6 = 15,
+    DayOfMonth7 = 16,
+    DayOfMonth8 = 17,
+    DayOfMonth9 = 18,
+    DayOfMonth10 = 19,
+    DayOfMonth11 = 20,
+    DayOfMonth12 = 21,
+    DayOfMonth13 = 22,
+    DayOfMonth14 = 23,
+    DayOfMonth15 = 24,
+    DayOfMonth16 = 25,
+    DayOfMonth17 = 26,
+    DayOfMonth18 = 27,
+    DayOfMonth19 = 28,
+    DayOfMonth20 = 29,
+    DayOfMonth21 = 30,
+    DayOfMonth22 = 31,
+    DayOfMonth23 = 32,
+    DayOfMonth24 = 33,
+    DayOfMonth25 = 34,
+    DayOfMonth26 = 35,
+    DayOfMonth27 = 36,
+    DayOfMonth28 = 37,
+    DayOfMonth29 = 38,
+    DayOfMonth30 = 39,
+    Monday = 40,
+    Tuesday = 41,
+    Wednesday = 42,
+    Thursday = 43,
+    Friday = 44,
+    Saturday = 45,
+    Sunday = 46
+};
+
+template <>
+struct enum_traits<RollConvention> {
+    static constexpr std::size_t count = FE_RollConvention_COUNT;
+    static constexpr std::size_t max_ordinal = FE_RollConvention_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_RollConvention_ORDINAL_VALID(o); }
+};
+
 enum class ScheduleFrequency : std::uint8_t {
     Invalid = 0,
     Daily = 1,
@@ -10526,7 +11753,11 @@ enum class ScheduleFrequency : std::uint8_t {
     SemiAnnual = 5,
     Annual = 6,
     AtMaturity = 7,
-    AdHoc = 8
+    AdHoc = 8,
+    Biweekly = 9,
+    EveryFourWeeks = 10,
+    EveryTwoMonths = 11,
+    EveryFourMonths = 12
 };
 
 template <>
@@ -10556,6 +11787,20 @@ struct enum_traits<Sector> {
     static constexpr std::size_t count = FE_Sector_COUNT;
     static constexpr std::size_t max_ordinal = FE_Sector_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_Sector_ORDINAL_VALID(o); }
+};
+
+enum class SecurityForm : std::uint8_t {
+    Invalid = 0,
+    Bearer = 1,
+    Registered = 2,
+    BearerOrRegistered = 3
+};
+
+template <>
+struct enum_traits<SecurityForm> {
+    static constexpr std::size_t count = FE_SecurityForm_COUNT;
+    static constexpr std::size_t max_ordinal = FE_SecurityForm_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_SecurityForm_ORDINAL_VALID(o); }
 };
 
 enum class SecurityStatus : std::uint8_t {
@@ -10628,7 +11873,11 @@ enum class Seniority : std::uint8_t {
     SeniorSubordinated = 3,
     Subordinated = 4,
     JuniorSubordinated = 5,
-    Preferred = 6
+    Preferred = 6,
+    SeniorNonPreferred = 7,
+    LowerTierTwoSubordinated = 8,
+    UpperTierTwoSubordinated = 9,
+    TierOneSubordinated = 10
 };
 
 template <>
@@ -10682,12 +11931,7 @@ enum class SettlementType : std::uint8_t {
     Physical = 1,
     Cash = 2,
     NonDeliverable = 3,
-    ElectAtExercise = 4,
-    DeliveryVersusPayment = 5,
-    PaymentVersusPayment = 6,
-    FreeOfPayment = 7,
-    HoldInCustody = 8,
-    TriParty = 9
+    ElectAtExercise = 4
 };
 
 template <>
@@ -10765,7 +12009,10 @@ enum class StubType : std::uint8_t {
     ShortFront = 2,
     ShortBack = 3,
     LongFront = 4,
-    LongBack = 5
+    LongBack = 5,
+    SmartFront = 6,
+    SmartBack = 7,
+    Both = 8
 };
 
 template <>
@@ -10975,7 +12222,8 @@ enum class SwapLegType : std::uint8_t {
     Equity = 5,
     Commodity = 6,
     ForeignExchange = 7,
-    Basis = 8
+    Basis = 8,
+    Overnight = 9
 };
 
 template <>
@@ -11000,6 +12248,21 @@ struct enum_traits<SwapType> {
     static constexpr std::size_t count = FE_SwapType_COUNT;
     static constexpr std::size_t max_ordinal = FE_SwapType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_SwapType_ORDINAL_VALID(o); }
+};
+
+enum class SwaptionCashSettlementMethod : std::uint8_t {
+    Invalid = 0,
+    CashPrice = 1,
+    ParYield = 2,
+    ZeroCouponYield = 3,
+    CollateralizedCashPrice = 4
+};
+
+template <>
+struct enum_traits<SwaptionCashSettlementMethod> {
+    static constexpr std::size_t count = FE_SwaptionCashSettlementMethod_COUNT;
+    static constexpr std::size_t max_ordinal = FE_SwaptionCashSettlementMethod_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_SwaptionCashSettlementMethod_ORDINAL_VALID(o); }
 };
 
 enum class Symbology : std::uint8_t {
@@ -11082,7 +12345,10 @@ enum class TimeInForce : std::uint8_t {
     FillOrKill = 5,
     GoodTillDate = 6,
     AtOpen = 7,
-    AtClose = 8
+    AtClose = 8,
+    GoodForAuction = 9,
+    GoodTillCrossing = 10,
+    AtCrossing = 11
 };
 
 template <>
@@ -11090,6 +12356,21 @@ struct enum_traits<TimeInForce> {
     static constexpr std::size_t count = FE_TimeInForce_COUNT;
     static constexpr std::size_t max_ordinal = FE_TimeInForce_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_TimeInForce_ORDINAL_VALID(o); }
+};
+
+enum class TouchType : std::uint8_t {
+    Invalid = 0,
+    OneTouch = 1,
+    NoTouch = 2,
+    DoubleOneTouch = 3,
+    DoubleNoTouch = 4
+};
+
+template <>
+struct enum_traits<TouchType> {
+    static constexpr std::size_t count = FE_TouchType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_TouchType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_TouchType_ORDINAL_VALID(o); }
 };
 
 enum class TradeCondition : std::uint8_t {
@@ -11230,6 +12511,45 @@ struct enum_traits<VenueType> {
     static constexpr std::size_t count = FE_VenueType_COUNT;
     static constexpr std::size_t max_ordinal = FE_VenueType_MAX_ORDINAL;
     static constexpr bool is_valid(std::size_t o) noexcept { return FE_VenueType_ORDINAL_VALID(o); }
+};
+
+enum class YieldType : std::uint8_t {
+    Invalid = 0,
+    AfterTaxYield = 1,
+    AnnualYield = 2,
+    YieldAtIssue = 3,
+    YieldToAverageMaturity = 4,
+    BookYield = 5,
+    YieldToNextCall = 6,
+    YieldChangeSinceClose = 7,
+    CompoundYield = 8,
+    CurrentYield = 9,
+    TrueGrossYield = 10,
+    YieldWithInflationAssumption = 11,
+    InverseFloaterBondYield = 12,
+    MostRecentClosingYield = 13,
+    YieldToLongestAverageLife = 14,
+    MarkToMarketYield = 15,
+    YieldToMaturity = 16,
+    YieldToNextRefund = 17,
+    OpenAverageYield = 18,
+    PreviousCloseYield = 19,
+    ProceedsYield = 20,
+    YieldToNextPut = 21,
+    SemiAnnualYield = 22,
+    YieldToShortestAverageLife = 23,
+    SimpleYield = 24,
+    TaxEquivalentYield = 25,
+    YieldToTenderDate = 26,
+    TrueYield = 27,
+    YieldToWorst = 28
+};
+
+template <>
+struct enum_traits<YieldType> {
+    static constexpr std::size_t count = FE_YieldType_COUNT;
+    static constexpr std::size_t max_ordinal = FE_YieldType_MAX_ORDINAL;
+    static constexpr bool is_valid(std::size_t o) noexcept { return FE_YieldType_ORDINAL_VALID(o); }
 };
 
 } // namespace fe
