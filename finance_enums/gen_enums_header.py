@@ -64,8 +64,28 @@ _CPP_TYPES = {1: "std::uint8_t", 2: "std::uint16_t", 4: "std::uint32_t"}
 # Object-like macros from <windows.h> and its includes that would otherwise
 # rewrite an enumerator with the same name (IN is India, PURE is a MIC code).
 _PLATFORM_MACROS = (
-    "ABSOLUTE", "CALLBACK", "CDECL", "CONST", "DELETE", "ERROR", "FALSE", "FAR", "IN", "NEAR", "OPAQUE",
-    "OPTIONAL", "OUT", "PASCAL", "PURE", "RELATIVE", "TRANSPARENT", "TRUE", "VOID", "hyper", "interface", "small",
+    "ABSOLUTE",
+    "CALLBACK",
+    "CDECL",
+    "CONST",
+    "DELETE",
+    "ERROR",
+    "FALSE",
+    "FAR",
+    "IN",
+    "NEAR",
+    "OPAQUE",
+    "OPTIONAL",
+    "OUT",
+    "PASCAL",
+    "PURE",
+    "RELATIVE",
+    "TRANSPARENT",
+    "TRUE",
+    "VOID",
+    "hyper",
+    "interface",
+    "small",
 )
 
 
