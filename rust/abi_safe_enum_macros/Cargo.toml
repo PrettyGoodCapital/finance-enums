@@ -1,0 +1,16 @@
+[package]
+name = "abi_safe_enum_macros"
+version = "0.8.0"
+authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/prettygoodcapital/finance-enums"
+description = "Attribute macro behind the abi_safe_enum crate"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = { version = "2", features = ["full"] }

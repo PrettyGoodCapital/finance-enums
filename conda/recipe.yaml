@@ -1,0 +1,101 @@
+schema_version: 1
+
+context:
+  version: 0.8.0
+
+recipe:
+  name: finance-enums-split
+  version: ${{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+
+outputs:
+  - package:
+      name: libfinance-enums
+    build:
+      script:
+        - if: unix
+          then:
+            - cmake ${CMAKE_ARGS} -S . -B build/conda-native -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=${PREFIX} -DFINANCE_ENUMS_BUILD_SHARED=ON -DFINANCE_ENUMS_BUILD_STATIC=OFF
+            - cmake --build build/conda-native --config Release
+            - cmake --install build/conda-native --config Release
+        - if: win
+          then:
+            - cmake %CMAKE_ARGS% -S . -B build/conda-native -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% -DFINANCE_ENUMS_BUILD_SHARED=ON -DFINANCE_ENUMS_BUILD_STATIC=OFF
+            - cmake --build build/conda-native --config Release
+            - cmake --install build/conda-native --config Release
+    requirements:
+      build:
+        - ${{ compiler('rust') }}
+        - cmake
+        - ninja
+      run_exports:
+        - ${{ pin_subpackage('libfinance-enums', lower_bound='x.x.x', upper_bound='x.x') }}
+    tests:
+      - package_contents:
+          files:
+            - if: win
+              then:
+                - Library/bin/finance_enums.dll
+                - Library/lib/finance_enums.dll.lib
+          lib:
+            - if: unix
+              then: finance_enums
+          include:
+            - finance_enums/finance_enums.h
+            - finance_enums/finance_enums.hpp
+            - finance_enums/finance_enums_convert.hpp
+            - finance_enums/finance_enums_generated.h
+      - script:
+          - if: unix
+            then:
+              - test -f ${PREFIX}/lib/cmake/finance-enums/finance-enumsConfig.cmake
+              - PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig pkg-config --exact-version=${PKG_VERSION} finance-enums
+          - if: win
+            then:
+              - if not exist %LIBRARY_PREFIX%\lib\cmake\finance-enums\finance-enumsConfig.cmake exit 1
+        requirements:
+          run:
+            - if: unix
+              then: pkg-config
+
+  - package:
+      name: finance-enums
+    build:
+      script:
+        - if: unix
+          then:
+            - HATCH_RS_LIBRARY_SOURCE=external PYO3_PYTHON=${PYTHON} ${PYTHON} -m pip install . -vv --no-deps --no-build-isolation
+        - if: win
+          then:
+            - set "HATCH_RS_LIBRARY_SOURCE=external" && set "PYO3_PYTHON=%PYTHON%" && %PYTHON% -m pip install . -vv --no-deps --no-build-isolation
+    requirements:
+      build:
+        - ${{ compiler('rust') }}
+      host:
+        - python
+        - pip
+        - hatchling
+        - hatch-rs >=0.6.1
+        - ${{ pin_subpackage('libfinance-enums', exact=True) }}
+      run:
+        - python
+        - ${{ pin_subpackage('libfinance-enums', exact=True) }}
+    tests:
+      - python:
+          imports:
+            - finance_enums
+          pip_check: true
+      - script:
+          - python -c "import os; from pathlib import Path; import finance_enums as fe; expected = os.environ['PKG_VERSION']; assert fe.__version__ == expected; assert fe.abi_version() == tuple(map(int, expected.split('.'))); assert not (Path(fe.__file__).parent / 'lib').exists(); assert not (Path(fe.__file__).parent / 'include').exists()"
+
+about:
+  homepage: https://github.com/prettygoodcapital/finance-enums
+  repository: https://github.com/prettygoodcapital/finance-enums
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: Standard financial enumerations for Python and native consumers

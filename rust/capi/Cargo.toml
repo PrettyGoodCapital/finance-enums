@@ -1,0 +1,21 @@
+[package]
+name = "finance_enums_capi"
+version = "0.8.0"
+authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
+edition = "2021"
+license = "Apache-2.0"
+readme = "../../README.md"
+repository = "https://github.com/prettygoodcapital/finance-enums"
+description = "C ABI for finance-enums"
+build = "build.rs"
+
+[lib]
+name = "finance_enums"
+path = "src/lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+finance_enums_core = { path = "..", version = "0.8.0" }
+
+[build-dependencies]
+cbindgen = { version = "0.29", default-features = false }

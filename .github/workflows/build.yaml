@@ -1,0 +1,297 @@
+name: Build Status
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - v*
+    paths-ignore:
+      - LICENSE
+      - README.md
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  build:
+    name: build (${{ matrix.name }})
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - name: ubuntu-24.04
+            dist_path: dist
+            os: ubuntu-24.04
+            python: "3.11"
+            target: native
+          - name: ubuntu-24.04-arm
+            dist_path: dist
+            os: ubuntu-24.04-arm
+            python: "3.11"
+            target: native
+          - name: macos-26
+            dist_path: dist
+            os: macos-26
+            python: "3.11"
+            target: native
+          - name: windows-2025
+            dist_path: dist
+            os: windows-2025
+            python: "3.11"
+            target: native
+          
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions-ext/python/setup@c7ef9cbf13bc854a8d1422e9f8c6ee7a7ce1b911
+        with:
+          version: ${{ matrix.python }}
+
+      - name: Setup Rust
+        uses: actions-ext/rust/setup@af6343171cd1a86c4183da96de7eb96e15599662
+
+      - name: Install dependencies
+        run: make develop
+        if: matrix.target == 'native'
+
+      - name: Lint
+        run: make lint
+        if: matrix.target == 'native'
+
+      - name: Checks
+        run: make checks
+        if: matrix.name == 'ubuntu-24.04'
+
+      - name: Test native package consumers
+        run: |
+          cmake -S . -B "${{ runner.temp }}/finance-enums-native" -DFINANCE_ENUMS_BUILD_SHARED=ON -DFINANCE_ENUMS_BUILD_STATIC=OFF -DCMAKE_INSTALL_PREFIX="${{ runner.temp }}/finance-enums-prefix"
+          cmake --build "${{ runner.temp }}/finance-enums-native" --config Release
+          cmake --install "${{ runner.temp }}/finance-enums-native" --config Release
+          if cmake -S tests/native_consumer -B "${{ runner.temp }}/finance-enums-incompatible-consumer" -DCMAKE_PREFIX_PATH="${{ runner.temp }}/finance-enums-prefix" -DFINANCE_ENUMS_REQUIRED_VERSION=0.6; then
+            echo "CMake accepted an incompatible beta ABI minor" >&2
+            exit 1
+          fi
+          cmake -S tests/native_consumer -B "${{ runner.temp }}/finance-enums-consumer" -DCMAKE_PREFIX_PATH="${{ runner.temp }}/finance-enums-prefix"
+          cmake --build "${{ runner.temp }}/finance-enums-consumer" --config Release
+          ctest --test-dir "${{ runner.temp }}/finance-enums-consumer" -C Release --output-on-failure
+        shell: bash
+
+      - name: Test pkg-config metadata
+        run: PKG_CONFIG_PATH="${{ runner.temp }}/finance-enums-prefix/lib/pkgconfig" pkg-config --exists finance-enums
+        shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Build
+        run: make build
+        if: matrix.target == 'native'
+
+      - name: Test
+        run: make coverage
+        if: matrix.target == 'native'
+
+      - name: Build and test Pyodide wheel
+        run: make test-pyodide
+        if: matrix.target == 'pyodide'
+
+      - name: Upload test results (Python)
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: test-results-${{ matrix.name }}
+          path: '**/junit.xml'
+        if: always() && matrix.target == 'native'
+
+      - name: Publish test results
+        uses: EnricoMi/publish-unit-test-result-action@7622c5bf3d112a72ab4fa3951c2aa5723d8ab92d  # v2.25.0
+        with:
+          files: '**/junit.xml'
+        if: matrix.name == 'ubuntu-24.04'
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5  # v7.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+        if: matrix.target == 'native'
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/share/swift
+          df -h /
+        shell: bash
+        if: matrix.target == 'native' && runner.os == 'Linux'
+
+      - name: Build distributions (Linux x86_64)
+        run: |
+          rm -rf dist
+          make dist-rs
+          make dist-py-sdist
+          make dist-py-wheel
+          make dist-check
+        shell: bash
+        env:
+          CIBW_ARCHS_LINUX: native
+        if: matrix.name == 'ubuntu-24.04'
+
+      - name: Build distributions (Linux ARM64)
+        run: |
+          rm -rf dist
+          make dist-py-wheel
+          make dist-check
+        shell: bash
+        env:
+          CIBW_ARCHS_LINUX: native
+        if: matrix.name == 'ubuntu-24.04-arm'
+
+      - name: Build distributions (macOS/Windows)
+        run: |
+          rm -rf dist
+          make dist-py-wheel
+          make dist-check
+        shell: bash
+        env:
+          CIBW_ENVIRONMENT_MACOS: MACOSX_DEPLOYMENT_TARGET=11.0
+        if: matrix.target == 'native' && runner.os != 'Linux'
+
+      - name: Test wheel
+        uses: actions-ext/python/test-wheel@c7ef9cbf13bc854a8d1422e9f8c6ee7a7ce1b911
+        with:
+          module: finance_enums
+        if: matrix.target == 'native' && runner.os == 'Linux'
+
+      - name: Test wheel SDK layout
+        run: python scripts/smoke_test_wheel.py dist
+
+      - name: Test split Python wheel
+        run: |
+          rm -rf finance_enums/lib finance_enums/include
+          HATCH_RS_LIBRARY_SOURCE=direct python -m build --wheel --no-isolation --outdir dist/split
+          python scripts/smoke_test_wheel.py dist/split --split
+        shell: bash
+        if: runner.os == 'Linux' && runner.arch == 'X64'
+
+      - name: Test source distribution
+        uses: actions-ext/python/test-sdist@c7ef9cbf13bc854a8d1422e9f8c6ee7a7ce1b911
+        with:
+          module: finance_enums
+        if: matrix.name == 'ubuntu-24.04'
+
+      - name: Install rattler-build
+        id: rattler-build
+        run: |
+          case "${{ runner.os }}-${{ runner.arch }}" in
+            Linux-X64)
+              asset="rattler-build-x86_64-unknown-linux-musl"
+              sha256="34f540732796dd4dea9d6273017b68ebec3a753e6ee71a9b6458e836cafdc1d0"
+              ;;
+            Linux-ARM64)
+              asset="rattler-build-aarch64-unknown-linux-musl"
+              sha256="a8223b8b5437bdd807fad15ca62fa067ecf9087faf34262ee4fcaf2ddb210c85"
+              ;;
+            macOS-X64)
+              asset="rattler-build-x86_64-apple-darwin"
+              sha256="2ec076cceb8a532b601af1801eae964e5551a76e8d579410f157c1c1c1ca1697"
+              ;;
+            macOS-ARM64)
+              asset="rattler-build-aarch64-apple-darwin"
+              sha256="a65eb0975e30c712d4b1c5512cf9e9fffce81ec8ae8fe293991f50a1d1b95936"
+              ;;
+            Windows-X64)
+              asset="rattler-build-x86_64-pc-windows-msvc.exe"
+              sha256="fa27f04ccdba28d42fc8478ede2a299cd334a73384080cdef653fa5568382d1f"
+              ;;
+            Windows-ARM64)
+              asset="rattler-build-aarch64-pc-windows-msvc.exe"
+              sha256="469d7fbab0db12138bd8604f798acb9a96e110ee0fd1ba295e71f2959805bb9c"
+              ;;
+            *)
+              echo "Unsupported runner: ${{ runner.os }}-${{ runner.arch }}" >&2
+              exit 1
+              ;;
+          esac
+          destination="${{ runner.temp }}/${asset}"
+          python - "$asset" "$sha256" "$destination" <<'PY'
+          import hashlib
+          import sys
+          import urllib.request
+          from pathlib import Path
+
+          asset, expected, destination = sys.argv[1:]
+          url = f"https://github.com/prefix-dev/rattler-build/releases/download/v0.73.0/{asset}"
+          urllib.request.urlretrieve(url, destination)
+          actual = hashlib.sha256(Path(destination).read_bytes()).hexdigest()
+          if actual != expected:
+              raise SystemExit(f"SHA256 mismatch for {asset}: {actual}")
+          PY
+          chmod +x "$destination"
+          echo "executable=$destination" >> "$GITHUB_OUTPUT"
+        shell: bash
+
+      - name: Build and test split conda packages
+        run: |
+          "${{ steps.rattler-build.outputs.executable }}" build --recipe conda/recipe.yaml --channel conda-forge --output-dir "${{ runner.temp }}/conda-output"
+        shell: bash
+
+      - name: Clone vcpkg
+        run: |
+          git clone --filter=blob:none https://github.com/microsoft/vcpkg.git "${{ runner.temp }}/vcpkg"
+          git -C "${{ runner.temp }}/vcpkg" checkout da411b1cfb549469ae350136f954deed7ad8c650
+        shell: bash
+
+      - name: Bootstrap vcpkg (Unix)
+        run: |
+          "${{ runner.temp }}/vcpkg/bootstrap-vcpkg.sh" -disableMetrics
+        shell: bash
+        if: runner.os != 'Windows'
+
+      - name: Bootstrap vcpkg (Windows)
+        run: '& "$env:RUNNER_TEMP\vcpkg\bootstrap-vcpkg.bat" -disableMetrics'
+        shell: pwsh
+        if: runner.os == 'Windows'
+
+      - name: Build and test vcpkg overlay port
+        run: |
+          case "${{ runner.os }}-${{ runner.arch }}" in
+            Linux-X64) triplet="x64-linux-dynamic" ;;
+            Linux-ARM64) triplet="arm64-linux-dynamic" ;;
+            macOS-X64) triplet="x64-osx" ;;
+            macOS-ARM64) triplet="arm64-osx" ;;
+            Windows-X64) triplet="x64-windows" ;;
+            Windows-ARM64) triplet="arm64-windows" ;;
+            *)
+              echo "Unsupported runner: ${{ runner.os }}-${{ runner.arch }}" >&2
+              exit 1
+              ;;
+          esac
+          vcpkg="${{ runner.temp }}/vcpkg/vcpkg"
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            vcpkg="${vcpkg}.exe"
+          fi
+          "$vcpkg" install finance-enums --classic --overlay-ports="${{ github.workspace }}/ports" --triplet "$triplet"
+          cmake -S tests/native_consumer -B "${{ runner.temp }}/vcpkg-consumer" -DCMAKE_TOOLCHAIN_FILE="${{ runner.temp }}/vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET="$triplet"
+          cmake --build "${{ runner.temp }}/vcpkg-consumer" --config Release
+          ctest --test-dir "${{ runner.temp }}/vcpkg-consumer" -C Release --output-on-failure
+        shell: bash
+        env:
+          VCPKG_KEEP_ENV_VARS: PATH;CARGO_HOME;RUSTUP_HOME
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
+        with:
+          name: dist-${{ matrix.name }}
+          path: ${{ matrix.dist_path }}
