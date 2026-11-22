@@ -8,6 +8,15 @@
  * Run:   ./ffi_cpp <path-to-libfinance_enums.so|.dylib>
  */
 
+// <windows.h> defines IN and PURE; the generated header must compile with them
+// defined on every platform.
+#ifndef IN
+#define IN
+#endif
+#ifndef PURE
+#define PURE = 0
+#endif
+
 #include <cassert>
 #include <cstddef>
 #include <cstdint>

@@ -5992,6 +5992,13 @@ typedef enum {
 #include <cstddef>
 #include <cstdint>
 
+// Some enumerators share a name with a <windows.h> macro (for example IN).
+// Set those macros aside while declaring the enums; they are restored below.
+#pragma push_macro("IN")
+#undef IN
+#pragma push_macro("PURE")
+#undef PURE
+
 namespace fe {
 
 // Size and ordinal facts for each fe::<Family>; see <finance_enums_convert.hpp>.
@@ -12553,6 +12560,9 @@ struct enum_traits<YieldType> {
 };
 
 } // namespace fe
+
+#pragma pop_macro("IN")
+#pragma pop_macro("PURE")
 
 #endif /* __cplusplus */
 

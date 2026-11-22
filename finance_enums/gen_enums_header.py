@@ -61,6 +61,13 @@ def _valid_expression(items):
 
 _CPP_TYPES = {1: "std::uint8_t", 2: "std::uint16_t", 4: "std::uint32_t"}
 
+# Object-like macros from <windows.h> and its includes that would otherwise
+# rewrite an enumerator with the same name (IN is India, PURE is a MIC code).
+_PLATFORM_MACROS = (
+    "ABSOLUTE", "CALLBACK", "CDECL", "CONST", "DELETE", "ERROR", "FALSE", "FAR", "IN", "NEAR", "OPAQUE",
+    "OPTIONAL", "OUT", "PASCAL", "PURE", "RELATIVE", "TRANSPARENT", "TRUE", "VOID", "hyper", "interface", "small",
+)
+
 
 def generate_header(families):
     lines = [
@@ -115,6 +122,16 @@ def generate_header(families):
     lines.append("#include <cstdint>")
     lines.append("")
 
+    enumerators = {_cpp_enumerator(v) for _, items, _ in families for _, v in items}
+    collisions = [macro for macro in _PLATFORM_MACROS if macro in enumerators]
+    if collisions:
+        lines.append("// Some enumerators share a name with a <windows.h> macro (for example IN).")
+        lines.append("// Set those macros aside while declaring the enums; they are restored below.")
+        for macro in collisions:
+            lines.append(f'#pragma push_macro("{macro}")')
+            lines.append(f"#undef {macro}")
+        lines.append("")
+
     # C++ enum class definitions in namespace fe, sized like the Rust enums.
     lines.append("namespace fe {")
     lines.append("")
@@ -138,6 +155,10 @@ def generate_header(families):
         lines.append("")
     lines.append("} // namespace fe")
     lines.append("")
+    for macro in collisions:
+        lines.append(f'#pragma pop_macro("{macro}")')
+    if collisions:
+        lines.append("")
     lines.append("#endif /* __cplusplus */")
     lines.append("")
     lines.append("#endif /* FINANCE_ENUMS_GENERATED_H */")

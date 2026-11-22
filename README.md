@@ -218,6 +218,10 @@ These cover every family in the C ABI export, including `Currency` and
 count, not a bound; check an ordinal with `FE_ENUMS_ORDINAL_VALID` or
 `checked_from_ordinal`.
 
+A few C++ enumerators share a name with a `<windows.h>` macro, such as
+`fe::CountryCodeAlpha2::IN`. The header compiles either way, but code that names
+such an enumerator after including `<windows.h>` needs `#undef IN` first.
+
 ```cpp
 #include <finance_enums_generated.h>   // compile-time enum class
 #include <finance_enums_convert.hpp>   // ordinal <-> enum helpers
