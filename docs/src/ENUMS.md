@@ -3,7 +3,7 @@
 `finance-enums` centralizes identifier vocabularies used across the
 `finance-*` libraries. Python gets string-valued `Enum` classes; Rust
 gets typed `#[abi_safe_enum]` enums and data tables under
-`finance_enums_core::data`.
+`finance_enums::data`.
 
 All generated Python enum values are strings whose value equals the
 member name:
@@ -29,14 +29,13 @@ Rust package:
 
 ```toml
 [dependencies]
-finance_enums_core = "0.8"
+finance_enums = "0.9"
 ```
 
-Releases through 0.7 published this crate as `finance_enums`. The C ABI
-library is built by the separate `finance_enums_capi` crate.
+The crate's `capi` feature builds the C ABI library, `libfinance_enums`.
 
 ```rust
-use finance_enums_core::data::ExchangeCode_VARIANTS;
+use finance_enums::data::ExchangeCode_VARIANTS;
 ```
 
 ______________________________________________________________________

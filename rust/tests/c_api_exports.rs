@@ -1,9 +1,11 @@
-use finance_enums::{
+#![cfg(feature = "capi")]
+
+use finance_enums::capi::{
     finance_enums_currency_export_v1, finance_enums_enum_export_v1,
     finance_enums_exchange_export_v1, FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION,
     FINANCE_ENUMS_ENUM_EXPORT_ABI_VERSION, FINANCE_ENUMS_EXCHANGE_EXPORT_ABI_VERSION,
 };
-use finance_enums_core::enum_data;
+use finance_enums::enum_data;
 use std::collections::{BTreeMap, BTreeSet};
 use std::ffi::CStr;
 

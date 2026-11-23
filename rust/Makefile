@@ -31,13 +31,13 @@ checks: check
 
 .PHONY: test tests test-ci tests-ci
 test:  ## run the tests
-	cargo llvm-cov nextest --workspace --cobertura --output-path coverage.xml
+	cargo llvm-cov nextest --workspace --features finance_enums/capi --cobertura --output-path coverage.xml
 
 # alias
 tests: test
 
 coverage:
-	cargo llvm-cov nextest --workspace --lcov --output-path coverage
+	cargo llvm-cov nextest --workspace --features finance_enums/capi --lcov --output-path coverage
 
 .PHONY: dist publish
 dist:  ## create dist

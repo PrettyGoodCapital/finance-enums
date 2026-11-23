@@ -4,13 +4,13 @@
 //!
 //! ```toml
 //! [dependencies]
-//! finance_enums_core = { version = "0.7", features = ["polars"] }
+//! finance_enums = { version = "0.9", features = ["polars"] }
 //! ```
 //!
 //! # Usage
 //!
 //! ```rust,ignore
-//! use finance_enums_core::polars::enum_dtype;
+//! use finance_enums::polars::enum_dtype;
 //!
 //! let currency_dtype = enum_dtype("Currency").unwrap();
 //! let side_dtype = enum_dtype("Side").unwrap();

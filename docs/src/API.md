@@ -378,11 +378,11 @@ ______________________________________________________________________
 
 ## Rust data access
 
-Rust consumers use the `finance_enums_core` crate and read static arrays from
-`finance_enums_core::data`:
+Rust consumers use the `finance_enums` crate and read static arrays from
+`finance_enums::data`:
 
 ```rust
-use finance_enums_core::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
+use finance_enums::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
 
 assert!(ExchangeCode_VARIANTS.contains(&"XNYS"));
 assert!(Currency_VARIANTS.contains(&"USD"));

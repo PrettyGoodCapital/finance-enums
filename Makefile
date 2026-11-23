@@ -30,7 +30,7 @@ build: build-rs build-py  ## build the project
 
 .PHONY: build-lib build-vcpkg
 build-lib:  ## build the standalone shared library (libfinance_enums cdylib)
-	cargo build --manifest-path rust/capi/Cargo.toml --release
+	cargo build --manifest-path rust/Cargo.toml --release --features capi
 
 build-vcpkg:  ## build and install the C ABI library + headers + cmake config into an install tree
 	cmake -B build -S . -DCMAKE_INSTALL_PREFIX=build/install

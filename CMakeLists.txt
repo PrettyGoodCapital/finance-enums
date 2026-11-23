@@ -2,8 +2,8 @@
 # finance-enums C/C++ packaging                                               #
 #                                                                             #
 # This CMake project does not compile any C/C++ itself. Its sole job is to    #
-# drive `cargo build` for the C ABI crate (rust/capi/Cargo.toml, which        #
-# exposes the stable C ABI declared in rust/capi/include/finance_enums.h),    #
+# drive `cargo build` for the finance_enums crate with its `capi` feature    #
+# (the stable C ABI declared in rust/capi/include/finance_enums.h),           #
 # then install the resulting shared/static libraries, the public headers, and #
 # the CMake package-config + pkg-config files so the artifact is consumable   #
 # via `find_package(finance-enums CONFIG)` (e.g. from a vcpkg port).          #
@@ -38,7 +38,7 @@ find_program(CARGO_EXECUTABLE cargo
   REQUIRED)
 message(STATUS "Using cargo: ${CARGO_EXECUTABLE}")
 
-set(_fe_manifest "${CMAKE_CURRENT_SOURCE_DIR}/rust/capi/Cargo.toml")
+set(_fe_manifest "${CMAKE_CURRENT_SOURCE_DIR}/rust/Cargo.toml")
 set(_fe_cargo_dir "${CMAKE_CURRENT_BINARY_DIR}/cargo")
 set(_fe_include_dir "${CMAKE_CURRENT_SOURCE_DIR}/rust/capi/include")
 
@@ -66,7 +66,7 @@ endif()
 ###############################################################################
 # Build the Rust library                                                      #
 ###############################################################################
-# The crate declares only cdylib and rlib (a staticlib would collide with the
+# The crate declares only rlib and cdylib (a staticlib would collide with the
 # MSVC import library name), so request the library kinds to install here.
 set(_fe_crate_types "")
 if(FINANCE_ENUMS_BUILD_SHARED)
@@ -89,7 +89,7 @@ endif()
 
 add_custom_target(finance_enums_cargo ALL
   COMMAND ${CMAKE_COMMAND} -E env CARGO_TARGET_DIR=${_fe_cargo_dir}
-          ${CARGO_EXECUTABLE} rustc --release --lib --crate-type ${_fe_crate_types} --manifest-path "${_fe_manifest}" ${_fe_link_args}
+          ${CARGO_EXECUTABLE} rustc --release --lib --features capi --crate-type ${_fe_crate_types} --manifest-path "${_fe_manifest}" ${_fe_link_args}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMENT "Building finance_enums Rust library (${_fe_crate_types})"
   VERBATIM)

@@ -150,20 +150,19 @@ reference and recipes.
 
 ### Rust crate
 
-The Rust data lives in the `finance_enums_core` crate (`rust/`). Releases
-through 0.7 published it as `finance_enums`.
+The Rust crate is `finance_enums` (`rust/`):
 
 ```toml
 [dependencies]
-finance_enums_core = "0.8"
+finance_enums = "0.9"
 ```
 
 ```rust
-use finance_enums_core::data::ExchangeCode_VARIANTS;
+use finance_enums::data::ExchangeCode_VARIANTS;
 ```
 
-The C ABI is a separate crate, `finance_enums_capi` (`rust/capi/`), which
-builds `libfinance_enums`.
+Its `capi` feature adds the C ABI exports and builds `libfinance_enums`; Rust
+users who only need the enums leave it off.
 
 > [!NOTE]
 > This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
@@ -190,7 +189,7 @@ Exchange coverage is now backed by bundled ISO 10383 MIC records plus a small se
 
 `finance-enums` ships a versioned C ABI for immutable metadata and enum-family discovery.
 
-- `rust/capi` builds `libfinance_enums`, which exports `finance_enums_currency_export_v1`, `finance_enums_exchange_export_v1`, and `finance_enums_enum_export_v1`. The enum export is a flat family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.
+- The `finance_enums` crate's `capi` feature (`rust/src/capi.rs`) builds `libfinance_enums`, which exports `finance_enums_currency_export_v1`, `finance_enums_exchange_export_v1`, and `finance_enums_enum_export_v1`. The enum export is a flat family / variant table that lets C and C++ consumers discover every Rust-backed enum without needing Python.
 - cbindgen generates the public header `rust/capi/include/finance_enums.h` from the crate; the C++ wrappers (`finance_enums.hpp`, `finance_enums_convert.hpp`) and `finance_enums_generated.h` sit beside it.
 - The Python extension links against `libfinance_enums` and reads all of its data through the C ABI, so a process that loads both shares one copy of the tables.
 - Wheels ship the library under `finance_enums/lib/` and the headers under `finance_enums/include/finance_enums/`. Native code built against an installed wheel can use `finance_enums.get_include()`, `get_library_dirs()`, and `get_libraries()`.
@@ -261,8 +260,8 @@ assert_abi_compatible(0, 7)   # raises RuntimeError if incompatible
 
 ```rust
 // Rust
-use finance_enums_core::{abi_compatible, assert_abi_compatible};
-use finance_enums_core::{ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR};
+use finance_enums::{abi_compatible, assert_abi_compatible};
+use finance_enums::{ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR};
 
 assert!(abi_compatible(ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR));
 assert_abi_compatible(ENUM_ABI_VERSION_MAJOR, ENUM_ABI_VERSION_MINOR); // panics if not

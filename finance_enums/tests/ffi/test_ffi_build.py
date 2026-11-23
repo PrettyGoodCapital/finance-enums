@@ -44,14 +44,14 @@ def _build_library() -> Path:
         pytest.skip("cargo not available and shared library not built")
 
     result = subprocess.run(
-        ["cargo", "build", "--release", "-p", "finance_enums_capi"],
+        ["cargo", "build", "--release", "--features", "capi"],
         cwd=PROJECT_ROOT / "rust",
         capture_output=True,
         check=False,
         text=True,
     )
     if result.returncode != 0:
-        pytest.fail(f"cargo build -p finance_enums_capi failed:\n{result.stderr}")
+        pytest.fail(f"cargo build --features capi failed:\n{result.stderr}")
 
     lib_path = _find_shared_library()
     if lib_path is None:

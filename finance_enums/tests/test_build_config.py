@@ -33,7 +33,8 @@ def test_c_abi_library_is_built_before_the_extension_that_links_it():
     assert [artifact["name"] for artifact in artifacts] == ["finance_enums", "_finance_enums"]
 
     library, extension = artifacts
-    assert library["manifest"] == "rust/capi/Cargo.toml"
+    assert library["manifest"] == "rust/Cargo.toml"
+    assert library["features"] == ["capi"]
     assert library["destination"] == "finance_enums/lib/{shared_library}"
     assert library["header-symbol-prefix"] == "finance_enums_"
     assert library["validate"] is True
@@ -60,26 +61,28 @@ def test_c_abi_library_is_built_before_the_extension_that_links_it():
     assert "finance_enums/include/**/*.h" in wheel["artifacts"]
 
 
-def test_cargo_crates_split_core_c_abi_and_extension():
+def test_one_finance_enums_crate_builds_the_c_abi_behind_a_feature():
     extension = _toml("Cargo.toml")
-    core = _toml("rust/Cargo.toml")
-    capi = _toml("rust/capi/Cargo.toml")
+    crate = _toml("rust/Cargo.toml")
 
     assert extension["lib"]["name"] == "_finance_enums"
     assert extension["features"] == {"default": ["direct"], "capi": [], "direct": ["dep:finance_enums"]}
-    assert extension["dependencies"]["finance_enums"]["package"] == "finance_enums_capi"
+    assert extension["dependencies"]["finance_enums"]["path"] == "./rust"
+    assert extension["dependencies"]["finance_enums"]["features"] == ["capi"]
 
-    assert core["package"]["name"] == "finance_enums_core"
-    assert core["lib"]["crate-type"] == ["rlib"]
-    assert core["workspace"]["members"] == [".", "abi_safe_enum", "abi_safe_enum_macros", "capi"]
-    assert core["dependencies"]["abi_safe_enum"]["path"] == "abi_safe_enum"
+    # Published to crates.io as finance_enums; the cdylib is libfinance_enums.
+    assert crate["package"]["name"] == "finance_enums"
+    assert crate["lib"]["name"] == "finance_enums"
+    assert crate["lib"]["crate-type"] == ["rlib", "cdylib"]
+    assert crate["features"]["capi"] == ["dep:cbindgen"]
+    assert crate["build-dependencies"]["cbindgen"]["optional"] is True
+    assert crate["workspace"]["members"] == [".", "abi_safe_enum", "abi_safe_enum_macros"]
+    assert crate["dependencies"]["abi_safe_enum"]["path"] == "abi_safe_enum"
 
-    assert capi["lib"]["name"] == "finance_enums"
-    assert "cdylib" in capi["lib"]["crate-type"]
-    assert capi["dependencies"]["finance_enums_core"]["path"] == ".."
+    core = crate
     abi_safe_enum = _toml("rust/abi_safe_enum/Cargo.toml")
     abi_safe_enum_macros = _toml("rust/abi_safe_enum_macros/Cargo.toml")
-    for crate in (extension, core, capi, abi_safe_enum, abi_safe_enum_macros):
+    for crate in (extension, core, abi_safe_enum, abi_safe_enum_macros):
         assert crate["package"]["version"] == core["package"]["version"]
 
 

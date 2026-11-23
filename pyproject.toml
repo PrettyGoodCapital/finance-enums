@@ -95,11 +95,6 @@ search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
 
 [[tool.bumpversion.files]]
-filename = "rust/capi/Cargo.toml"
-search = 'version = "{current_version}"'
-replace = 'version = "{new_version}"'
-
-[[tool.bumpversion.files]]
 filename = "rust/abi_safe_enum/Cargo.toml"
 search = 'version = "{current_version}"'
 replace = 'version = "{new_version}"'
@@ -164,17 +159,17 @@ search = "ENUM_ABI_VERSION_PATCH: u32 = {current_patch}"
 replace = "ENUM_ABI_VERSION_PATCH: u32 = {new_patch}"
 
 [[tool.bumpversion.files]]
-filename = "rust/capi/src/lib.rs"
+filename = "rust/src/capi.rs"
 search = "FINANCE_ENUMS_ABI_VERSION_MAJOR: u32 = {current_major}"
 replace = "FINANCE_ENUMS_ABI_VERSION_MAJOR: u32 = {new_major}"
 
 [[tool.bumpversion.files]]
-filename = "rust/capi/src/lib.rs"
+filename = "rust/src/capi.rs"
 search = "FINANCE_ENUMS_ABI_VERSION_MINOR: u32 = {current_minor}"
 replace = "FINANCE_ENUMS_ABI_VERSION_MINOR: u32 = {new_minor}"
 
 [[tool.bumpversion.files]]
-filename = "rust/capi/src/lib.rs"
+filename = "rust/src/capi.rs"
 search = "FINANCE_ENUMS_ABI_VERSION_PATCH: u32 = {current_patch}"
 replace = "FINANCE_ENUMS_ABI_VERSION_PATCH: u32 = {new_patch}"
 
@@ -254,7 +249,8 @@ target-dir = "isolated"
 # libfinance_enums: the C ABI library, shipped under finance_enums/lib with its headers.
 [[tool.hatch.build.hooks.hatch-rs.artifacts]]
 name = "finance_enums"
-manifest = "rust/capi/Cargo.toml"
+manifest = "rust/Cargo.toml"
+features = ["capi"]
 destination = "finance_enums/lib/{shared_library}"
 expected-symbols = ["finance_enums_currency_export_v1", "finance_enums_exchange_export_v1", "finance_enums_enum_export_v1", "finance_enums_abi_version", "finance_enums_abi_compatible"]
 expected-headers = [

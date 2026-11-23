@@ -10,7 +10,7 @@ path = "rust/python/lib.rs"
 crate-type = ["cdylib"]
 
 [dependencies]
-finance_enums = { package = "finance_enums_capi", path = "./rust/capi", version = "*", optional = true }
+finance_enums = { path = "./rust", version = "*", optional = true, features = ["capi"] }
 pyo3 = { version = "0.30.1", features = ["abi3", "extension-module", "multiple-pymethods"] }
 
 [features]

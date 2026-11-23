@@ -1,3 +1,5 @@
+#[cfg(feature = "capi")]
+pub mod capi;
 pub mod currency_data;
 pub mod data;
 pub mod enum_data;

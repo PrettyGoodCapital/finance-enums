@@ -1,4 +1,4 @@
-//! C ABI for finance-enums: `libfinance_enums`.
+//! C ABI for finance-enums: `libfinance_enums`, built with the `capi` feature.
 //!
 //! Every pointer returned by this library points into data the library owns
 //! and stays valid for the lifetime of the process; callers never free it.
@@ -9,10 +9,10 @@ use std::ffi::{c_char, CStr, CString};
 use std::ptr;
 use std::sync::OnceLock;
 
-use finance_enums_core::data::{
+use crate::data::{
     exchange_records, CountryCodeAlpha2_NAMES, CURRENCY_ALIAS_RECORDS, CURRENCY_RECORDS,
 };
-use finance_enums_core::enum_data::{enum_family_spec, enum_family_specs, EnumFamilySpec};
+use crate::enum_data::{enum_family_spec, enum_family_specs, EnumFamilySpec};
 
 /// Layout version of `CurrencyDataExportV1` and its record structs.
 pub const FINANCE_ENUMS_CURRENCY_EXPORT_ABI_VERSION: u32 = 1;
@@ -305,7 +305,7 @@ pub unsafe extern "C" fn finance_enums_abi_version(
 /// minor may be newer than the consumer's.
 #[no_mangle]
 pub extern "C" fn finance_enums_abi_compatible(consumer_major: u32, consumer_minor: u32) -> i32 {
-    finance_enums_core::abi_compatible(consumer_major, consumer_minor) as i32
+    crate::abi_compatible(consumer_major, consumer_minor) as i32
 }
 
 /// Borrows a C string as `&str`, returning `None` for null or non-UTF-8.
@@ -433,15 +433,15 @@ mod tests {
     fn abi_version_matches_core() {
         assert_eq!(
             FINANCE_ENUMS_ABI_VERSION_MAJOR,
-            finance_enums_core::ENUM_ABI_VERSION_MAJOR
+            crate::ENUM_ABI_VERSION_MAJOR
         );
         assert_eq!(
             FINANCE_ENUMS_ABI_VERSION_MINOR,
-            finance_enums_core::ENUM_ABI_VERSION_MINOR
+            crate::ENUM_ABI_VERSION_MINOR
         );
         assert_eq!(
             FINANCE_ENUMS_ABI_VERSION_PATCH,
-            finance_enums_core::ENUM_ABI_VERSION_PATCH
+            crate::ENUM_ABI_VERSION_PATCH
         );
     }
 
@@ -501,7 +501,7 @@ mod tests {
 
     #[test]
     fn country_names_cover_alpha2_ordinals() {
-        let us = finance_enums_core::data::CountryCodeAlpha2::US as usize;
+        let us = crate::data::CountryCodeAlpha2::US as usize;
         let name = unsafe { CStr::from_ptr(finance_enums_country_name(us)) };
         assert_eq!(name.to_str().unwrap(), "United States of America");
         assert!(finance_enums_country_name(CountryCodeAlpha2_NAMES.len()).is_null());

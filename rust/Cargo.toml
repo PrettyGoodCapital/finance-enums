@@ -1,5 +1,5 @@
 [package]
-name = "finance_enums_core"
+name = "finance_enums"
 version = "0.9.0"
 authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
 edition = "2021"
@@ -7,24 +7,30 @@ license = "Apache-2.0"
 readme = "../README.md"
 repository = "https://github.com/prettygoodcapital/finance-enums"
 description = "Standard financial enumerations"
+build = "build.rs"
 
 [lib]
-name = "finance_enums_core"
+name = "finance_enums"
 path = "src/lib.rs"
-crate-type = ["rlib"]
+# The cdylib is libfinance_enums, the C ABI library; it only exports symbols
+# when the `capi` feature is on. Rust dependents build the rlib alone.
+crate-type = ["rlib", "cdylib"]
 
 [features]
 default = []
+capi = ["dep:cbindgen"]
 polars = ["dep:polars-core"]
 
 [dependencies]
 abi_safe_enum = { path = "abi_safe_enum", version = "0.9.0" }
 polars-core = { version = "0.55", optional = true, default-features = false, features = ["dtype-categorical"] }
 
+[build-dependencies]
+cbindgen = { version = "0.29", default-features = false, optional = true }
+
 [workspace]
 members = [
     ".",
     "abi_safe_enum",
     "abi_safe_enum_macros",
-    "capi",
 ]

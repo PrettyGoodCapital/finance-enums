@@ -1,6 +1,7 @@
 //! The C ABI of `libfinance_enums`, and safe views over it.
 //!
-//! With the `direct` feature the library's Rust crate is linked statically.
+//! With the `direct` feature the `finance_enums` crate (with `capi`) is linked
+//! statically.
 //! Otherwise (`capi`) the declarations below resolve against the shared
 //! library, which hatch-rs links and adds to the rpath.
 
@@ -11,7 +12,7 @@ use std::mem::size_of;
 use std::sync::OnceLock;
 
 #[cfg(feature = "direct")]
-pub use finance_enums::{
+pub use finance_enums::capi::{
     finance_enums_abi_compatible, finance_enums_abi_version, finance_enums_country_name,
     finance_enums_currency_export_v1, finance_enums_enum_export_v1,
     finance_enums_exchange_export_v1, finance_enums_family_ordinal_size,

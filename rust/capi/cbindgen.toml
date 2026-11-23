@@ -28,6 +28,11 @@ static inline int finance_enums_abi_header_compatible(void) {
 #endif  /* FINANCE_ENUMS_HEADER_COMPATIBLE_H */
 """
 
+[export]
+# Rust-only constants from the rest of the crate; the C header carries the
+# FINANCE_ENUMS_* equivalents from src/capi.rs.
+exclude = ["ENUM_ABI_VERSION_MAJOR", "ENUM_ABI_VERSION_MINOR", "ENUM_ABI_VERSION_PATCH"]
+
 [enum]
 prefix_with_name = false
 
