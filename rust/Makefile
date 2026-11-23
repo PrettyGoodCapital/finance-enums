@@ -41,10 +41,10 @@ coverage:
 
 .PHONY: dist publish
 dist:  ## create dist
-	cargo publish --dry-run --allow-dirty
+	cargo publish --dry-run --allow-dirty --workspace
 
 publish:  ## publish to cargo
-	cargo publish
+	cargo publish --workspace
 
 # Thanks to Francoise at marmelab.com for this
 .DEFAULT_GOAL := help
