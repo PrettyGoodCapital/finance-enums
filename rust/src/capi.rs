@@ -43,7 +43,7 @@ pub const FINANCE_ENUMS_ABI_VERSION_MAJOR: u32 = 0;
 /// Minor component of the semantic enum-data ABI version.
 pub const FINANCE_ENUMS_ABI_VERSION_MINOR: u32 = 9;
 /// Patch component of the semantic enum-data ABI version.
-pub const FINANCE_ENUMS_ABI_VERSION_PATCH: u32 = 0;
+pub const FINANCE_ENUMS_ABI_VERSION_PATCH: u32 = 1;
 
 /// One currency: ISO 4217 code (or project extension), display name, and
 /// whether the code is official ISO 4217.

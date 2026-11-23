@@ -54,7 +54,7 @@
 /**
  * Patch component of the semantic enum-data ABI version.
  */
-#define FINANCE_ENUMS_ABI_VERSION_PATCH 0
+#define FINANCE_ENUMS_ABI_VERSION_PATCH 1
 
 /**
  * One currency: ISO 4217 code (or project extension), display name, and

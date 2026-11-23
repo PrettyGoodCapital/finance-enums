@@ -1,6 +1,6 @@
 [package]
 name = "abi_safe_enum"
-version = "0.9.0"
+version = "0.9.1"
 authors = ["PrettyGoodCapital <prettygoodcapital@gmail.com>"]
 edition = "2021"
 license = "Apache-2.0"
@@ -8,4 +8,4 @@ repository = "https://github.com/prettygoodcapital/finance-enums"
 description = "Fieldless Rust enums with stable, explicit ordinals for C ABI and FFI boundaries"
 
 [dependencies]
-abi_safe_enum_macros = { path = "../abi_safe_enum_macros", version = "0.9.0" }
+abi_safe_enum_macros = { path = "../abi_safe_enum_macros", version = "0.9.1" }
