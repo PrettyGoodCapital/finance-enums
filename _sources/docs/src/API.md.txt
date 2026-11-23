@@ -5,9 +5,11 @@
 ```python
 from finance_enums import (
    AccountType,
+   AggressorSide,
    AgricultureType,
    AllocationMethod,
    AmortizationType,
+   AssetBackedCollateralType,
    AuctionType,
    AveragingMethod,
    BarrierType,
@@ -15,6 +17,8 @@ from finance_enums import (
    BondType,
    BookType,
    BorrowType,
+   BusinessDayConvention,
+   CFIClassification,
    CalculationAgentType,
    ClearingHouse,
    ClearingModel,
@@ -28,66 +32,106 @@ from finance_enums import (
    CountryCodeAlpha2,
    CountryCodeAlpha3,
    CouponType,
+   CreditDefaultSwapTransactionType,
+   CreditEventType,
+   CreditQuality,
+   CreditRatingAgency,
+   CreditRatingOutlook,
    CrossType,
    Currency,
    CurrencyAliasRecord,
    CurrencyRecord,
    CurrencyRole,
    DayCountConvention,
+   DebtGuaranteeType,
    DelistingReason,
+   DeliveryType,
    DistributionPolicy,
+   DurationType,
    EnergyType,
-   EquityType,
    EnumFamilySchema,
    EnumVariantRecord,
+   EquityType,
    ExchangeCode,
+   ExchangeRecord,
+   ExecutionInstruction,
    ExecutionType,
    ExerciseEventType,
    ExoticOptionFeature,
+   FactorGroup,
+   FamaFrenchFactor,
    FinancingType,
+   ForeignExchangeAtTheMoneyConvention,
+   ForeignExchangeBenchmark,
+   ForeignExchangeDeltaConvention,
+   ForeignExchangeProductType,
+   ForeignExchangeQuoteBasis,
+   ForeignExchangeTenor,
+   ForeignExchangeVolatilityQuoteType,
    Frequency,
    FundSubType,
    FundType,
    FutureAssetClass,
+   FutureMonthCode,
+   FutureSpreadLegType,
+   FutureSpreadSubType,
    GiveUpType,
    IdentifierType,
    IndexWeightingMethod,
    Industry,
    IndustryGroup,
    InstrumentType,
+   InterestRateProductType,
+   InterestRateSwapType,
    InventoryType,
+   IssuerType,
    LegRole,
    LiquidityFlag,
    ListingStatus,
+   LivestockType,
    MarginType,
    MarketCategory,
    MarketState,
    MarketStatusReason,
    MarketType,
    MetalType,
+   MoneyMarketInstrumentType,
    MutualFundEndedness,
    NettingType,
+   ObligationCategory,
+   ObligationCharacteristic,
    OptionExerciseType,
+   OptionPremiumQuoteBasis,
+   OptionStrikeQuoteBasis,
    OptionType,
    OrderCapacity,
-   OrderFlag,
+   OrderSide,
    OrderStatus,
    OrderType,
+   OvernightAccrualMethod,
    PayoffStyle,
+   PayoutTiming,
+   PeriodTiming,
+   PeriodUnit,
    PositionEffect,
    PositionType,
+   PriceIndexCalculationMethod,
    PriceKind,
    PriceNotation,
    QuantityUnit,
    QuoteCondition,
    RateIndex,
+   RedemptionFeature,
    RepoType,
+   RestructuringClause,
+   RollConvention,
    ScheduleFrequency,
    Sector,
-   SegmentType,
-   Seniority,
+   SecurityForm,
    SecurityStatus,
    SecurityType,
+   SegmentType,
+   Seniority,
    SettlementFailReason,
    SettlementStatus,
    SettlementType,
@@ -96,12 +140,17 @@ from finance_enums import (
    Side,
    StrategyType,
    StubType,
+   StyleFactor,
    SubIndustry,
    SwapLegType,
    SwapType,
+   SwaptionCashSettlementMethod,
+   Symbology,
    TenderOfferType,
+   TickDirection,
    TickerNamespace,
    TimeInForce,
+   TouchType,
    TradeCondition,
    TradingPhase,
    TradingSession,
@@ -109,9 +158,15 @@ from finance_enums import (
    UnderlyingAssetClass,
    VenueRegulatoryFlag,
    VenueType,
+   YieldType,
+   abi_compatible,
+   abi_version,
+   assert_abi_compatible,
    build_cfi,
    build_cfi_from_classification,
+   country_currency,
    currency_alias_records,
+   currency_countries,
    currency_export_capsule,
    currency_records,
    enum_export_capsule,
@@ -119,9 +174,12 @@ from finance_enums import (
    enum_schema,
    enum_schema_json,
    enum_variant_records,
+   exchange_currency,
+   exchange_export_capsule,
    exchange_record,
    exchange_records,
    exchange_records_by_country,
+   exchange_records_by_currency,
    exchange_records_by_market_category,
    exchange_records_by_market_category_type,
    exchange_records_by_operating_mic,
@@ -129,15 +187,20 @@ from finance_enums import (
    exchange_records_by_region,
    exchange_records_by_regulatory_flag,
    exchange_records_by_status,
+   family_ordinal_size,
+   family_variant_count,
    get_include,
    get_libraries,
    get_library_dirs,
    get_prefix,
+   ordinal_of,
    parse_cfi,
    to_frequency,
    transaction_intent,
    transaction_intent_records,
    validate_cfi_classification,
+   validate_ordinal,
+   variant_name,
 )
 ```
 
@@ -229,14 +292,18 @@ Generated enum classes:
 - Identifier and notation: `IdentifierType`, `Symbology`, `TickerNamespace`, `PriceNotation`, `QuantityUnit`, `CurrencyRole`
 - Sectors: `Sector`, `IndustryGroup`, `Industry`, `SubIndustry`
 - Instruments: `SecurityType`, `InstrumentType`, `EquityType`, `OptionType`, `OptionExerciseType`, `BondType`, `CommodityType`, `EnergyType`, `MetalType`, `AgricultureType`, `FundType`, `FundSubType`, `MutualFundEndedness`, `FutureAssetClass`, `SettlementType`, `UnderlyingAssetClass`, `ContractStyle`, `PayoffStyle`, `ContractUnit`, `LegRole`
-- Fixed income and financing: `CouponType`, `ScheduleFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
-- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
-- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
+- Financing: `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
+- Swaps and structured products: `SwapType`, `SwapLegType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Post-trade and clearing: `SettlementType`, `DeliveryType`, `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
+- Rates and schedules: `DayCountConvention`, `BusinessDayConvention`, `RollConvention`, `StubType`, `ScheduleFrequency`, `PeriodUnit`, `PeriodTiming`, `RateIndex`, `CompoundingMethod`, `OvernightAccrualMethod`, `PriceIndexCalculationMethod`, `InterestRateSwapType`, `InterestRateProductType`, `SwaptionCashSettlementMethod`
+- Bonds and money markets: `BondType`, `IssuerType`, `CouponType`, `Seniority`, `RedemptionFeature`, `DebtGuaranteeType`, `AmortizationType`, `SecurityForm`, `AssetBackedCollateralType`, `MoneyMarketInstrumentType`, `YieldType`, `DurationType`
+- Credit: `RestructuringClause`, `CreditEventType`, `ObligationCategory`, `ObligationCharacteristic`, `CreditDefaultSwapTransactionType`, `CreditRatingAgency`, `CreditRatingOutlook`, `CreditQuality`
+- Foreign exchange: `ForeignExchangeProductType`, `ForeignExchangeTenor`, `ForeignExchangeQuoteBasis`, `ForeignExchangeBenchmark`, `ForeignExchangeDeltaConvention`, `ForeignExchangeAtTheMoneyConvention`, `ForeignExchangeVolatilityQuoteType`, `OptionStrikeQuoteBasis`, `OptionPremiumQuoteBasis`, `TouchType`, `PayoutTiming`
 - Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 - Portfolio and fund structure: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`, `DistributionPolicy`, `ShareClassHedging`
 - Corporate actions and lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
-- Trading: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderFlag`, `TimeInForce`
-- Market data: `QuoteCondition`, `TradeCondition`, `CrossType`, `PriceKind`, `PriceNotation`
+- Trading: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `LiquidityFlag`, `PositionEffect`, `OrderCapacity`, `ShortSaleRestriction`, `Side`, `OrderSide`, `TimeInForce`
+- Market data: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
 
 Exchange helpers now also support typed MIC category access through `ExchangeRecord.market_category()` / `ExchangeCode.market_category()`, standards-backed flags through `.regulatory_flags()`, and indexed lookups through `exchange_records_by_market_category_type()` and `exchange_records_by_regulatory_flag()`.
 
@@ -311,11 +378,11 @@ ______________________________________________________________________
 
 ## Rust data access
 
-Rust consumers use the `finance_enums_core` crate and read static arrays from
-`finance_enums_core::data`:
+Rust consumers use the `finance_enums` crate and read static arrays from
+`finance_enums::data`:
 
 ```rust
-use finance_enums_core::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
+use finance_enums::data::{Currency_VARIANTS, ExchangeCode_VARIANTS};
 
 assert!(ExchangeCode_VARIANTS.contains(&"XNYS"));
 assert!(Currency_VARIANTS.contains(&"USD"));

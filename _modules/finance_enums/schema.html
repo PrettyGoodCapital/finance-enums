@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>finance_enums.schema &#8212; finance enums v0.8.0</title>
+    <title>finance_enums.schema &#8212; finance enums v0.9.1</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma.css?v=ca04d621" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma-code.css?v=a950e949" />
@@ -15,7 +15,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/fuma-fonts.css?v=c2892c73" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=88c24c6a" />
-    <script src="../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../_static/documentation_options.js?v=9dc39874"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -453,7 +453,7 @@ window.runMermaid = runMermaid;</script>
   <div class="fd-subnav-inner">
     <button type="button" class="fd-icon-button fd-sidebar-toggle" aria-controls="fd-sidebar" aria-expanded="false" aria-label="Toggle navigation" title="Toggle navigation">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
-    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
+    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.9.1</span>
 </a>
 
     <div class="fd-nav-actions">
@@ -468,7 +468,7 @@ window.runMermaid = runMermaid;</script>
 
 <aside id="fd-sidebar" aria-label="Documentation">
   <div class="fd-sidebar-header">
-    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
+    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.9.1</span>
 </a>
       <button type="button" class="fd-icon-button fd-sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></button>
     </div>
@@ -533,9 +533,9 @@ window.runMermaid = runMermaid;</script>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">cast</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">._finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">enum_records_raw</span> <span class="k">as</span> <span class="n">_enum_records_raw</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">._finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="n">enum_records_raw</span> <span class="k">as</span> <span class="n">_enum_records_raw</span><span class="p">,</span> <span class="n">family_ordinal_size</span> <span class="k">as</span> <span class="n">_family_ordinal_size</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"EnumFamilySchema"</span><span class="p">,</span>
@@ -546,7 +546,9 @@ window.runMermaid = runMermaid;</script>
     <span class="s2">"enum_variant_records"</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">_ENUM_SCHEMA_VERSION</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">_ENUM_SCHEMA_VERSION</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Families backed by a name table rather than an #[abi_safe_enum] type.</span>
+<span class="n">_TABLE_FAMILIES</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"Currency"</span><span class="p">,</span> <span class="s2">"ExchangeCode"</span><span class="p">})</span>
 
 
 <div class="viewcode-block" id="EnumVariantRecord">
@@ -569,7 +571,11 @@ window.runMermaid = runMermaid;</script>
     <span class="n">c_abi_family</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">json_type</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">arrow_type</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">variants</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span></div>
+    <span class="n">variants</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="c1">#: Ordinal of each variant, parallel to ``variants``. Ordinals can have gaps.</span>
+    <span class="n">ordinals</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+    <span class="c1">#: Size in bytes (1, 2, or 4) of the family's ordinal type.</span>
+    <span class="n">ordinal_size</span><span class="p">:</span> <span class="nb">int</span></div>
 
 
 
@@ -586,21 +592,24 @@ window.runMermaid = runMermaid;</script>
 <div class="viewcode-block" id="enum_family_schemas">
 <a class="viewcode-back" href="../../docs/src/API.html#finance_enums.enum_family_schemas">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">enum_family_schemas</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">EnumFamilySchema</span><span class="p">]:</span>
-    <span class="n">families</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">families</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">EnumVariantRecord</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">_ENUM_VARIANT_RECORDS</span><span class="p">:</span>
-        <span class="n">families</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">enum_name</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">variant</span><span class="p">)</span>
+        <span class="n">families</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">enum_name</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">record</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">[</span>
         <span class="n">EnumFamilySchema</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-            <span class="n">rust_static</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_VARIANTS"</span><span class="p">,</span>
+            <span class="n">rust_static</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">_VARIANTS"</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_TABLE_FAMILIES</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">::VARIANTS"</span><span class="p">,</span>
             <span class="n">python_symbol</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">c_abi_family</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
             <span class="n">json_type</span><span class="o">=</span><span class="s2">"string"</span><span class="p">,</span>
             <span class="n">arrow_type</span><span class="o">=</span><span class="s2">"dictionary&lt;utf8&gt;"</span><span class="p">,</span>
-            <span class="n">variants</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">variants</span><span class="p">),</span>
+            <span class="n">variants</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">variant</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">),</span>
+            <span class="n">ordinals</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">ordinal</span> <span class="k">for</span> <span class="n">record</span> <span class="ow">in</span> <span class="n">records</span><span class="p">),</span>
+            <span class="c1"># The name comes from the export itself, so the family is always known.</span>
+            <span class="n">ordinal_size</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">_family_ordinal_size</span><span class="p">(</span><span class="n">name</span><span class="p">)),</span>
         <span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">variants</span> <span class="ow">in</span> <span class="n">families</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">records</span> <span class="ow">in</span> <span class="n">families</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
     <span class="p">]</span></div>
 
 
@@ -614,6 +623,8 @@ window.runMermaid = runMermaid;</script>
         <span class="s2">"json_type"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">json_type</span><span class="p">,</span>
         <span class="s2">"arrow_type"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">arrow_type</span><span class="p">,</span>
         <span class="s2">"variants"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">variants</span><span class="p">),</span>
+        <span class="s2">"ordinals"</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">ordinals</span><span class="p">),</span>
+        <span class="s2">"ordinal_size"</span><span class="p">:</span> <span class="n">schema</span><span class="o">.</span><span class="n">ordinal_size</span><span class="p">,</span>
     <span class="p">}</span>
 
 

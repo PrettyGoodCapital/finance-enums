@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API &#8212; finance enums v0.8.0</title>
+    <title>API &#8212; finance enums v0.9.1</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma.css?v=ca04d621" />
     <link rel="stylesheet" type="text/css" href="../../_static/fuma-code.css?v=a950e949" />
@@ -16,7 +16,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../_static/fonts/fuma-fonts.css?v=c2892c73" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/custom.css?v=88c24c6a" />
-    <script src="../../_static/documentation_options.js?v=486e5634"></script>
+    <script src="../../_static/documentation_options.js?v=9dc39874"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -48,7 +48,7 @@
   <div class="fd-subnav-inner">
     <button type="button" class="fd-icon-button fd-sidebar-toggle" aria-controls="fd-sidebar" aria-expanded="false" aria-label="Toggle navigation" title="Toggle navigation">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg>
-    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
+    </button><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.9.1</span>
 </a>
 
     <div class="fd-nav-actions">
@@ -63,7 +63,7 @@
 
 <aside id="fd-sidebar" aria-label="Documentation">
   <div class="fd-sidebar-header">
-    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.8.0</span>
+    <div class="fd-sidebar-brand-row"><a class="fd-brand" href="../../index.html"><span class="fd-brand-name">finance enums v0.9.1</span>
 </a>
       <button type="button" class="fd-icon-button fd-sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="fd-icon "><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/></svg></button>
     </div>
@@ -134,6 +134,12 @@
   <li class="fd-toc-item" data-depth="2">
     <a href="#finance_enums.EnumFamilySchema">EnumFamilySchema</a>
   </li>
+  <li class="fd-toc-item" data-depth="3">
+    <a href="#finance_enums.EnumFamilySchema.ordinal_size">EnumFamilySchema.ordinal_size</a>
+  </li>
+  <li class="fd-toc-item" data-depth="3">
+    <a href="#finance_enums.EnumFamilySchema.ordinals">EnumFamilySchema.ordinals</a>
+  </li>
   <li class="fd-toc-item" data-depth="2">
     <a href="#finance_enums.enum_variant_records">enum_variant_records()</a>
   </li>
@@ -200,9 +206,11 @@
 <p><code class="docutils literal notranslate"><span class="pre">finance-enums</span></code> exposes the following public Python symbols:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">finance_enums</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
    <span class="n">AccountType</span><span class="p">,</span>
+   <span class="n">AggressorSide</span><span class="p">,</span>
    <span class="n">AgricultureType</span><span class="p">,</span>
    <span class="n">AllocationMethod</span><span class="p">,</span>
    <span class="n">AmortizationType</span><span class="p">,</span>
+   <span class="n">AssetBackedCollateralType</span><span class="p">,</span>
    <span class="n">AuctionType</span><span class="p">,</span>
    <span class="n">AveragingMethod</span><span class="p">,</span>
    <span class="n">BarrierType</span><span class="p">,</span>
@@ -210,6 +218,8 @@
    <span class="n">BondType</span><span class="p">,</span>
    <span class="n">BookType</span><span class="p">,</span>
    <span class="n">BorrowType</span><span class="p">,</span>
+   <span class="n">BusinessDayConvention</span><span class="p">,</span>
+   <span class="n">CFIClassification</span><span class="p">,</span>
    <span class="n">CalculationAgentType</span><span class="p">,</span>
    <span class="n">ClearingHouse</span><span class="p">,</span>
    <span class="n">ClearingModel</span><span class="p">,</span>
@@ -223,66 +233,106 @@
    <span class="n">CountryCodeAlpha2</span><span class="p">,</span>
    <span class="n">CountryCodeAlpha3</span><span class="p">,</span>
    <span class="n">CouponType</span><span class="p">,</span>
+   <span class="n">CreditDefaultSwapTransactionType</span><span class="p">,</span>
+   <span class="n">CreditEventType</span><span class="p">,</span>
+   <span class="n">CreditQuality</span><span class="p">,</span>
+   <span class="n">CreditRatingAgency</span><span class="p">,</span>
+   <span class="n">CreditRatingOutlook</span><span class="p">,</span>
    <span class="n">CrossType</span><span class="p">,</span>
    <span class="n">Currency</span><span class="p">,</span>
    <span class="n">CurrencyAliasRecord</span><span class="p">,</span>
    <span class="n">CurrencyRecord</span><span class="p">,</span>
    <span class="n">CurrencyRole</span><span class="p">,</span>
    <span class="n">DayCountConvention</span><span class="p">,</span>
+   <span class="n">DebtGuaranteeType</span><span class="p">,</span>
    <span class="n">DelistingReason</span><span class="p">,</span>
+   <span class="n">DeliveryType</span><span class="p">,</span>
    <span class="n">DistributionPolicy</span><span class="p">,</span>
+   <span class="n">DurationType</span><span class="p">,</span>
    <span class="n">EnergyType</span><span class="p">,</span>
-   <span class="n">EquityType</span><span class="p">,</span>
    <span class="n">EnumFamilySchema</span><span class="p">,</span>
    <span class="n">EnumVariantRecord</span><span class="p">,</span>
+   <span class="n">EquityType</span><span class="p">,</span>
    <span class="n">ExchangeCode</span><span class="p">,</span>
+   <span class="n">ExchangeRecord</span><span class="p">,</span>
+   <span class="n">ExecutionInstruction</span><span class="p">,</span>
    <span class="n">ExecutionType</span><span class="p">,</span>
    <span class="n">ExerciseEventType</span><span class="p">,</span>
    <span class="n">ExoticOptionFeature</span><span class="p">,</span>
+   <span class="n">FactorGroup</span><span class="p">,</span>
+   <span class="n">FamaFrenchFactor</span><span class="p">,</span>
    <span class="n">FinancingType</span><span class="p">,</span>
+   <span class="n">ForeignExchangeAtTheMoneyConvention</span><span class="p">,</span>
+   <span class="n">ForeignExchangeBenchmark</span><span class="p">,</span>
+   <span class="n">ForeignExchangeDeltaConvention</span><span class="p">,</span>
+   <span class="n">ForeignExchangeProductType</span><span class="p">,</span>
+   <span class="n">ForeignExchangeQuoteBasis</span><span class="p">,</span>
+   <span class="n">ForeignExchangeTenor</span><span class="p">,</span>
+   <span class="n">ForeignExchangeVolatilityQuoteType</span><span class="p">,</span>
    <span class="n">Frequency</span><span class="p">,</span>
    <span class="n">FundSubType</span><span class="p">,</span>
    <span class="n">FundType</span><span class="p">,</span>
    <span class="n">FutureAssetClass</span><span class="p">,</span>
+   <span class="n">FutureMonthCode</span><span class="p">,</span>
+   <span class="n">FutureSpreadLegType</span><span class="p">,</span>
+   <span class="n">FutureSpreadSubType</span><span class="p">,</span>
    <span class="n">GiveUpType</span><span class="p">,</span>
    <span class="n">IdentifierType</span><span class="p">,</span>
    <span class="n">IndexWeightingMethod</span><span class="p">,</span>
    <span class="n">Industry</span><span class="p">,</span>
    <span class="n">IndustryGroup</span><span class="p">,</span>
    <span class="n">InstrumentType</span><span class="p">,</span>
+   <span class="n">InterestRateProductType</span><span class="p">,</span>
+   <span class="n">InterestRateSwapType</span><span class="p">,</span>
    <span class="n">InventoryType</span><span class="p">,</span>
+   <span class="n">IssuerType</span><span class="p">,</span>
    <span class="n">LegRole</span><span class="p">,</span>
    <span class="n">LiquidityFlag</span><span class="p">,</span>
    <span class="n">ListingStatus</span><span class="p">,</span>
+   <span class="n">LivestockType</span><span class="p">,</span>
    <span class="n">MarginType</span><span class="p">,</span>
    <span class="n">MarketCategory</span><span class="p">,</span>
    <span class="n">MarketState</span><span class="p">,</span>
    <span class="n">MarketStatusReason</span><span class="p">,</span>
    <span class="n">MarketType</span><span class="p">,</span>
    <span class="n">MetalType</span><span class="p">,</span>
+   <span class="n">MoneyMarketInstrumentType</span><span class="p">,</span>
    <span class="n">MutualFundEndedness</span><span class="p">,</span>
    <span class="n">NettingType</span><span class="p">,</span>
+   <span class="n">ObligationCategory</span><span class="p">,</span>
+   <span class="n">ObligationCharacteristic</span><span class="p">,</span>
    <span class="n">OptionExerciseType</span><span class="p">,</span>
+   <span class="n">OptionPremiumQuoteBasis</span><span class="p">,</span>
+   <span class="n">OptionStrikeQuoteBasis</span><span class="p">,</span>
    <span class="n">OptionType</span><span class="p">,</span>
    <span class="n">OrderCapacity</span><span class="p">,</span>
-   <span class="n">OrderFlag</span><span class="p">,</span>
+   <span class="n">OrderSide</span><span class="p">,</span>
    <span class="n">OrderStatus</span><span class="p">,</span>
    <span class="n">OrderType</span><span class="p">,</span>
+   <span class="n">OvernightAccrualMethod</span><span class="p">,</span>
    <span class="n">PayoffStyle</span><span class="p">,</span>
+   <span class="n">PayoutTiming</span><span class="p">,</span>
+   <span class="n">PeriodTiming</span><span class="p">,</span>
+   <span class="n">PeriodUnit</span><span class="p">,</span>
    <span class="n">PositionEffect</span><span class="p">,</span>
    <span class="n">PositionType</span><span class="p">,</span>
+   <span class="n">PriceIndexCalculationMethod</span><span class="p">,</span>
    <span class="n">PriceKind</span><span class="p">,</span>
    <span class="n">PriceNotation</span><span class="p">,</span>
    <span class="n">QuantityUnit</span><span class="p">,</span>
    <span class="n">QuoteCondition</span><span class="p">,</span>
    <span class="n">RateIndex</span><span class="p">,</span>
+   <span class="n">RedemptionFeature</span><span class="p">,</span>
    <span class="n">RepoType</span><span class="p">,</span>
+   <span class="n">RestructuringClause</span><span class="p">,</span>
+   <span class="n">RollConvention</span><span class="p">,</span>
    <span class="n">ScheduleFrequency</span><span class="p">,</span>
    <span class="n">Sector</span><span class="p">,</span>
-   <span class="n">SegmentType</span><span class="p">,</span>
-   <span class="n">Seniority</span><span class="p">,</span>
+   <span class="n">SecurityForm</span><span class="p">,</span>
    <span class="n">SecurityStatus</span><span class="p">,</span>
    <span class="n">SecurityType</span><span class="p">,</span>
+   <span class="n">SegmentType</span><span class="p">,</span>
+   <span class="n">Seniority</span><span class="p">,</span>
    <span class="n">SettlementFailReason</span><span class="p">,</span>
    <span class="n">SettlementStatus</span><span class="p">,</span>
    <span class="n">SettlementType</span><span class="p">,</span>
@@ -291,12 +341,17 @@
    <span class="n">Side</span><span class="p">,</span>
    <span class="n">StrategyType</span><span class="p">,</span>
    <span class="n">StubType</span><span class="p">,</span>
+   <span class="n">StyleFactor</span><span class="p">,</span>
    <span class="n">SubIndustry</span><span class="p">,</span>
    <span class="n">SwapLegType</span><span class="p">,</span>
    <span class="n">SwapType</span><span class="p">,</span>
+   <span class="n">SwaptionCashSettlementMethod</span><span class="p">,</span>
+   <span class="n">Symbology</span><span class="p">,</span>
    <span class="n">TenderOfferType</span><span class="p">,</span>
+   <span class="n">TickDirection</span><span class="p">,</span>
    <span class="n">TickerNamespace</span><span class="p">,</span>
    <span class="n">TimeInForce</span><span class="p">,</span>
+   <span class="n">TouchType</span><span class="p">,</span>
    <span class="n">TradeCondition</span><span class="p">,</span>
    <span class="n">TradingPhase</span><span class="p">,</span>
    <span class="n">TradingSession</span><span class="p">,</span>
@@ -304,9 +359,15 @@
    <span class="n">UnderlyingAssetClass</span><span class="p">,</span>
    <span class="n">VenueRegulatoryFlag</span><span class="p">,</span>
    <span class="n">VenueType</span><span class="p">,</span>
+   <span class="n">YieldType</span><span class="p">,</span>
+   <span class="n">abi_compatible</span><span class="p">,</span>
+   <span class="n">abi_version</span><span class="p">,</span>
+   <span class="n">assert_abi_compatible</span><span class="p">,</span>
    <span class="n">build_cfi</span><span class="p">,</span>
    <span class="n">build_cfi_from_classification</span><span class="p">,</span>
+   <span class="n">country_currency</span><span class="p">,</span>
    <span class="n">currency_alias_records</span><span class="p">,</span>
+   <span class="n">currency_countries</span><span class="p">,</span>
    <span class="n">currency_export_capsule</span><span class="p">,</span>
    <span class="n">currency_records</span><span class="p">,</span>
    <span class="n">enum_export_capsule</span><span class="p">,</span>
@@ -314,9 +375,12 @@
    <span class="n">enum_schema</span><span class="p">,</span>
    <span class="n">enum_schema_json</span><span class="p">,</span>
    <span class="n">enum_variant_records</span><span class="p">,</span>
+   <span class="n">exchange_currency</span><span class="p">,</span>
+   <span class="n">exchange_export_capsule</span><span class="p">,</span>
    <span class="n">exchange_record</span><span class="p">,</span>
    <span class="n">exchange_records</span><span class="p">,</span>
    <span class="n">exchange_records_by_country</span><span class="p">,</span>
+   <span class="n">exchange_records_by_currency</span><span class="p">,</span>
    <span class="n">exchange_records_by_market_category</span><span class="p">,</span>
    <span class="n">exchange_records_by_market_category_type</span><span class="p">,</span>
    <span class="n">exchange_records_by_operating_mic</span><span class="p">,</span>
@@ -324,15 +388,20 @@
    <span class="n">exchange_records_by_region</span><span class="p">,</span>
    <span class="n">exchange_records_by_regulatory_flag</span><span class="p">,</span>
    <span class="n">exchange_records_by_status</span><span class="p">,</span>
+   <span class="n">family_ordinal_size</span><span class="p">,</span>
+   <span class="n">family_variant_count</span><span class="p">,</span>
    <span class="n">get_include</span><span class="p">,</span>
    <span class="n">get_libraries</span><span class="p">,</span>
    <span class="n">get_library_dirs</span><span class="p">,</span>
    <span class="n">get_prefix</span><span class="p">,</span>
+   <span class="n">ordinal_of</span><span class="p">,</span>
    <span class="n">parse_cfi</span><span class="p">,</span>
    <span class="n">to_frequency</span><span class="p">,</span>
    <span class="n">transaction_intent</span><span class="p">,</span>
    <span class="n">transaction_intent_records</span><span class="p">,</span>
    <span class="n">validate_cfi_classification</span><span class="p">,</span>
+   <span class="n">validate_ordinal</span><span class="p">,</span>
+   <span class="n">variant_name</span><span class="p">,</span>
 <span class="p">)</span>
 </pre></div>
 </div>
@@ -388,8 +457,20 @@
 
 <dl class="py class">
 <dt class="sig sig-object py" id="finance_enums.EnumFamilySchema">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">finance_enums.</span></span><span class="sig-name descname"><span class="pre">EnumFamilySchema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rust_static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python_symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_abi_family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variants</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'tuple[str,</span> <span class="pre">...]'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/finance_enums/schema.html#EnumFamilySchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#finance_enums.EnumFamilySchema" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">finance_enums.</span></span><span class="sig-name descname"><span class="pre">EnumFamilySchema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rust_static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">python_symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_abi_family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arrow_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'str'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variants</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'tuple[str,</span> <span class="pre">...]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordinals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'tuple[int,</span> <span class="pre">...]'</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ordinal_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'int'</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/finance_enums/schema.html#EnumFamilySchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#finance_enums.EnumFamilySchema" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="finance_enums.EnumFamilySchema.ordinal_size">
+<span class="sig-name descname"><span class="pre">ordinal_size</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#finance_enums.EnumFamilySchema.ordinal_size" title="Link to this definition">¶</a></dt>
+<dd><p>Size in bytes (1, 2, or 4) of the family’s ordinal type.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="finance_enums.EnumFamilySchema.ordinals">
+<span class="sig-name descname"><span class="pre">ordinals</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#finance_enums.EnumFamilySchema.ordinals" title="Link to this definition">¶</a></dt>
+<dd><p>Ordinal of each variant, parallel to <code class="docutils literal notranslate"><span class="pre">variants</span></code>. Ordinals can have gaps.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -490,14 +571,18 @@ values when needed:</p>
 <li><p>Identifier and notation: <code class="docutils literal notranslate"><span class="pre">IdentifierType</span></code>, <code class="docutils literal notranslate"><span class="pre">Symbology</span></code>, <code class="docutils literal notranslate"><span class="pre">TickerNamespace</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceNotation</span></code>, <code class="docutils literal notranslate"><span class="pre">QuantityUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">CurrencyRole</span></code></p></li>
 <li><p>Sectors: <code class="docutils literal notranslate"><span class="pre">Sector</span></code>, <code class="docutils literal notranslate"><span class="pre">IndustryGroup</span></code>, <code class="docutils literal notranslate"><span class="pre">Industry</span></code>, <code class="docutils literal notranslate"><span class="pre">SubIndustry</span></code></p></li>
 <li><p>Instruments: <code class="docutils literal notranslate"><span class="pre">SecurityType</span></code>, <code class="docutils literal notranslate"><span class="pre">InstrumentType</span></code>, <code class="docutils literal notranslate"><span class="pre">EquityType</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionType</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionExerciseType</span></code>, <code class="docutils literal notranslate"><span class="pre">BondType</span></code>, <code class="docutils literal notranslate"><span class="pre">CommodityType</span></code>, <code class="docutils literal notranslate"><span class="pre">EnergyType</span></code>, <code class="docutils literal notranslate"><span class="pre">MetalType</span></code>, <code class="docutils literal notranslate"><span class="pre">AgricultureType</span></code>, <code class="docutils literal notranslate"><span class="pre">FundType</span></code>, <code class="docutils literal notranslate"><span class="pre">FundSubType</span></code>, <code class="docutils literal notranslate"><span class="pre">MutualFundEndedness</span></code>, <code class="docutils literal notranslate"><span class="pre">FutureAssetClass</span></code>, <code class="docutils literal notranslate"><span class="pre">SettlementType</span></code>, <code class="docutils literal notranslate"><span class="pre">UnderlyingAssetClass</span></code>, <code class="docutils literal notranslate"><span class="pre">ContractStyle</span></code>, <code class="docutils literal notranslate"><span class="pre">PayoffStyle</span></code>, <code class="docutils literal notranslate"><span class="pre">ContractUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">LegRole</span></code></p></li>
-<li><p>Fixed income and financing: <code class="docutils literal notranslate"><span class="pre">CouponType</span></code>, <code class="docutils literal notranslate"><span class="pre">ScheduleFrequency</span></code>, <code class="docutils literal notranslate"><span class="pre">DayCountConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">AmortizationType</span></code>, <code class="docutils literal notranslate"><span class="pre">Seniority</span></code>, <code class="docutils literal notranslate"><span class="pre">CollateralType</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginType</span></code>, <code class="docutils literal notranslate"><span class="pre">BorrowType</span></code>, <code class="docutils literal notranslate"><span class="pre">RepoType</span></code>, <code class="docutils literal notranslate"><span class="pre">FinancingType</span></code></p></li>
-<li><p>Swaps and structured products: <code class="docutils literal notranslate"><span class="pre">SwapType</span></code>, <code class="docutils literal notranslate"><span class="pre">SwapLegType</span></code>, <code class="docutils literal notranslate"><span class="pre">RateIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">CompoundingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">StubType</span></code>, <code class="docutils literal notranslate"><span class="pre">BarrierType</span></code>, <code class="docutils literal notranslate"><span class="pre">AveragingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">ExoticOptionFeature</span></code></p></li>
-<li><p>Post-trade and clearing: <code class="docutils literal notranslate"><span class="pre">SettlementStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ClearingModel</span></code>, <code class="docutils literal notranslate"><span class="pre">ClearingHouse</span></code>, <code class="docutils literal notranslate"><span class="pre">SettlementFailReason</span></code>, <code class="docutils literal notranslate"><span class="pre">AllocationMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">GiveUpType</span></code></p></li>
+<li><p>Financing: <code class="docutils literal notranslate"><span class="pre">CollateralType</span></code>, <code class="docutils literal notranslate"><span class="pre">MarginType</span></code>, <code class="docutils literal notranslate"><span class="pre">BorrowType</span></code>, <code class="docutils literal notranslate"><span class="pre">RepoType</span></code>, <code class="docutils literal notranslate"><span class="pre">FinancingType</span></code></p></li>
+<li><p>Swaps and structured products: <code class="docutils literal notranslate"><span class="pre">SwapType</span></code>, <code class="docutils literal notranslate"><span class="pre">SwapLegType</span></code>, <code class="docutils literal notranslate"><span class="pre">BarrierType</span></code>, <code class="docutils literal notranslate"><span class="pre">AveragingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">ExoticOptionFeature</span></code></p></li>
+<li><p>Post-trade and clearing: <code class="docutils literal notranslate"><span class="pre">SettlementType</span></code>, <code class="docutils literal notranslate"><span class="pre">DeliveryType</span></code>, <code class="docutils literal notranslate"><span class="pre">SettlementStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ClearingModel</span></code>, <code class="docutils literal notranslate"><span class="pre">ClearingHouse</span></code>, <code class="docutils literal notranslate"><span class="pre">SettlementFailReason</span></code>, <code class="docutils literal notranslate"><span class="pre">AllocationMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">GiveUpType</span></code></p></li>
+<li><p>Rates and schedules: <code class="docutils literal notranslate"><span class="pre">DayCountConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">BusinessDayConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">RollConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">StubType</span></code>, <code class="docutils literal notranslate"><span class="pre">ScheduleFrequency</span></code>, <code class="docutils literal notranslate"><span class="pre">PeriodUnit</span></code>, <code class="docutils literal notranslate"><span class="pre">PeriodTiming</span></code>, <code class="docutils literal notranslate"><span class="pre">RateIndex</span></code>, <code class="docutils literal notranslate"><span class="pre">CompoundingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">OvernightAccrualMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceIndexCalculationMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">InterestRateSwapType</span></code>, <code class="docutils literal notranslate"><span class="pre">InterestRateProductType</span></code>, <code class="docutils literal notranslate"><span class="pre">SwaptionCashSettlementMethod</span></code></p></li>
+<li><p>Bonds and money markets: <code class="docutils literal notranslate"><span class="pre">BondType</span></code>, <code class="docutils literal notranslate"><span class="pre">IssuerType</span></code>, <code class="docutils literal notranslate"><span class="pre">CouponType</span></code>, <code class="docutils literal notranslate"><span class="pre">Seniority</span></code>, <code class="docutils literal notranslate"><span class="pre">RedemptionFeature</span></code>, <code class="docutils literal notranslate"><span class="pre">DebtGuaranteeType</span></code>, <code class="docutils literal notranslate"><span class="pre">AmortizationType</span></code>, <code class="docutils literal notranslate"><span class="pre">SecurityForm</span></code>, <code class="docutils literal notranslate"><span class="pre">AssetBackedCollateralType</span></code>, <code class="docutils literal notranslate"><span class="pre">MoneyMarketInstrumentType</span></code>, <code class="docutils literal notranslate"><span class="pre">YieldType</span></code>, <code class="docutils literal notranslate"><span class="pre">DurationType</span></code></p></li>
+<li><p>Credit: <code class="docutils literal notranslate"><span class="pre">RestructuringClause</span></code>, <code class="docutils literal notranslate"><span class="pre">CreditEventType</span></code>, <code class="docutils literal notranslate"><span class="pre">ObligationCategory</span></code>, <code class="docutils literal notranslate"><span class="pre">ObligationCharacteristic</span></code>, <code class="docutils literal notranslate"><span class="pre">CreditDefaultSwapTransactionType</span></code>, <code class="docutils literal notranslate"><span class="pre">CreditRatingAgency</span></code>, <code class="docutils literal notranslate"><span class="pre">CreditRatingOutlook</span></code>, <code class="docutils literal notranslate"><span class="pre">CreditQuality</span></code></p></li>
+<li><p>Foreign exchange: <code class="docutils literal notranslate"><span class="pre">ForeignExchangeProductType</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeTenor</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeQuoteBasis</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeBenchmark</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeDeltaConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeAtTheMoneyConvention</span></code>, <code class="docutils literal notranslate"><span class="pre">ForeignExchangeVolatilityQuoteType</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionStrikeQuoteBasis</span></code>, <code class="docutils literal notranslate"><span class="pre">OptionPremiumQuoteBasis</span></code>, <code class="docutils literal notranslate"><span class="pre">TouchType</span></code>, <code class="docutils literal notranslate"><span class="pre">PayoutTiming</span></code></p></li>
 <li><p>Benchmarks and index administration: <code class="docutils literal notranslate"><span class="pre">BenchmarkType</span></code>, <code class="docutils literal notranslate"><span class="pre">IndexWeightingMethod</span></code>, <code class="docutils literal notranslate"><span class="pre">CorporateActionAdjustmentType</span></code>, <code class="docutils literal notranslate"><span class="pre">CalculationAgentType</span></code></p></li>
 <li><p>Portfolio and fund structure: <code class="docutils literal notranslate"><span class="pre">AccountType</span></code>, <code class="docutils literal notranslate"><span class="pre">BookType</span></code>, <code class="docutils literal notranslate"><span class="pre">PositionType</span></code>, <code class="docutils literal notranslate"><span class="pre">InventoryType</span></code>, <code class="docutils literal notranslate"><span class="pre">StrategyType</span></code>, <code class="docutils literal notranslate"><span class="pre">NettingType</span></code>, <code class="docutils literal notranslate"><span class="pre">DistributionPolicy</span></code>, <code class="docutils literal notranslate"><span class="pre">ShareClassHedging</span></code></p></li>
 <li><p>Corporate actions and lifecycle: <code class="docutils literal notranslate"><span class="pre">CorporateActionType</span></code>, <code class="docutils literal notranslate"><span class="pre">ListingStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">SecurityStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ExerciseEventType</span></code>, <code class="docutils literal notranslate"><span class="pre">TenderOfferType</span></code>, <code class="docutils literal notranslate"><span class="pre">DelistingReason</span></code></p></li>
-<li><p>Trading: <code class="docutils literal notranslate"><span class="pre">OrderType</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutionType</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutionInstruction</span></code>, <code class="docutils literal notranslate"><span class="pre">LiquidityFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">PositionEffect</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderCapacity</span></code>, <code class="docutils literal notranslate"><span class="pre">ShortSaleRestriction</span></code>, <code class="docutils literal notranslate"><span class="pre">Side</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">TimeInForce</span></code></p></li>
-<li><p>Market data: <code class="docutils literal notranslate"><span class="pre">QuoteCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">TradeCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">CrossType</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceKind</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceNotation</span></code></p></li>
+<li><p>Trading: <code class="docutils literal notranslate"><span class="pre">OrderType</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderStatus</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutionType</span></code>, <code class="docutils literal notranslate"><span class="pre">ExecutionInstruction</span></code>, <code class="docutils literal notranslate"><span class="pre">LiquidityFlag</span></code>, <code class="docutils literal notranslate"><span class="pre">PositionEffect</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderCapacity</span></code>, <code class="docutils literal notranslate"><span class="pre">ShortSaleRestriction</span></code>, <code class="docutils literal notranslate"><span class="pre">Side</span></code>, <code class="docutils literal notranslate"><span class="pre">OrderSide</span></code>, <code class="docutils literal notranslate"><span class="pre">TimeInForce</span></code></p></li>
+<li><p>Market data: <code class="docutils literal notranslate"><span class="pre">QuoteCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">TradeCondition</span></code>, <code class="docutils literal notranslate"><span class="pre">AggressorSide</span></code>, <code class="docutils literal notranslate"><span class="pre">CrossType</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceKind</span></code>, <code class="docutils literal notranslate"><span class="pre">PriceNotation</span></code></p></li>
 </ul>
 <p>Exchange helpers now also support typed MIC category access through <code class="docutils literal notranslate"><span class="pre">ExchangeRecord.market_category()</span></code> / <code class="docutils literal notranslate"><span class="pre">ExchangeCode.market_category()</span></code>, standards-backed flags through <code class="docutils literal notranslate"><span class="pre">.regulatory_flags()</span></code>, and indexed lookups through <code class="docutils literal notranslate"><span class="pre">exchange_records_by_market_category_type()</span></code> and <code class="docutils literal notranslate"><span class="pre">exchange_records_by_regulatory_flag()</span></code>.</p>
 <p>CFI helpers now support structured round trips through <code class="docutils literal notranslate"><span class="pre">build_cfi_from_classification()</span></code> and validation through <code class="docutils literal notranslate"><span class="pre">validate_cfi_classification()</span></code>, plus the equivalent <code class="docutils literal notranslate"><span class="pre">CFIClassification.to_code()</span></code> and <code class="docutils literal notranslate"><span class="pre">CFIClassification.validate()</span></code> convenience methods.</p>
@@ -559,9 +644,9 @@ Polars-style bucket strings (<code class="docutils literal notranslate"><span cl
 <hr class="docutils" />
 <section id="rust-data-access">
 <h2>Rust data access<a class="headerlink" href="#rust-data-access" title="Link to this heading">¶</a></h2>
-<p>Rust consumers use the <code class="docutils literal notranslate"><span class="pre">finance_enums_core</span></code> crate and read static arrays from
-<code class="docutils literal notranslate"><span class="pre">finance_enums_core::data</span></code>:</p>
-<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums_core</span><span class="p">::</span><span class="n">data</span><span class="p">::{</span><span class="n">Currency_VARIANTS</span><span class="p">,</span><span class="w"> </span><span class="n">ExchangeCode_VARIANTS</span><span class="p">};</span>
+<p>Rust consumers use the <code class="docutils literal notranslate"><span class="pre">finance_enums</span></code> crate and read static arrays from
+<code class="docutils literal notranslate"><span class="pre">finance_enums::data</span></code>:</p>
+<div class="highlight-rust notranslate"><div class="highlight"><pre><span></span><span class="k">use</span><span class="w"> </span><span class="n">finance_enums</span><span class="p">::</span><span class="n">data</span><span class="p">::{</span><span class="n">Currency_VARIANTS</span><span class="p">,</span><span class="w"> </span><span class="n">ExchangeCode_VARIANTS</span><span class="p">};</span>
 
 <span class="fm">assert!</span><span class="p">(</span><span class="n">ExchangeCode_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">"XNYS"</span><span class="p">));</span>
 <span class="fm">assert!</span><span class="p">(</span><span class="n">Currency_VARIANTS</span><span class="p">.</span><span class="n">contains</span><span class="p">(</span><span class="o">&amp;</span><span class="s">"USD"</span><span class="p">));</span>
@@ -633,6 +718,12 @@ documented currency export capsule.</p>
   </li>
   <li class="fd-toc-item" data-depth="2">
     <a href="#finance_enums.EnumFamilySchema">EnumFamilySchema</a>
+  </li>
+  <li class="fd-toc-item" data-depth="3">
+    <a href="#finance_enums.EnumFamilySchema.ordinal_size">EnumFamilySchema.ordinal_size</a>
+  </li>
+  <li class="fd-toc-item" data-depth="3">
+    <a href="#finance_enums.EnumFamilySchema.ordinals">EnumFamilySchema.ordinals</a>
   </li>
   <li class="fd-toc-item" data-depth="2">
     <a href="#finance_enums.enum_variant_records">enum_variant_records()</a>

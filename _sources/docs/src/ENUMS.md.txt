@@ -2,7 +2,8 @@
 
 `finance-enums` centralizes identifier vocabularies used across the
 `finance-*` libraries. Python gets string-valued `Enum` classes; Rust
-gets static data arrays under `finance_enums::data`.
+gets typed `#[abi_safe_enum]` enums and data tables under
+`finance_enums::data`.
 
 All generated Python enum values are strings whose value equals the
 member name:
@@ -28,14 +29,13 @@ Rust package:
 
 ```toml
 [dependencies]
-finance_enums_core = "0.8"
+finance_enums = "0.9"
 ```
 
-Releases through 0.7 published this crate as `finance_enums`. The C ABI
-library is built by the separate `finance_enums_capi` crate.
+The crate's `capi` feature builds the C ABI library, `libfinance_enums`.
 
 ```rust
-use finance_enums_core::data::ExchangeCode_VARIANTS;
+use finance_enums::data::ExchangeCode_VARIANTS;
 ```
 
 ______________________________________________________________________
@@ -176,8 +176,12 @@ subtypes:
 - Commodities: `CommodityType`, `EnergyType`, `MetalType`, `AgricultureType`
 - Funds: `FundType`, `FundSubType`, `MutualFundEndedness`
 - Futures: `FutureAssetClass`, `SettlementType`, `ContractUnit`, `LegRole`
-- Fixed income and financing: `CouponType`, `ScheduleFrequency`, `DayCountConvention`, `AmortizationType`, `Seniority`, `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
-- Swaps and structured products: `SwapType`, `SwapLegType`, `RateIndex`, `CompoundingMethod`, `StubType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Financing: `CollateralType`, `MarginType`, `BorrowType`, `RepoType`, `FinancingType`
+- Swaps and structured products: `SwapType`, `SwapLegType`, `BarrierType`, `AveragingMethod`, `ExoticOptionFeature`
+- Rates and schedules: `DayCountConvention`, `BusinessDayConvention`, `RollConvention`, `StubType`, `ScheduleFrequency`, `PeriodUnit`, `PeriodTiming`, `RateIndex`, `CompoundingMethod`, `OvernightAccrualMethod`, `PriceIndexCalculationMethod`, `InterestRateSwapType`, `InterestRateProductType`, `SwaptionCashSettlementMethod`
+- Bonds and money markets: `BondType`, `IssuerType`, `CouponType`, `Seniority`, `RedemptionFeature`, `DebtGuaranteeType`, `AmortizationType`, `SecurityForm`, `AssetBackedCollateralType`, `MoneyMarketInstrumentType`, `YieldType`, `DurationType`
+- Credit: `RestructuringClause`, `CreditEventType`, `ObligationCategory`, `ObligationCharacteristic`, `CreditDefaultSwapTransactionType`, `CreditRatingAgency`, `CreditRatingOutlook`, `CreditQuality`
+- Foreign exchange: `ForeignExchangeProductType`, `ForeignExchangeTenor`, `ForeignExchangeQuoteBasis`, `ForeignExchangeBenchmark`, `ForeignExchangeDeltaConvention`, `ForeignExchangeAtTheMoneyConvention`, `ForeignExchangeVolatilityQuoteType`, `OptionStrikeQuoteBasis`, `OptionPremiumQuoteBasis`, `TouchType`, `PayoutTiming`
 - Benchmarks and index administration: `BenchmarkType`, `IndexWeightingMethod`, `CorporateActionAdjustmentType`, `CalculationAgentType`
 
 The taxonomy is deliberately descriptive rather than behavioral. It does
@@ -192,7 +196,7 @@ Shared post-trade and fund-operation vocabularies now include:
 - Portfolio and booking: `AccountType`, `BookType`, `PositionType`, `InventoryType`, `StrategyType`, `NettingType`
 - Fund structure: `DistributionPolicy`, `ShareClassHedging`
 - Security lifecycle: `CorporateActionType`, `ListingStatus`, `SecurityStatus`, `ExerciseEventType`, `TenderOfferType`, `DelistingReason`
-- Post-trade and clearing: `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
+- Post-trade and clearing: `SettlementType`, `DeliveryType`, `SettlementStatus`, `ClearingModel`, `ClearingHouse`, `SettlementFailReason`, `AllocationMethod`, `GiveUpType`
 
 These enums are intended for validation and shared schemas across
 execution, risk, portfolio, and reference-data workflows.
@@ -217,8 +221,8 @@ ______________________________________________________________________
 Trading workflow identifiers include:
 
 - Order workflow: `OrderType`, `OrderStatus`, `ExecutionType`, `ExecutionInstruction`, `OrderCapacity`, `PositionEffect`, `ShortSaleRestriction`
-- Venue and execution flags: `LiquidityFlag`, `OrderFlag`, `TimeInForce`
-- Market-data conditions: `QuoteCondition`, `TradeCondition`, `CrossType`, `PriceKind`, `PriceNotation`
+- Venue and execution flags: `LiquidityFlag`, `TimeInForce`
+- Market-data conditions: `QuoteCondition`, `TradeCondition`, `AggressorSide`, `CrossType`, `PriceKind`, `PriceNotation`
 - Side: `Side`
 
 These enums are intended for validation and shared API contracts rather than order routing logic.
